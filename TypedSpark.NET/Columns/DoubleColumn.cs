@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
+public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
 {
     private DoubleColumn(string columnName, Column column)
         : base(columnName, new DoubleType(), column) { }

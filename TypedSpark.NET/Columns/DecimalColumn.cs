@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
+public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
 {
     private DecimalColumn(string columnName, Column column)
         : base(columnName, new DecimalType(), column) { }

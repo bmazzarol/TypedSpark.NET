@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class ShortColumn : TypedNumericColumn<ShortColumn, ShortType, short>
+public sealed class ShortColumn : TypedNumericColumn<ShortColumn, ShortType, short>
 {
     private ShortColumn(string columnName, Column column)
         : base(columnName, new ShortType(), column) { }

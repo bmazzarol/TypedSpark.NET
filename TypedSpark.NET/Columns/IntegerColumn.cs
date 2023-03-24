@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
+public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
 {
     private IntegerColumn(string columnName, Column column)
         : base(columnName, new IntegerType(), column) { }

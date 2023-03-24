@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
+public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
 {
     private LongColumn(string columnName, Column column) : base(columnName, new LongType(), column)
     { }

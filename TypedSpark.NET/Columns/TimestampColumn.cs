@@ -4,7 +4,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampType, Timestamp>
+public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampType, Timestamp>
 {
     private TimestampColumn(string columnName, Column column)
         : base(columnName, new TimestampType(), column) { }

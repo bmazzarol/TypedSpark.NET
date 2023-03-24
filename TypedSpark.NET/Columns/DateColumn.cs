@@ -7,7 +7,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Date column
 /// </summary>
-public class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
+public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
 {
     private DateColumn(string columnName, Column column) : base(columnName, new DateType(), column)
     { }

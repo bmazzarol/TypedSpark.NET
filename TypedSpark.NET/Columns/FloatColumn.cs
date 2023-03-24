@@ -5,7 +5,7 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, float>
+public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, float>
 {
     private FloatColumn(string columnName, Column column)
         : base(columnName, new FloatType(), column) { }
