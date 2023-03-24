@@ -1,0 +1,1 @@
+﻿{"fields":[{"metadata":{},"name":"NullableInt","nullable":true,"type":"integer"}],"type":"struct"}

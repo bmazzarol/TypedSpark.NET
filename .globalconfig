@@ -1,0 +1,7 @@
+﻿is_global = true
+
+# Remove overload of 'operator =='
+dotnet_diagnostic.S3875.severity = suggestion
+
+# Rename virtual/interface member so that it no longer conflicts with the reserved language keyword
+dotnet_diagnostic.CA1716.severity = suggestion
