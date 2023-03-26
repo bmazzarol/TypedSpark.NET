@@ -403,9 +403,9 @@ public static class TypedDataFrame
 
         var result3 = schema1.InnerJoin(schema2, (a, b) => a.B == b.C, (a, b) => (a.B, b.D));
 
-        var result4 = result.Select(x => (x.B, x.B.CastToDate())) & result3;
-        
-        var result5 = result.Select(x => (x.B, x.B.CastToDate())) | result3;
+        var result4 = result.Select(x => (x.B, D: x.B.CastToDate())) & result3;
+
+        var result5 = result.Select(x => (x.B, D: x.B.CastToDate())) | result3;
 
 #pragma warning restore S1481
     }

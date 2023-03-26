@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark.Sql;
+﻿using System;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
 
@@ -6,8 +7,9 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampType, Timestamp>
 {
-    private TimestampColumn(string columnName, Column column)
-        : base(columnName, new TimestampType(), column) { }
+    private TimestampColumn(Column column) : base(new TimestampType(), column) { }
+
+    public TimestampColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -16,15 +18,40 @@ public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampT
     /// <param name="column">column</param>
     /// <returns></returns>
     public static TimestampColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+        new(column ?? Col(name));
 
-    protected override TimestampColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Creates a new column
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static TimestampColumn New(Column column) => new(column);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator TimestampColumn(Timestamp lit) => New(Lit(lit));
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator TimestampColumn(DateTime lit) => new Timestamp(lit);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator TimestampColumn(DateTimeOffset lit) => lit.UtcDateTime;
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
     /// representation of a timestamp.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 }

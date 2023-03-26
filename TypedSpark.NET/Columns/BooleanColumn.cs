@@ -10,8 +10,9 @@ namespace TypedSpark.NET.Columns;
 /// </summary>
 public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, bool>
 {
-    private BooleanColumn(string columnName, Column column)
-        : base(columnName, new BooleanType(), column) { }
+    private BooleanColumn(Column column) : base(new BooleanType(), column) { }
+
+    public BooleanColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -20,18 +21,21 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// <param name="column">column</param>
     /// <returns></returns>
     public static BooleanColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+        new(column ?? Col(name));
 
     /// <summary>
     /// Creates a new column
     /// </summary>
-    /// <param name="name">name</param>
-    /// <param name="lit">literal</param>
+    /// <param name="column">column</param>
     /// <returns></returns>
-    public static BooleanColumn New(string name, bool lit) => New(name, Lit(lit).As(name));
+    public static BooleanColumn New(Column column) => new(column);
 
-    protected override BooleanColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator BooleanColumn(bool lit) => New(Lit(lit));
 
     /// <summary>Apply inversion of boolean expression, i.e. NOT.</summary>
     /// <param name="self">Column to apply inversion</param>
@@ -69,7 +73,7 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// representation of a boolean.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 
     public static implicit operator StringColumn(BooleanColumn column) => column.CastToString();
 
@@ -77,43 +81,43 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// Casts the column to a byte column
     /// </summary>
     /// <returns>Column object</returns>
-    public ByteColumn CastToByte() => ByteColumn.New(ColumnName, Column.Cast("byte"));
+    public ByteColumn CastToByte() => ByteColumn.New(Column.Cast("byte"));
 
     /// <summary>
     /// Casts the column to a integer column
     /// </summary>
     /// <returns>Column object</returns>
-    public IntegerColumn CastToInteger() => IntegerColumn.New(ColumnName, Column.Cast("int"));
+    public IntegerColumn CastToInteger() => IntegerColumn.New(Column.Cast("int"));
 
     /// <summary>
     /// Casts the column to a short column
     /// </summary>
     /// <returns>Column object</returns>
-    public ShortColumn CastToShort() => ShortColumn.New(ColumnName, Column.Cast("short"));
+    public ShortColumn CastToShort() => ShortColumn.New(Column.Cast("short"));
 
     /// <summary>
     /// Casts the column to a long column
     /// </summary>
     /// <returns>Column object</returns>
-    public LongColumn CastToLong() => LongColumn.New(ColumnName, Column.Cast("long"));
+    public LongColumn CastToLong() => LongColumn.New(Column.Cast("long"));
 
     /// <summary>
     /// Casts the column to a float column
     /// </summary>
     /// <returns>Column object</returns>
-    public FloatColumn CastToFloat() => FloatColumn.New(ColumnName, Column.Cast("float"));
+    public FloatColumn CastToFloat() => FloatColumn.New(Column.Cast("float"));
 
     /// <summary>
     /// Casts the column to a double column
     /// </summary>
     /// <returns>Column object</returns>
-    public DoubleColumn CastToDouble() => DoubleColumn.New(ColumnName, Column.Cast("double"));
+    public DoubleColumn CastToDouble() => DoubleColumn.New(Column.Cast("double"));
 
     /// <summary>
     /// Casts the column to a decimal column
     /// </summary>
     /// <returns>Column object</returns>
-    public DecimalColumn CastToDecimal() => DecimalColumn.New(ColumnName, Column.Cast("decimal"));
+    public DecimalColumn CastToDecimal() => DecimalColumn.New(Column.Cast("decimal"));
 
     /// <summary>
     ///  A boolean expression that is evaluated to true if the value of this expression

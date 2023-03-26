@@ -19,5 +19,5 @@ public static class Functions
     /// <param name="column">Column to apply</param>
     /// <returns>Column object</returns>
     public static IntegerColumn Length(StringColumn column) =>
-        IntegerColumn.New(column.ColumnName, UT.Length((Column)column));
+        IntegerColumn.New(UT.Length((Column)column));
 }

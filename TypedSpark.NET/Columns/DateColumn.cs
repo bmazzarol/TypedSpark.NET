@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark.Sql;
+﻿using System;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
 
@@ -9,8 +10,9 @@ namespace TypedSpark.NET.Columns;
 /// </summary>
 public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
 {
-    private DateColumn(string columnName, Column column) : base(columnName, new DateType(), column)
-    { }
+    private DateColumn(Column column) : base(new DateType(), column) { }
+
+    public DateColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -18,16 +20,33 @@ public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
     /// <param name="name">name</param>
     /// <param name="column">column</param>
     /// <returns></returns>
-    public static DateColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+    public static DateColumn New(string name, Column? column = default) => new(column ?? Col(name));
 
-    protected override DateColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Creates a new column
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static DateColumn New(Column column) => new(column);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator DateColumn(Date lit) => New(Lit(lit));
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator DateColumn(DateTime lit) => new Date(lit);
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
     /// representation of a date.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 }
