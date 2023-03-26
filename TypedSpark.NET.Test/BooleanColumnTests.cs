@@ -6,7 +6,6 @@ using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET;
 using SparkTest.NET.Extensions;
-using TypedSpark.NET.Extensions;
 using TypedSpark.NET.Generators;
 using Xunit;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
