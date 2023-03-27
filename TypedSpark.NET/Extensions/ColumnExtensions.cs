@@ -3,8 +3,11 @@ using Microsoft.Spark.Sql;
 
 namespace TypedSpark.NET.Extensions;
 
-public static class ColumnExtensions
+internal static class ColumnExtensions
 {
     // implement this
-    public static Column[] ExtractColumns<T>(this T schema) => Array.Empty<Column>();
+    internal static Column[] ExtractColumns<T>(this T schema) => Array.Empty<Column>();
+
+    // implement this
+    internal static Column ExtractColumn<T>(this T column) => default!;
 }

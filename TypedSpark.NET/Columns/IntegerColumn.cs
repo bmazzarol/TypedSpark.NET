@@ -5,10 +5,11 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
+public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
 {
-    private IntegerColumn(string columnName, Column column)
-        : base(columnName, new IntegerType(), column) { }
+    private IntegerColumn(Column column) : base(new IntegerType(), column) { }
+
+    public IntegerColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -17,17 +18,28 @@ public class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
     /// <param name="column">column</param>
     /// <returns></returns>
     public static IntegerColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+        new(column ?? Col(name));
 
-    protected override IntegerColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Creates a new column
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static IntegerColumn New(Column column) => new(column);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator IntegerColumn(int lit) => New(Lit(lit));
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
     /// representation of a integer.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 
     public static implicit operator StringColumn(IntegerColumn column) => column.CastToString();
 

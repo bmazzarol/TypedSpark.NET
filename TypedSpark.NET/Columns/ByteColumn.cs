@@ -10,8 +10,9 @@ namespace TypedSpark.NET.Columns;
 /// <remarks>Spark side only, cannot be serialized to Java at this stage</remarks>
 public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
 {
-    private ByteColumn(string columnName, Column column) : base(columnName, new ByteType(), column)
-    { }
+    private ByteColumn(Column column) : base(new ByteType(), column) { }
+
+    public ByteColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -19,20 +20,21 @@ public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
     /// <param name="name">name</param>
     /// <param name="column">column</param>
     /// <returns></returns>
-    public static ByteColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
-
-    protected override ByteColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    public static ByteColumn New(string name, Column? column = default) => new(column ?? Col(name));
 
     /// <summary>
-    /// Compute bitwise OR of this expression with another expression.
+    /// Creates a new column
     /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise OR.
-    /// </param>
-    /// <returns>New column after applying bitwise OR operator</returns>
-    public ByteColumn BitwiseOR(byte other) => New(Column.BitwiseOR(Lit(other)));
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static ByteColumn New(Column column) => new(column);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator ByteColumn(byte lit) => New(Lit((int)lit));
 
     /// <summary>
     /// Compute bitwise OR of this expression with another expression.
@@ -50,25 +52,7 @@ public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
     /// The other column that will be used to compute the bitwise AND.
     /// </param>
     /// <returns>New column after applying the bitwise AND operator</returns>
-    public ByteColumn BitwiseAND(byte other) => New(Column.BitwiseAND(Lit(other)));
-
-    /// <summary>
-    /// Compute bitwise AND of this expression with another expression.
-    /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise AND.
-    /// </param>
-    /// <returns>New column after applying the bitwise AND operator</returns>
     public ByteColumn BitwiseAND(ByteColumn other) => New(Column.BitwiseAND(other.Column));
-
-    /// <summary>
-    /// Compute bitwise XOR of this expression with another expression.
-    /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise XOR.
-    /// </param>
-    /// <returns>New column after applying bitwise XOR operator</returns>
-    public ByteColumn BitwiseXOR(byte other) => New(Column.BitwiseXOR(Lit(other)));
 
     /// <summary>
     /// Compute bitwise XOR of this expression with another expression.
@@ -84,7 +68,7 @@ public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
     /// representation of a byte.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 
     public static implicit operator StringColumn(ByteColumn column) => column.CastToString();
 
@@ -93,7 +77,7 @@ public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
     /// representation of a byte.
     /// </summary>
     /// <returns>Column object</returns>
-    public IntegerColumn CastToInteger() => IntegerColumn.New(ColumnName, Column.Cast("int"));
+    public IntegerColumn CastToInteger() => IntegerColumn.New(Column.Cast("int"));
 
     public static implicit operator IntegerColumn(ByteColumn column) => column.CastToInteger();
 }

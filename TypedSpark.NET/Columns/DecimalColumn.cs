@@ -5,10 +5,11 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
+public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
 {
-    private DecimalColumn(string columnName, Column column)
-        : base(columnName, new DecimalType(), column) { }
+    private DecimalColumn(Column column) : base(new DecimalType(), column) { }
+
+    public DecimalColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -17,17 +18,28 @@ public class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, deci
     /// <param name="column">column</param>
     /// <returns></returns>
     public static DecimalColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+        new(column ?? Col(name));
 
-    protected override DecimalColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Creates a new column
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static DecimalColumn New(Column column) => new(column);
+
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator DecimalColumn(decimal lit) => New(Lit((double)lit));
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
     /// representation of a double.
     /// </summary>
     /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(ColumnName, Column.Cast("string"));
+    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 
     public static implicit operator StringColumn(DecimalColumn column) => column.CastToString();
 

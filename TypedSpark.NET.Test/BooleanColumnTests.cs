@@ -6,7 +6,6 @@ using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET;
 using SparkTest.NET.Extensions;
-using TypedSpark.NET.Extensions;
 using TypedSpark.NET.Generators;
 using Xunit;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
@@ -227,8 +226,10 @@ namespace TypedSpark.NET.Test
             await ArrangedSession
                 .Act(session =>
                 {
+                    B a = true;
+                    B b = false;
                     var df = session.CreateEmptyFrame();
-                    return df.Select((Column)true.As("A"), (Column)false.As("B")).Collect();
+                    return df.Select((Column)a.As("A"), (Column)b.As("B")).Collect();
                 })
                 .Assert(
                     rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(true, false)
@@ -242,6 +243,8 @@ namespace TypedSpark.NET.Test
         protected override bool ExampleValue1() => true;
 
         protected override bool ExampleValue2() => false;
+
+        protected override B FromNative(bool native) => native;
     }
 
     [GenerateSchema]

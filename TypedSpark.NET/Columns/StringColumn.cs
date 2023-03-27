@@ -1,14 +1,15 @@
-﻿using Microsoft.Spark.Sql.Types;
+﻿using Microsoft.Spark.Sql;
+using Microsoft.Spark.Sql.Types;
 using TypedSpark.NET.Extensions;
 using static Microsoft.Spark.Sql.Functions;
-using Column = Microsoft.Spark.Sql.Column;
 
 namespace TypedSpark.NET.Columns;
 
 public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, string>
 {
-    private StringColumn(string columnName, Column column)
-        : base(columnName, new StringType(), column) { }
+    private StringColumn(Column column) : base(new StringType(), column) { }
+
+    public StringColumn() : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -17,16 +18,21 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <param name="column">column</param>
     /// <returns></returns>
     public static StringColumn New(string name, Column? column = default) =>
-        new(name, column ?? Col(name));
+        new(column ?? Col(name));
 
-    protected override StringColumn New(Column column, string? name = default) =>
-        New(name ?? ColumnName, column);
+    /// <summary>
+    /// Creates a new column
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <returns></returns>
+    public static StringColumn New(Column column) => new(column);
 
-    /// <summary>Apply sum of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the sum operation</returns>
-    public static StringColumn operator +(StringColumn lhs, string rhs) => lhs.Plus(rhs);
+    /// <summary>
+    /// Convert the dotnet literal value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>typed column</returns>
+    public static implicit operator StringColumn(string lit) => New(Lit(lit));
 
     /// <summary>Apply sum of two expressions.</summary>
     /// <param name="lhs">Column on the left side of the operator</param>
@@ -37,20 +43,14 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <summary>Sum of this expression and another expression.</summary>
     /// <param name="rhs">The expression to be summed with</param>
     /// <returns>New column after applying the plus operator</returns>
-    public StringColumn Plus(string rhs) => New(ColumnName, Column.Plus(Lit(rhs)));
-
-    /// <summary>Sum of this expression and another expression.</summary>
-    /// <param name="rhs">The expression to be summed with</param>
-    /// <returns>New column after applying the plus operator</returns>
-    public StringColumn Plus(StringColumn rhs) => New(ColumnName, Column.Plus(rhs));
+    public StringColumn Plus(StringColumn rhs) => New(Column.Plus(rhs));
 
     /// <summary>
     /// SQL like expression. Returns a boolean column based on a SQL LIKE match.
     /// </summary>
     /// <param name="literal">The literal that is used to compute the SQL LIKE match</param>
     /// <returns>New column after applying the SQL LIKE match</returns>
-    public BooleanColumn Like(string literal) =>
-        BooleanColumn.New(ColumnName, Column.Like(literal));
+    public BooleanColumn Like(string literal) => BooleanColumn.New(Column.Like(literal));
 
     /// <summary>
     /// SQL RLIKE expression (LIKE with Regex). Returns a boolean column based on a regex
@@ -58,8 +58,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// </summary>
     /// <param name="literal">The literal that is used to compute the Regex match</param>
     /// <returns>New column after applying the regex LIKE method</returns>
-    public BooleanColumn RLike(string literal) =>
-        BooleanColumn.New(ColumnName, Column.RLike(literal));
+    public BooleanColumn RLike(string literal) => BooleanColumn.New(Column.RLike(literal));
 
     /// <summary>An expression that returns a substring.</summary>
     /// <param name="startPos">Expression for the starting position</param>
@@ -68,26 +67,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// New column that is bound by the start position provided, and the length.
     /// </returns>
     public StringColumn SubStr(IntegerColumn startPos, IntegerColumn len) =>
-        New(ColumnName, Column.SubStr((Column)startPos, (Column)len));
-
-    /// <summary>An expression that returns a substring.</summary>
-    /// <param name="startPos">Starting position</param>
-    /// <param name="len">Length of the substring</param>
-    /// <returns>
-    /// New column that is bound by the start position provided, and the length.
-    /// </returns>
-    public StringColumn SubStr(int startPos, int len) =>
-        New(ColumnName, Column.SubStr(startPos, len));
-
-    /// <summary>
-    /// Contains the other element. Returns a boolean column based on a string match.
-    /// </summary>
-    /// <param name="other">
-    /// The object that is used to check for existence in the current column.
-    /// </param>
-    /// <returns>New column after checking if the column contains object other</returns>
-    public BooleanColumn Contains(string other) =>
-        BooleanColumn.New(ColumnName, Column.Contains(other));
+        New(Column.SubStr((Column)startPos, (Column)len));
 
     /// <summary>
     /// Contains the other element. Returns a boolean column based on a string match.
@@ -97,7 +77,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// </param>
     /// <returns>New column after checking if the column contains object other</returns>
     public BooleanColumn Contains(StringColumn other) =>
-        BooleanColumn.New(ColumnName, Column.Contains((Column)other));
+        BooleanColumn.New(Column.Contains((Column)other));
 
     /// <summary>
     /// String starts with. Returns a boolean column based on a string match.
@@ -111,21 +91,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// column does indeed start with the values in the given column.
     /// </returns>
     public BooleanColumn StartsWith(StringColumn other) =>
-        BooleanColumn.New(ColumnName, Column.StartsWith((Column)other));
-
-    /// <summary>
-    /// String starts with another string literal.
-    /// Returns a boolean column based on a string match.
-    /// </summary>
-    /// <param name="literal">
-    /// The string literal used to check how values in a column starts.
-    /// </param>
-    /// <returns>
-    /// A boolean column where entries are true if values in the current column
-    /// does indeed start with the given string literal.
-    /// </returns>
-    public BooleanColumn StartsWith(string literal) =>
-        BooleanColumn.New(ColumnName, Column.StartsWith(literal));
+        BooleanColumn.New(Column.StartsWith((Column)other));
 
     /// <summary>
     /// String ends with. Returns a boolean column based on a string match.
@@ -139,64 +105,49 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// column does indeed end with the values in the given column.
     /// </returns>
     public BooleanColumn EndsWith(StringColumn other) =>
-        BooleanColumn.New(ColumnName, Column.EndsWith((Column)other));
-
-    /// <summary>
-    /// String ends with another string literal. Returns a boolean column based
-    /// on a string match.
-    /// </summary>
-    /// <param name="literal">
-    /// The string literal used to check how values in a column ends.
-    /// </param>
-    /// <returns>
-    /// A boolean column where entries are true if values in the current column
-    /// does indeed end with the given string literal.
-    /// </returns>
-    public BooleanColumn EndsWith(string literal) =>
-        BooleanColumn.New(ColumnName, Column.EndsWith(literal));
+        BooleanColumn.New(Column.EndsWith((Column)other));
 
     /// <summary>
     /// Casts the column to a boolean column, using the canonical string
     /// representation of a boolean.
     /// </summary>
     /// <returns>Column object</returns>
-    public BooleanColumn CastToBoolean() => BooleanColumn.New(ColumnName, Column.Cast("boolean"));
+    public BooleanColumn CastToBoolean() => BooleanColumn.New(Column.Cast("boolean"));
 
     /// <summary>
     /// Casts the column to a integer column, using the canonical string
     /// representation of a integer.
     /// </summary>
     /// <returns>Column object</returns>
-    public IntegerColumn CastToInteger() => IntegerColumn.New(ColumnName, Column.Cast("int"));
+    public IntegerColumn CastToInteger() => IntegerColumn.New(Column.Cast("int"));
 
     /// <summary>
     /// Casts the column to a long column, using the canonical string
     /// representation of a long.
     /// </summary>
     /// <returns>Column object</returns>
-    public LongColumn CastToLong() => LongColumn.New(ColumnName, Column.Cast("long"));
+    public LongColumn CastToLong() => LongColumn.New(Column.Cast("long"));
 
     /// <summary>
     /// Casts the column to a double column, using the canonical string
     /// representation of a double.
     /// </summary>
     /// <returns>Column object</returns>
-    public DoubleColumn CastToDouble() => DoubleColumn.New(ColumnName, Column.Cast("double"));
+    public DoubleColumn CastToDouble() => DoubleColumn.New(Column.Cast("double"));
 
     /// <summary>
     /// Casts the column to a date column, using the canonical string
     /// representation of a date.
     /// </summary>
     /// <returns>Column object</returns>
-    public DateColumn CastToDate() => DateColumn.New(ColumnName, Column.Cast("date"));
+    public DateColumn CastToDate() => DateColumn.New(Column.Cast("date"));
 
     /// <summary>
     /// Casts the column to a timestamp column, using the canonical string
     /// representation of a timestamp.
     /// </summary>
     /// <returns>Column object</returns>
-    public TimestampColumn CastToTimestamp() =>
-        TimestampColumn.New(ColumnName, Column.Cast("timestamp"));
+    public TimestampColumn CastToTimestamp() => TimestampColumn.New(Column.Cast("timestamp"));
 
     /// <summary>
     ///  A boolean expression that is evaluated to true if the value of this expression

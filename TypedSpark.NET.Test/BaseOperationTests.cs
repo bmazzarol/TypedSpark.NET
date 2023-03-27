@@ -12,7 +12,7 @@ using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
 namespace TypedSpark.NET.Test
 {
     public abstract class BaseOperationTests<TColumn, TSparkType, TNativeType>
-        where TColumn : TypedColumn<TColumn, TSparkType, TNativeType>
+        where TColumn : TypedColumn<TColumn, TSparkType, TNativeType>, new()
         where TSparkType : DataType
     {
         private readonly Scenario.Arranged<SparkSession> _arrangedSession =
@@ -22,6 +22,8 @@ namespace TypedSpark.NET.Test
 
         protected abstract TNativeType ExampleValue1();
         protected abstract TNativeType ExampleValue2();
+
+        protected abstract TColumn FromNative(TNativeType native);
 
         [Fact(DisplayName = "== operator can be applied to a column and literal")]
         public async Task Case1() =>
@@ -34,7 +36,9 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
-                    return df.Select((Column)col).Where((Column)(col == ExampleValue1())).Collect();
+                    return df.Select((Column)col)
+                        .Where((Column)(col == FromNative(ExampleValue1())))
+                        .Collect();
                 })
                 .Assert(rows =>
                 {
@@ -82,7 +86,9 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
-                    return df.Select((Column)col).Where((Column)(col != ExampleValue1())).Collect();
+                    return df.Select((Column)col)
+                        .Where((Column)(col != FromNative(ExampleValue1())))
+                        .Collect();
                 })
                 .Assert(rows =>
                 {
@@ -122,26 +128,5 @@ namespace TypedSpark.NET.Test
                     return df.Select((Column)a).Where((Column)a.EqNullSafe(a)).Collect();
                 })
                 .Assert(rows => rows.Should().HaveCount(1));
-
-        // [Fact(DisplayName = "When and Otherwise can be used")]
-        // public async Task Case6() =>
-        //     await _arrangedSession
-        //         .Act(session =>
-        //         {
-        //             var a = Create("A");
-        //             var lit = Create("B", Microsoft.Spark.Sql.Functions.Lit(ExampleValue1()));
-        //             var df = session.CreateDataFrameFromData(
-        //                 new { A = ExampleValue1() },
-        //                 new { A = ExampleValue2() }
-        //             );
-        //             return df.Select(
-        //                     (Column)a,
-        //                     lit.CastToObject(),
-        //                     a.When(a == lit, lit).Otherwise(lit).CastToObject().As("C")
-        //                 )
-        //                 .Where((Column)a.EqNullSafe(a))
-        //                 .Collect();
-        //         })
-        //         .Assert(rows => rows.Should().HaveCount(1));
     }
 }
