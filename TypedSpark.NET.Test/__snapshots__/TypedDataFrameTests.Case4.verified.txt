@@ -1,0 +1,28 @@
+﻿== Parsed Logical Plan ==
+Union
+:- SubqueryAlias a
+:  +- LocalRelation [A, B, C]
++- SubqueryAlias b
+   +- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date
+Union
+:- SubqueryAlias a
+:  +- LocalRelation [A, B, C]
++- Project [A AS A, B AS B, C AS C]
+   +- SubqueryAlias b
+      +- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Union
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Physical Plan ==
+Union
+:- LocalTableScan [A, B, C]
++- LocalTableScan [A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date>

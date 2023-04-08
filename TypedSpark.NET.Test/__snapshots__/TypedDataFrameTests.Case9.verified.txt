@@ -1,0 +1,20 @@
+﻿== Parsed Logical Plan ==
+'Sort ['A DESC NULLS LAST, 'B ASC NULLS FIRST], true
++- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date
+Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
++- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
++- LocalRelation [A, B, C]
+
+== Physical Plan ==
+*(1) Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true, 0
++- Exchange rangepartitioning(A DESC NULLS LAST, B ASC NULLS FIRST, 1), true, [id=]
+   +- LocalTableScan [A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date>

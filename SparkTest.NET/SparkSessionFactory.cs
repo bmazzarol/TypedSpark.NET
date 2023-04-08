@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.Spark.Sql;
 
 namespace SparkTest.NET;
@@ -17,11 +18,7 @@ namespace SparkTest.NET;
 public static class SparkSessionFactory
 {
     private static readonly ConcurrentDictionary<string, Lazy<SparkSession>> SparkSessions;
-
-    /// <summary>
-    /// Singleton shared spark session
-    /// </summary>
-    public static readonly SparkSession DefaultSession;
+    private static readonly SparkSession DefaultSession;
 
     static SparkSessionFactory()
     {
@@ -50,11 +47,38 @@ public static class SparkSessionFactory
     }
 
     /// <summary>
-    /// Gets or creates a new session
+    /// Uses a spark session and returns the result
     /// </summary>
-    /// <param name="appName">application name</param>
-    /// <returns>spark session</returns>
-    public static SparkSession GetOrCreateSession(string appName) =>
+    /// <param name="fn">function that takes a session and returns a T</param>
+    /// <param name="appName">optional app name</param>
+    /// <typeparam name="T">some T</typeparam>
+    /// <returns>T</returns>
+    public static Task<T> UseSession<T>(Func<SparkSession, Task<T>> fn, string? appName = default)
+    {
+        var session = appName != null ? GetOrCreateSession(appName) : DefaultSession;
+        lock (SparkSessions)
+        {
+            return fn(session);
+        }
+    }
+
+    /// <summary>
+    /// Uses a spark session and returns the result
+    /// </summary>
+    /// <param name="fn">function that takes a session and returns a T</param>
+    /// <param name="appName">optional app name</param>
+    /// <typeparam name="T">some T</typeparam>
+    /// <returns>T</returns>
+    public static T UseSession<T>(Func<SparkSession, T> fn, string? appName = default)
+    {
+        var session = appName != null ? GetOrCreateSession(appName) : DefaultSession;
+        lock (SparkSessions)
+        {
+            return fn(session);
+        }
+    }
+
+    private static SparkSession GetOrCreateSession(string appName) =>
         SparkSessions
             .GetOrAdd(
                 appName,
@@ -159,7 +183,7 @@ public static class SparkSessionFactory
         process.StartInfo.RedirectStandardError = true;
 
         var isSparkReady = false;
-        process.OutputDataReceived += (sender, arguments) =>
+        process.OutputDataReceived += (_, arguments) =>
         {
             // Scala-side driver for .NET emits the following message after it is
             // launched and ready to accept connections.

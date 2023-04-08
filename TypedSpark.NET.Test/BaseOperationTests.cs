@@ -4,9 +4,9 @@ using BunsenBurner;
 using FluentAssertions;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using SparkTest.NET;
 using SparkTest.NET.Extensions;
 using Xunit;
+using static TypedSpark.NET.Test.SparkTestExtensions;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
 
 namespace TypedSpark.NET.Test
@@ -15,9 +15,6 @@ namespace TypedSpark.NET.Test
         where TColumn : TypedColumn<TColumn, TSparkType, TNativeType>, new()
         where TSparkType : DataType
     {
-        private readonly Scenario.Arranged<SparkSession> _arrangedSession =
-            SparkSessionFactory.DefaultSession.ArrangeData();
-
         protected abstract TColumn Create(string name, Column? column = default);
 
         protected abstract TNativeType ExampleValue1();
@@ -27,19 +24,18 @@ namespace TypedSpark.NET.Test
 
         [Fact(DisplayName = "== operator can be applied to a column and literal")]
         public async Task Case1() =>
-            await _arrangedSession
-                .Act(session =>
+            await ArrangeUsingSpark(s =>
                 {
                     var col = Create("A");
-                    var df = session.CreateDataFrameFromData(
+                    var df = s.CreateDataFrameFromData(
                         new { A = ExampleValue1() },
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
                     return df.Select((Column)col)
-                        .Where((Column)(col == FromNative(ExampleValue1())))
-                        .Collect();
+                        .Where((Column)(col == FromNative(ExampleValue1())));
                 })
+                .Act(df => df.Collect().ToList())
                 .Assert(rows =>
                 {
                     rows.Should().HaveCount(2);
@@ -50,18 +46,18 @@ namespace TypedSpark.NET.Test
 
         [Fact(DisplayName = "== operator can be applied to a column and another column")]
         public async Task Case2() =>
-            await _arrangedSession
-                .Act(session =>
+            await ArrangeUsingSpark(s =>
                 {
                     var a = Create("A");
                     var b = Create("B");
-                    var df = session.CreateDataFrameFromData(
+                    var df = s.CreateDataFrameFromData(
                         new { A = ExampleValue1(), B = ExampleValue2() },
                         new { A = ExampleValue2(), B = ExampleValue2() },
                         new { A = ExampleValue1(), B = ExampleValue1() }
                     );
-                    return df.Select((Column)a, (Column)b).Where((Column)(a == b)).Collect();
+                    return df.Select((Column)a, (Column)b).Where((Column)(a == b));
                 })
+                .Act(df => df.Collect().ToList())
                 .Assert(rows =>
                 {
                     rows.Should().HaveCount(2);
@@ -77,19 +73,18 @@ namespace TypedSpark.NET.Test
 
         [Fact(DisplayName = "!= operator can be applied to a column and literal")]
         public async Task Case3() =>
-            await _arrangedSession
-                .Act(session =>
+            await ArrangeUsingSpark(s =>
                 {
                     var col = Create("A");
-                    var df = session.CreateDataFrameFromData(
+                    var df = s.CreateDataFrameFromData(
                         new { A = ExampleValue1() },
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
                     return df.Select((Column)col)
-                        .Where((Column)(col != FromNative(ExampleValue1())))
-                        .Collect();
+                        .Where((Column)(col != FromNative(ExampleValue1())));
                 })
+                .Act(df => df.Collect().ToList())
                 .Assert(rows =>
                 {
                     rows.Should().HaveCount(1);
@@ -98,18 +93,18 @@ namespace TypedSpark.NET.Test
 
         [Fact(DisplayName = "!= operator can be applied to a column and another column")]
         public async Task Case4() =>
-            await _arrangedSession
-                .Act(session =>
+            await ArrangeUsingSpark(s =>
                 {
                     var a = Create("A");
                     var b = Create("B");
-                    var df = session.CreateDataFrameFromData(
+                    var df = s.CreateDataFrameFromData(
                         new { A = ExampleValue1(), B = ExampleValue2() },
                         new { A = ExampleValue2(), B = ExampleValue2() },
                         new { A = ExampleValue1(), B = ExampleValue1() }
                     );
-                    return df.Select((Column)a, (Column)b).Where((Column)(a != b)).Collect();
+                    return df.Select((Column)a, (Column)b).Where((Column)(a != b));
                 })
+                .Act(df => df.Collect().ToList())
                 .Assert(rows =>
                 {
                     rows.Should().HaveCount(1);
@@ -120,13 +115,13 @@ namespace TypedSpark.NET.Test
 
         [Fact(DisplayName = "EqNullSafe can be used against another column")]
         public async Task Case5() =>
-            await _arrangedSession
-                .Act(session =>
+            await ArrangeUsingSpark(s =>
                 {
                     var a = Create("A");
-                    var df = session.CreateDataFrameFromData(new { A = ExampleValue1() });
-                    return df.Select((Column)a).Where((Column)a.EqNullSafe(a)).Collect();
+                    var df = s.CreateDataFrameFromData(new { A = ExampleValue1() });
+                    return df.Select((Column)a).Where((Column)a.EqNullSafe(a));
                 })
+                .Act(df => df.Collect())
                 .Assert(rows => rows.Should().HaveCount(1));
     }
 }

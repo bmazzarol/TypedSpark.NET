@@ -1,0 +1,28 @@
+﻿== Parsed Logical Plan ==
+Intersect false
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date
+Intersect false
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Aggregate [A, B, C], [A, B, C]
++- Join LeftSemi, (((A <=> A) AND (B <=> B)) AND (C <=> C))
+   :- LocalRelation [A, B, C]
+   +- LocalRelation [A, B, C]
+
+== Physical Plan ==
+*(2) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
++- Exchange hashpartitioning(A, B, C, 1), true, [id=]
+   +- *(1) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
+      +- *(1) BroadcastHashJoin [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], LeftSemi, BuildRight
+         :- *(1) LocalTableScan [A, B, C]
+         +- BroadcastExchange HashedRelationBroadcastMode(List(coalesce(input[0, string, true], ), isnull(input[0, string, true]), coalesce(input[1, int, true], 0), isnull(input[1, int, true]), coalesce(input[2, date, true], 0), isnull(input[2, date, true]))), [id=]
+            +- LocalTableScan [A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date>

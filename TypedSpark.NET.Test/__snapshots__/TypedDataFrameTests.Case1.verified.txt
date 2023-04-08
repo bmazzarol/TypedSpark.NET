@@ -1,0 +1,17 @@
+﻿== Parsed Logical Plan ==
+'Project ['A AS A]
++- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string
+Project [A AS A]
++- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+LocalRelation [A]
+
+== Physical Plan ==
+LocalTableScan [A]
+
+== DataFrame Schema ==
+struct<A:string>

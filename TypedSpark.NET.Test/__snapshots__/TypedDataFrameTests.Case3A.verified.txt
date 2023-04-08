@@ -1,0 +1,32 @@
+﻿== Parsed Logical Plan ==
+'Project ['a.A AS A1, 'b.A AS A2, ('a.B + 'b.B) AS C]
++- Join Cross
+   :- SubqueryAlias a
+   :  +- LocalRelation [A, B, C]
+   +- SubqueryAlias b
+      +- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A1: string, A2: string, C: int
+Project [A AS A1, A AS A2, (B + B) AS C]
++- Join Cross
+   :- SubqueryAlias a
+   :  +- LocalRelation [A, B, C]
+   +- SubqueryAlias b
+      +- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Project [A AS A1, A AS A2, (B + B) AS C]
++- Join Cross
+   :- LocalRelation [A, B]
+   +- LocalRelation [A, B]
+
+== Physical Plan ==
+*(1) Project [A AS A1, A AS A2, (B + B) AS C]
++- BroadcastNestedLoopJoin BuildRight, Cross
+   :- LocalTableScan [A, B]
+   +- BroadcastExchange IdentityBroadcastMode, [id=]
+      +- LocalTableScan [A, B]
+
+== DataFrame Schema ==
+struct<A1:string,A2:string,C:integer>

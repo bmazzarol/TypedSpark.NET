@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.Spark.Interop.Ipc;
 using Microsoft.Spark.Sql;
-using Microsoft.Spark.Sql.Types;
 using TypedSpark.NET.Columns;
 using TypedSpark.NET.Extensions;
 
@@ -16,22 +16,65 @@ public sealed class TypedDataFrame<TSchema>
     /// <summary>
     /// Underlying data frame
     /// </summary>
-    private DataFrame DataFrame { get; }
+    public DataFrame DataFrame { get; }
 
     /// <summary>
     /// The underlying schema for the data frame
     /// </summary>
     public TSchema Schema { get; }
 
-    internal TypedDataFrame(DataFrame dataFrame, TSchema schema)
+    private Func<string, TSchema> AliasSchemaBuilder { get; }
+
+    internal TypedDataFrame(
+        DataFrame dataFrame,
+        TSchema schema,
+        Func<string, TSchema> aliasSchemaFn
+    )
     {
-        DataFrame = dataFrame;
         Schema = schema;
-        // confirm the schema and dataframe conform
+        DataFrame = dataFrame;
+        AliasSchemaBuilder = aliasSchemaFn;
     }
 
     public static explicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
         typedDataFrame.DataFrame;
+
+    /// <summary>
+    /// Returns the plans (logical and physical) with a format specified by a given explain mode.
+    /// </summary>
+    /// <param name="mode">Specifies the expected output format of plans. </param>
+    public string Explain(ExplainMode mode = ExplainMode.Extended) =>
+        (string)
+            ((JvmObjectReference)DataFrame.Reference.Invoke("queryExecution")).Invoke(
+                "explainString",
+                (JvmObjectReference)
+                    DataFrame.Reference.Jvm.CallStaticJavaMethod(
+                        "org.apache.spark.sql.execution.ExplainMode",
+                        "fromString",
+                        mode switch
+                        {
+                            ExplainMode.Simple => "simple",
+                            ExplainMode.Extended => "extended",
+                            ExplainMode.CodeGen => "codegen",
+                            ExplainMode.Cost => "cost",
+                            ExplainMode.Formatted => "formatted",
+                            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                        }
+                    )
+            );
+
+    /// <summary>Returns a new `DataFrame` with an alias set.</summary>
+    /// <param name="alias">Alias name</param>
+    /// <returns>Column object</returns>
+    public TypedDataFrame<TSchema> As(string alias) =>
+        new(DataFrame.As(alias), AliasSchemaBuilder.Invoke(alias), AliasSchemaBuilder);
+
+    /// <summary>
+    /// Returns a new `DataFrame` with an alias set. Same as As().
+    /// </summary>
+    /// <param name="alias">Alias name</param>
+    /// <returns>Column object</returns>
+    public TypedDataFrame<TSchema> Alias(string alias) => As(alias);
 
     /// <summary>
     /// Maps the current `DataFrame` to a new `DataFrame`
@@ -42,7 +85,8 @@ public sealed class TypedDataFrame<TSchema>
     public TypedDataFrame<T> Map<T>(Func<TSchema, T> project)
     {
         var newSchema = project(Schema);
-        return new(DataFrame.Select(newSchema.ExtractColumns().ToArray()), newSchema);
+        var columns = newSchema.ExtractColumns(true).ToArray();
+        return new(DataFrame.Select(columns), newSchema, _ => newSchema);
     }
 
     /// <summary>
@@ -65,10 +109,7 @@ public sealed class TypedDataFrame<TSchema>
         var tdf = flatten(Schema);
         var ns = tdf.Schema;
         var ndf = tdf.DataFrame;
-        return new TypedDataFrame<T>(
-            DataFrame.CrossJoin(ndf).Select(ns.ExtractColumns().ToArray()),
-            ns
-        );
+        return new TypedDataFrame<T>(DataFrame.CrossJoin(ndf), ns, _ => ns);
     }
 
     /// <summary>
@@ -94,7 +135,7 @@ public sealed class TypedDataFrame<TSchema>
     public TypedDataFrame<TB> SelectMany<TA, TB>(
         Func<TSchema, TypedDataFrame<TA>> flatten,
         Func<TSchema, TA, TB> project
-    ) => Bind(flatten).Select(x => project(Schema, x));
+    ) => SelectMany(flatten).Select(x => project(Schema, x));
 
     /// <summary>
     /// Filters a `DataFrame` using a given boolean column
@@ -102,7 +143,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <param name="predicate">predicate function</param>
     /// <returns>new DataFrame filtered by the given boolean column</returns>
     public TypedDataFrame<TSchema> Filter(Func<TSchema, BooleanColumn> predicate) =>
-        new(DataFrame.Where((Column)predicate(Schema)), Schema);
+        new(DataFrame.Where((Column)predicate(Schema)), Schema, AliasSchemaBuilder);
 
     /// <summary>
     /// Filters a `DataFrame` using a given boolean column
@@ -119,7 +160,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <param name="other">Other DataFrame</param>
     /// <returns>DataFrame object</returns>
     public TypedDataFrame<TSchema> Union(TypedDataFrame<TSchema> other) =>
-        new(DataFrame.Union(other.DataFrame), Schema);
+        new(DataFrame.Union(other.DataFrame), Schema, AliasSchemaBuilder);
 
     /// <summary>
     /// Returns a new `DataFrame` containing union of rows in this `DataFrame`
@@ -139,7 +180,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <param name="other">Other DataFrame</param>
     /// <returns>DataFrame object</returns>
     public TypedDataFrame<TSchema> Intersect(TypedDataFrame<TSchema> other) =>
-        new(DataFrame.Intersect(other.DataFrame), Schema);
+        new(DataFrame.Intersect(other.DataFrame), Schema, AliasSchemaBuilder);
 
     /// <summary>
     /// Returns a new `DataFrame` containing rows only in both this `DataFrame`
@@ -160,7 +201,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <param name="other">Other DataFrame</param>
     /// <returns>DataFrame object</returns>
     public TypedDataFrame<TSchema> IntersectAll(TypedDataFrame<TSchema> other) =>
-        new(DataFrame.IntersectAll(other.DataFrame), Schema);
+        new(DataFrame.IntersectAll(other.DataFrame), Schema, AliasSchemaBuilder);
 
     private TypedDataFrame<TB> Join<TA, TB>(
         TypedDataFrame<TA> other,
@@ -173,8 +214,9 @@ public sealed class TypedDataFrame<TSchema>
         return new TypedDataFrame<TB>(
             DataFrame
                 .Join(other.DataFrame, (Column)join(Schema, other.Schema), type)
-                .Select(schema.ExtractColumns()),
-            schema
+                .Select(schema.ExtractColumns(true).ToArray()),
+            schema,
+            _ => schema
         );
     }
 
@@ -342,6 +384,34 @@ public sealed class TypedDataFrame<TSchema>
         Func<TSchema, TA, BooleanColumn> join,
         Func<TSchema, TA, TB> project
     ) => Join(other, join, project, "left_anti");
+
+    /// <summary>
+    /// Returns a new `DataFrame` sorted by the given expressions.
+    /// </summary>
+    /// <param name="selector">select columns to sort by</param>
+    /// <returns>DataFrame object</returns>
+    public TypedDataFrame<TSchema> Sort<T>(Func<TSchema, T> selector) =>
+        new(
+            DataFrame.Sort(selector(Schema).ExtractColumns(false).ToArray()),
+            Schema,
+            AliasSchemaBuilder
+        );
+
+    /// <summary>
+    /// Returns a new `DataFrame` sorted by the given expressions.
+    /// </summary>
+    /// <remarks>This is an alias of the Sort() function.</remarks>
+    /// <param name="selector">select columns to sort by</param>
+    /// <returns>DataFrame object</returns>
+    public TypedDataFrame<TSchema> OrderBy<T>(Func<TSchema, T> selector) => Sort(selector);
+
+    /// <summary>
+    /// Returns a new `DataFrame` by taking the first `number` rows.
+    /// </summary>
+    /// <param name="n">Number of rows to take</param>
+    /// <returns>DataFrame object</returns>
+    public TypedDataFrame<TSchema> Limit(int n) =>
+        new(DataFrame.Limit(n), Schema, AliasSchemaBuilder);
 }
 
 /// <summary>
@@ -349,6 +419,11 @@ public sealed class TypedDataFrame<TSchema>
 /// </summary>
 public static class TypedDataFrame
 {
+    // Review this code if performance becomes an issue
+    private static Func<string, T> AliasSchemaFn<T>() =>
+        alias =>
+            (T)typeof(T).GetConstructor(new[] { typeof(string) })!.Invoke(new[] { (object)alias });
+
     /// <summary>
     /// Creates a new typed data frame
     /// </summary>
@@ -356,57 +431,34 @@ public static class TypedDataFrame
     /// <param name="dataFrame">data frame</param>
     /// <typeparam name="T">schema type</typeparam>
     /// <returns>new typed data frame</returns>
-    public static TypedDataFrame<T> New<T>(T schema, DataFrame dataFrame) => new(dataFrame, schema);
+    public static TypedDataFrame<T> New<T>(T schema, DataFrame dataFrame)
+        where T : TypedSchema, new() => new(dataFrame, schema, AliasSchemaFn<T>());
 
-    class SchemaA : TypedSchema
-    {
-        public BooleanColumn A = null!;
-        public StringColumn B = null!;
+    /// <summary>
+    /// Creates a new typed data frame
+    /// </summary>
+    /// <param name="dataFrame">data frame</param>
+    /// <typeparam name="T">schema type</typeparam>
+    /// <returns>new typed data frame</returns>
+    public static TypedDataFrame<T> New<T>(DataFrame dataFrame) where T : TypedSchema, new() =>
+        new(dataFrame, new T(), AliasSchemaFn<T>());
 
-        public SchemaA(StructType type) : base(type) { }
-    }
+    /// <summary>
+    /// Creates a new typed data frame
+    /// </summary>
+    /// <param name="dataFrame">data frame</param>
+    /// <param name="schema">schema</param>
+    /// <typeparam name="T">schema type</typeparam>
+    /// <returns>new typed data frame</returns>
+    public static TypedDataFrame<T> AsTyped<T>(this DataFrame dataFrame, T schema)
+        where T : TypedSchema, new() => New(schema, dataFrame);
 
-    class SchemaB : TypedSchema
-    {
-#pragma warning disable S1144
-#pragma warning disable CS0414
-        public IntegerColumn C = null!;
-        public DateColumn D = null!;
-#pragma warning restore CS0414
-#pragma warning restore S1144
-
-        public SchemaB(StructType type) : base(type) { }
-    }
-
-    public static void Test()
-    {
-        var session = SparkSession.Builder().GetOrCreate();
-        var schema1 = New(
-            new SchemaA(null!),
-            session.CreateDataFrame(
-                Enumerable.Empty<GenericRow>(),
-                new StructType(Array.Empty<StructField>())
-            )
-        );
-#pragma warning disable S1481
-        var schema2 = New(
-            new SchemaB(null!),
-            session.CreateDataFrame(
-                Enumerable.Empty<GenericRow>(),
-                new StructType(Array.Empty<StructField>())
-            )
-        );
-
-        schema1.Select(x => (x.A, x.A));
-
-        var result = from a in schema1 from b in schema1 where a.B == b.B select (a.B, b.A);
-
-        var result3 = schema1.InnerJoin(schema2, (a, b) => a.B == b.C, (a, b) => (a.B, b.D));
-
-        var result4 = result.Select(x => (x.B, D: x.B.CastToDate())) & result3;
-
-        var result5 = result.Select(x => (x.B, D: x.B.CastToDate())) | result3;
-
-#pragma warning restore S1481
-    }
+    /// <summary>
+    /// Creates a new typed data frame
+    /// </summary>
+    /// <param name="dataFrame">data frame</param>
+    /// <typeparam name="T">schema type</typeparam>
+    /// <returns>new typed data frame</returns>
+    public static TypedDataFrame<T> AsTyped<T>(this DataFrame dataFrame)
+        where T : TypedSchema, new() => New<T>(dataFrame);
 }

@@ -1,0 +1,32 @@
+﻿== Parsed Logical Plan ==
+'Project ['a.A AS A1, 'b.A AS A2]
++- Join Inner, (B = B)
+   :- SubqueryAlias a
+   :  +- LocalRelation [A, B, C]
+   +- SubqueryAlias b
+      +- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A1: string, A2: string
+Project [A AS A1, A AS A2]
++- Join Inner, (B = B)
+   :- SubqueryAlias a
+   :  +- LocalRelation [A, B, C]
+   +- SubqueryAlias b
+      +- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Project [A AS A1, A AS A2]
++- Join Inner, (B = B)
+   :- LocalRelation [A, B]
+   +- LocalRelation [A, B]
+
+== Physical Plan ==
+*(1) Project [A AS A1, A AS A2]
++- *(1) BroadcastHashJoin [B], [B], Inner, BuildRight
+   :- *(1) LocalTableScan [A, B]
+   +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[1, int, true] as bigint))), [id=]
+      +- LocalTableScan [A, B]
+
+== DataFrame Schema ==
+struct<A1:string,A2:string>

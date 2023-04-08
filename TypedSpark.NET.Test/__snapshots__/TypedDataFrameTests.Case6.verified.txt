@@ -1,0 +1,35 @@
+﻿== Parsed Logical Plan ==
+IntersectAll true
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date
+IntersectAll true
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Project [A, B, C]
++- Generate replicaterows(min_countL, A, B, C), [3], false, [A, B, C]
+   +- Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
+      +- Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
+         +- Aggregate [A, B, C], [count(vcol1) AS vcol1_countL, count(vcol2) AS vcol2_countL, A, B, C]
+            +- Union
+               :- LocalRelation [vcol1, vcol2, A, B, C]
+               +- LocalRelation [vcol1, vcol2, A, B, C]
+
+== Physical Plan ==
+*(3) Project [A, B, C]
++- Generate replicaterows(min_countL, A, B, C), [A, B, C], false, [A, B, C]
+   +- *(2) Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
+      +- *(2) Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
+         +- *(2) HashAggregate(keys=[A, B, C], functions=[count(vcol1), count(vcol2)], output=[vcol1_countL, vcol2_countL, A, B, C])
+            +- Exchange hashpartitioning(A, B, C, 1), true, [id=]
+               +- *(1) HashAggregate(keys=[A, B, C], functions=[partial_count(vcol1), partial_count(vcol2)], output=[A, B, C, countL, countL])
+                  +- Union
+                     :- LocalTableScan [vcol1, vcol2, A, B, C]
+                     +- LocalTableScan [vcol1, vcol2, A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date>

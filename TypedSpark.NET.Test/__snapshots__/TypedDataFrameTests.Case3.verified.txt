@@ -1,0 +1,28 @@
+﻿== Parsed Logical Plan ==
+'Join Cross
+:- SubqueryAlias a
+:  +- LocalRelation [A, B, C]
++- SubqueryAlias b
+   +- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date, A: string, B: int, C: date
+Join Cross
+:- SubqueryAlias a
+:  +- LocalRelation [A, B, C]
++- SubqueryAlias b
+   +- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+Join Cross
+:- LocalRelation [A, B, C]
++- LocalRelation [A, B, C]
+
+== Physical Plan ==
+BroadcastNestedLoopJoin BuildRight, Cross
+:- LocalTableScan [A, B, C]
++- BroadcastExchange IdentityBroadcastMode, [id=]
+   +- LocalTableScan [A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date,A:string,B:integer,C:date>

@@ -1,0 +1,17 @@
+﻿== Parsed Logical Plan ==
+'Filter (('A = 2) AND ('B > 1))
++- LocalRelation [A, B, C]
+
+== Analyzed Logical Plan ==
+A: string, B: int, C: date
+Filter ((A = 2) AND (B > 1))
++- LocalRelation [A, B, C]
+
+== Optimized Logical Plan ==
+LocalRelation [A, B, C]
+
+== Physical Plan ==
+LocalTableScan [A, B, C]
+
+== DataFrame Schema ==
+struct<A:string,B:integer,C:date>

@@ -3,6 +3,7 @@
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Expressions;
 using Microsoft.Spark.Sql.Types;
+using static Microsoft.Spark.Sql.Functions;
 using TypedSpark.NET.Columns;
 
 namespace TypedSpark.NET;
@@ -14,7 +15,16 @@ public abstract class TypedColumn
     /// </summary>
     protected internal Column Column { get; set; }
 
-    protected TypedColumn(Column column) => Column = column;
+    /// <summary>
+    /// Underlying spark type of the column
+    /// </summary>
+    public DataType ColumnType { get; }
+
+    protected TypedColumn(DataType columnType, Column column)
+    {
+        ColumnType = columnType;
+        Column = column;
+    }
 
     /// <summary>
     /// Prints the expression to the console for debugging purposes.
@@ -51,42 +61,58 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     /// <summary>
     /// Underlying spark type of the column
     /// </summary>
-    public TSparkType ColumnType { get; }
+    public new TSparkType ColumnType { get; }
 
-    protected TypedColumn(TSparkType columnType, Column column) : base(column) =>
+    protected TypedColumn(TSparkType columnType, Column column) : base(columnType, column) =>
         ColumnType = columnType;
 
-    /// <summary>Apply equality test on the given two columns.</summary>
-    /// <param name="lhs">Column on the left side of equality test</param>
-    /// <param name="rhs">Column on the right side of equality test</param>
-    /// <returns>New column after applying equality test</returns>
+    //
+    // Equals Operations
+    //
+
     public static BooleanColumn operator ==(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.EqualTo(rhs);
 
-    /// <summary>Equality test.</summary>
-    /// <param name="rhs">The right hand side of expression being tested for equality</param>
-    /// <returns>New column after applying the equal to operator</returns>
+    public static BooleanColumn operator ==(
+        TNativeType lhs,
+        TypedColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.EqualTo(lhs);
+
+    public static BooleanColumn operator ==(
+        TypedColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.EqualTo(rhs);
+
     public BooleanColumn EqualTo(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
         BooleanColumn.New(Column.EqualTo((Column)rhs));
 
-    /// <summary>Apply inequality test.</summary>
-    /// <param name="lhs">Column on the left side of inequality test</param>
-    /// <param name="rhs">Column on the right side of inequality test</param>
-    /// <returns>New column after applying inequality test</returns>
+    public BooleanColumn EqualTo(TNativeType rhs) => BooleanColumn.New(Column.EqualTo(Lit(rhs)));
+
+    //
+    // Not Equals Operations
+    //
+
     public static BooleanColumn operator !=(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.NotEqual(rhs);
 
-    /// <summary>Inequality test.</summary>
-    /// <param name="rhs">
-    /// The right hand side of expression being tested for inequality.
-    /// </param>
-    /// <returns>New column after applying not equal operator</returns>
+    public static BooleanColumn operator !=(
+        TNativeType lhs,
+        TypedColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.NotEqual(lhs);
+
+    public static BooleanColumn operator !=(
+        TypedColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.NotEqual(rhs);
+
     public BooleanColumn NotEqual(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
         BooleanColumn.New(Column.NotEqual((Column)rhs));
+
+    public BooleanColumn NotEqual(TNativeType rhs) => BooleanColumn.New(Column.NotEqual(Lit(rhs)));
 
     /// <summary>Apply equality test that is safe for null values.</summary>
     /// <param name="obj">Object to apply equality test</param>

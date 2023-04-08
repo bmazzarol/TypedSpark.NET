@@ -9,6 +9,7 @@ using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
 using VerifyXunit;
 using Xunit;
+using static SparkTest.NET.SparkSessionFactory;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
 
 namespace SparkTest.NET.Test
@@ -16,22 +17,27 @@ namespace SparkTest.NET.Test
     [UsesVerify]
     public static class SparkSessionFactoryTests
     {
-        private static readonly Scenario.Arranged<SparkSession> ArrangedSession =
-            SparkSessionFactory.DefaultSession.ArrangeData();
+        private static Scenario.Arranged<T> ArrangeUsingSpark<T>(Func<SparkSession, T> arrange) =>
+            UseSession(arrange).ArrangeData();
 
         [Fact(DisplayName = "A spark session can be returned and used to query")]
         public static async Task Case1() =>
-            await ArrangedSession
-                .Act(session => session.CreateDataFrame(Enumerable.Range(1, 10)).Collect())
-                .Assert(rows => rows.Count() == 10);
+            await ArrangeUsingSpark(
+                    s =>
+                        s.CreateDataFrameFromData(
+                            new { Id = 1 },
+                            Enumerable.Range(2, 9).Select(i => new { Id = i }).ToArray()
+                        )
+                )
+                .Act(df => df.Collect())
+                .Assert(c => c.Count() == 10);
 
         [Fact(DisplayName = "A spark data frame can be created from a custom type")]
         public static async Task Case2() =>
-            await ArrangedSession
-                .Act(
-                    session =>
-                        session.CreateDataFrameFromData(new { A = 1, B = "2", C = 3.0 }).Collect()
+            await ArrangeUsingSpark(
+                    session => session.CreateDataFrameFromData(new { A = 1, B = "2", C = 3.0 })
                 )
+                .Act(df => df.Collect())
                 .Assert(rows => rows.Count() == 1)
                 .And(
                     rows =>
@@ -40,26 +46,22 @@ namespace SparkTest.NET.Test
 
         [Fact(DisplayName = "All the spark types are supported from dotnet custom types")]
         public static async Task Case3() =>
-            await ArrangedSession
-                .Act(
-                    session =>
-                        session
-                            .CreateDataFrameFromData(
-                                new
-                                {
-                                    Bool = true,
-                                    Int = 1,
-                                    Long = (long)1,
-                                    Double = 0.0,
-                                    Date = new Date(DateTime.Now),
-                                    Timestamp = new Timestamp(DateTime.Now),
-                                    String = ""
-                                }
-                            )
-                            .Collect()
-                            .First()
-                            .Schema.Json
+            await ArrangeUsingSpark(
+                    s =>
+                        s.CreateDataFrameFromData(
+                            new
+                            {
+                                Bool = true,
+                                Int = 1,
+                                Long = (long)1,
+                                Double = 0.0,
+                                Date = new Date(DateTime.Now),
+                                Timestamp = new Timestamp(DateTime.Now),
+                                String = ""
+                            }
+                        )
                 )
+                .Act(df => df.Collect().First().Schema.Json)
                 .AssertResultIsUnchanged();
 
         [Fact(DisplayName = "Nested objects are supported")]
@@ -117,8 +119,8 @@ namespace SparkTest.NET.Test
 
         [Fact(DisplayName = "Empty data frame returns a single empty row")]
         public static async Task Case8() =>
-            await ArrangedSession
-                .Act(session => session.CreateEmptyFrame().Collect())
+            await ArrangeUsingSpark(s => s.CreateEmptyFrame())
+                .Act(df => df.Collect().ToList())
                 .Assert(rows =>
                 {
                     rows.Should().HaveCount(1);

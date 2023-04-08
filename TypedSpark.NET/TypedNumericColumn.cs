@@ -1,8 +1,12 @@
 ﻿using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
+using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET;
 
+/// <summary>
+/// Numeric operators
+/// </summary>
 public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     : TypedOrdColumn<TThis, TSparkType, TNativeType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
@@ -21,84 +25,123 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <returns>New column after applying negation</returns>
     public TThis Negate() => new() { Column = -Column };
 
-    /// <summary>Apply sum of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the sum operation</returns>
+    //
+    // Plus Operations
+    //
+
     public static TThis operator +(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Plus(rhs);
 
-    /// <summary>Sum of this expression and another expression.</summary>
-    /// <param name="rhs">The expression to be summed with</param>
-    /// <returns>New column after applying the plus operator</returns>
+    public static TThis operator +(
+        TNativeType lhs,
+        TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.Plus(lhs);
+
+    public static TThis operator +(
+        TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.Plus(rhs);
+
     public TThis Plus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Plus((Column)rhs) };
 
-    /// <summary>Apply subtraction of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the subtraction operation</returns>
+    public TThis Plus(TNativeType rhs) => new() { Column = Column.Plus(Lit(rhs)) };
+
+    //
+    // Minus Operations
+    //
+
     public static TThis operator -(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Minus(rhs);
 
-    /// <summary>
-    /// Subtraction. Subtract the other expression from this expression.
-    /// </summary>
-    /// <param name="rhs">The expression to be subtracted with</param>
-    /// <returns>New column after applying the minus operator</returns>
+    public static TThis operator -(
+        TNativeType lhs,
+        TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.Minus(lhs);
+
+    public static TThis operator -(
+        TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.Minus(rhs);
+
     public TThis Minus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Minus((Column)rhs) };
 
-    /// <summary>Apply multiplication of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the multiplication operation</returns>
+    public TThis Minus(TNativeType rhs) => new() { Column = Column.Minus(Lit(rhs)) };
+
+    //
+    // Multiply Operations
+    //
+
     public static TThis operator *(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Multiply(rhs);
 
-    /// <summary>
-    /// Multiplication of this expression and another expression.
-    /// </summary>
-    /// <param name="rhs">The expression to be multiplied with</param>
-    /// <returns>New column after applying the multiply operator</returns>
+    public static TThis operator *(
+        TNativeType lhs,
+        TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.Multiply(lhs);
+
+    public static TThis operator *(
+        TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.Multiply(rhs);
+
     public TThis Multiply(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Multiply((Column)rhs) };
 
-    /// <summary>Apply division of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the division operation</returns>
+    public TThis Multiply(TNativeType rhs) => new() { Column = Column.Multiply(Lit(rhs)) };
+
+    //
+    // Divide Operations
+    //
+
     public static TThis operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Divide(rhs);
 
-    /// <summary>Division of this expression by another expression.</summary>
-    /// <param name="rhs">The expression to be divided by</param>
-    /// <returns>New column after applying the divide operator</returns>
+    public static TThis operator /(
+        TNativeType lhs,
+        TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
+    ) => new() { Column = Lit(lhs).Divide((Column)rhs) };
+
+    public static TThis operator /(
+        TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.Divide(rhs);
+
     public TThis Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Divide((Column)rhs) };
 
-    /// <summary>Apply division of two expressions.</summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Object on the right side of the operator</param>
-    /// <returns>New column after applying the division operation</returns>
+    public TThis Divide(TNativeType rhs) => new() { Column = Column.Divide(Lit(rhs)) };
+
+    //
+    // Mod Operations
+    //
+
     public static TThis operator %(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Mod(rhs);
 
-    /// <summary>Modulo (a.k.a remainder) expression.</summary>
-    /// <param name="rhs">
-    /// The expression to be divided by to get the remainder for.
-    /// </param>
-    /// <returns>New column after applying the mod operator</returns>
+    public static TThis operator %(
+        TNativeType lhs,
+        TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
+    ) => new() { Column = Lit(lhs).Mod((Column)rhs) };
+
+    public static TThis operator %(
+        TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.Mod(rhs);
+
     public TThis Mod(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Mod((Column)rhs) };
+
+    public TThis Mod(TNativeType rhs) => new() { Column = Column.Mod(Lit(rhs)) };
 }
