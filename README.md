@@ -15,7 +15,7 @@ Typesafe bindings for :star: Spark.NET
 
 </div>
 
-> **_IMPORTANT:_** Please note this library under active construction 
+> **_IMPORTANT:_** Please note this library under active construction
 > :construction_worker: and should not be used in production. Help is always
 > appreciated, create an issue, check the code out and have a play!
 
