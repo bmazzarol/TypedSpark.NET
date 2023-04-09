@@ -1,0 +1,68 @@
+name: "CI Build"
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project-name:
+          - TypedSpark.NET
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            3.1.x
+            6.0.x
+            7.0.x
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: zulu
+      - name: Cache Spark Files
+        id: cache-spark
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-spark-files
+        with:
+          path: |
+            ./spark-3.0.2-bin-hadoop2.7
+            ./Microsoft.Spark.Worker.netcoreapp3.1.linux-x64-2.1.1
+          key: spark-3.0.2
+      - name: Setup Spark
+        if: steps.cache-spark.outputs.cache-hit != 'true'
+        run: |
+          wget -v https://archive.apache.org/dist/spark/spark-3.0.2/spark-3.0.2-bin-hadoop2.7.tgz
+          tar -xvf spark-3.0.2-bin-hadoop2.7.tgz
+        shell: bash
+      - name: Setup Spark.NET
+        if: steps.cache-spark.outputs.cache-hit != 'true'
+        run: |
+          wget -v https://github.com/dotnet/spark/releases/download/v2.1.1/Microsoft.Spark.Worker.netcoreapp3.1.linux-x64-2.1.1.tar.gz
+          tar -xvf Microsoft.Spark.Worker.netcoreapp3.1.linux-x64-2.1.1.tar.gz
+        shell: bash
+      - name: Install dependencies
+        run: dotnet restore ${{ matrix.project-name }}.Tests/${{ matrix.project-name }}.Tests.csproj
+      - name: Build
+        run: dotnet build --configuration Release --no-restore ${{ matrix.project-name }}.Tests/${{ matrix.project-name }}.Tests.csproj
+      - name: Test
+        run: |
+          declare -x DOTNET_WORKER_DIR="$(echo -n $GITHUB_WORKSPACE)/Microsoft.Spark.Worker.netcoreapp3.1.linux-x64-2.1.1/Microsoft.Spark.Worker-2.1.1"
+          declare -x HADOOP_HOME="$(echo -n $GITHUB_WORKSPACE)/spark-3.0.2-bin-hadoop2.7"
+          declare -x SPARK_HOME="$(echo -n $GITHUB_WORKSPACE)/spark-3.0.2-bin-hadoop2.7"
+          declare -x PATH="$(echo $PATH):$(echo -n $SPARK_HOME):$(echo -n $HADOOP_HOME):$(echo -n $GITHUB_WORKSPACE)/spark-3.0.2-bin-hadoop2.7/bin"
+          declare -x SPARK_DOTNET_JAR_NAME=microsoft-spark-3-0_2.12-2.1.1.jar
+          export
+          dotnet test --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx" ${{ matrix.project-name }}.Tests/${{ matrix.project-name }}.Tests.csproj
+      - uses: actions/upload-artifact@v2
+        if: success() || failure()
+        with:
+          name: test-results-${{ matrix.project-name }}
+          path: '**/test-results.trx'
