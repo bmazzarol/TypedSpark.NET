@@ -7,6 +7,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/TypedSpark.NET)](https://www.nuget.org/packages/TypedSpark.NET/)
 [![Coverage Status](https://coveralls.io/repos/github/bmazzarol/TypedSpark.NET/badge.svg?branch=main)](https://coveralls.io/github/bmazzarol/TypedSpark.NET?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bmazzarol_TypedSpark.NET&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bmazzarol_TypedSpark.NET)
 [![CD Build](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/cd-build.yml/badge.svg)](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/cd-build.yml)
 [![Check Markdown](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/check-markdown.yml/badge.svg)](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/check-markdown.yml)
 [![CodeQL](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/codeql.yml/badge.svg)](https://github.com/bmazzarol/TypedSpark.NET/actions/workflows/codeql.yml)
