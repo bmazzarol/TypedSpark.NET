@@ -32,8 +32,7 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
-                    return df.Select((Column)col)
-                        .Where((Column)(col == FromNative(ExampleValue1())));
+                    return df.Select(col).Where((col == FromNative(ExampleValue1())));
                 })
                 .Act(df => df.Collect().ToList())
                 .Assert(rows =>
@@ -55,7 +54,8 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2(), B = ExampleValue2() },
                         new { A = ExampleValue1(), B = ExampleValue1() }
                     );
-                    return df.Select((Column)a, (Column)b).Where((Column)(a == b));
+
+                    return df.Select(a, b).Where((a == b));
                 })
                 .Act(df => df.Collect().ToList())
                 .Assert(rows =>
@@ -81,8 +81,7 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2() },
                         new { A = ExampleValue1() }
                     );
-                    return df.Select((Column)col)
-                        .Where((Column)(col != FromNative(ExampleValue1())));
+                    return df.Select(col).Where(col != FromNative(ExampleValue1()));
                 })
                 .Act(df => df.Collect().ToList())
                 .Assert(rows =>
@@ -102,7 +101,7 @@ namespace TypedSpark.NET.Test
                         new { A = ExampleValue2(), B = ExampleValue2() },
                         new { A = ExampleValue1(), B = ExampleValue1() }
                     );
-                    return df.Select((Column)a, (Column)b).Where((Column)(a != b));
+                    return df.Select(a, b).Where((a != b));
                 })
                 .Act(df => df.Collect().ToList())
                 .Assert(rows =>
@@ -119,7 +118,7 @@ namespace TypedSpark.NET.Test
                 {
                     var a = Create("A");
                     var df = s.CreateDataFrameFromData(new { A = ExampleValue1() });
-                    return df.Select((Column)a).Where((Column)a.EqNullSafe(a));
+                    return df.Select(a).Where(a.EqNullSafe(a));
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.Should().HaveCount(1));

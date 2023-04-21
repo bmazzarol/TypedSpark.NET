@@ -34,6 +34,8 @@ public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerTyp
     /// <returns>typed column</returns>
     public static implicit operator IntegerColumn(int lit) => New(Lit(lit));
 
+    public static implicit operator Column(IntegerColumn col) => col.Column;
+
     /// <summary>
     /// Casts the column to a string column, using the canonical string
     /// representation of a integer.

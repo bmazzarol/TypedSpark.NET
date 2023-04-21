@@ -67,7 +67,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// New column that is bound by the start position provided, and the length.
     /// </returns>
     public StringColumn SubStr(IntegerColumn startPos, IntegerColumn len) =>
-        New(Column.SubStr((Column)startPos, (Column)len));
+        New(Column.SubStr(startPos, len));
 
     /// <summary>
     /// Contains the other element. Returns a boolean column based on a string match.
@@ -76,8 +76,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// The object that is used to check for existence in the current column.
     /// </param>
     /// <returns>New column after checking if the column contains object other</returns>
-    public BooleanColumn Contains(StringColumn other) =>
-        BooleanColumn.New(Column.Contains((Column)other));
+    public BooleanColumn Contains(StringColumn other) => BooleanColumn.New(Column.Contains(other));
 
     /// <summary>
     /// String starts with. Returns a boolean column based on a string match.
@@ -91,7 +90,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// column does indeed start with the values in the given column.
     /// </returns>
     public BooleanColumn StartsWith(StringColumn other) =>
-        BooleanColumn.New(Column.StartsWith((Column)other));
+        BooleanColumn.New(Column.StartsWith(other));
 
     /// <summary>
     /// String ends with. Returns a boolean column based on a string match.
@@ -104,8 +103,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// A boolean column where entries are true if values in the current
     /// column does indeed end with the values in the given column.
     /// </returns>
-    public BooleanColumn EndsWith(StringColumn other) =>
-        BooleanColumn.New(Column.EndsWith((Column)other));
+    public BooleanColumn EndsWith(StringColumn other) => BooleanColumn.New(Column.EndsWith(other));
 
     /// <summary>
     /// Casts the column to a boolean column, using the canonical string

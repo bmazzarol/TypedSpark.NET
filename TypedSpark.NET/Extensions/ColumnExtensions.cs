@@ -78,7 +78,7 @@ internal static class ColumnExtensions
                             p.GetValue(o) as TypedColumn
                             ?? throw new InvalidOperationException("Only columns are supported");
 
-                        return alias ? ((Column)col).As(p.Name) : (Column)col;
+                        return alias ? col.Column.As(p.Name) : col;
                     }),
             _ => Enumerable.Empty<Column>()
         };

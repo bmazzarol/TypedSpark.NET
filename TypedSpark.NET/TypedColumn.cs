@@ -39,7 +39,7 @@ public abstract class TypedColumn
     /// </summary>
     /// <param name="typedColumn">column</param>
     /// <returns>untyped column</returns>
-    public static explicit operator Column(TypedColumn typedColumn) => typedColumn.Column;
+    public static implicit operator Column(TypedColumn typedColumn) => typedColumn.Column;
 
     /// <summary>
     /// Casts the column to an untyped column
@@ -66,6 +66,9 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     protected TypedColumn(TSparkType columnType, Column column) : base(columnType, column) =>
         ColumnType = columnType;
 
+    public static implicit operator Column(TypedColumn<TThis, TSparkType, TNativeType> col) =>
+        col.Column;
+
     //
     // Equals Operations
     //
@@ -73,20 +76,20 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     public static BooleanColumn operator ==(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => lhs.EqualTo(rhs);
+    ) => BooleanColumn.New(lhs.Column.EqualTo(rhs.Column));
 
     public static BooleanColumn operator ==(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.EqualTo(lhs);
+    ) => BooleanColumn.New(rhs.Column.EqualTo(lhs));
 
     public static BooleanColumn operator ==(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
-    ) => lhs.EqualTo(rhs);
+    ) => BooleanColumn.New(lhs.Column.EqualTo(rhs));
 
     public BooleanColumn EqualTo(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.EqualTo((Column)rhs));
+        BooleanColumn.New(Column.EqualTo(rhs));
 
     public BooleanColumn EqualTo(TNativeType rhs) => BooleanColumn.New(Column.EqualTo(Lit(rhs)));
 
@@ -97,27 +100,27 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     public static BooleanColumn operator !=(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => lhs.NotEqual(rhs);
+    ) => BooleanColumn.New(lhs.Column.NotEqual(rhs.Column));
 
     public static BooleanColumn operator !=(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.NotEqual(lhs);
+    ) => BooleanColumn.New(rhs.Column.NotEqual(lhs));
 
     public static BooleanColumn operator !=(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
-    ) => lhs.NotEqual(rhs);
+    ) => BooleanColumn.New(lhs.Column.NotEqual(rhs));
 
     public BooleanColumn NotEqual(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.NotEqual((Column)rhs));
+        BooleanColumn.New(Column.NotEqual(rhs));
 
     public BooleanColumn NotEqual(TNativeType rhs) => BooleanColumn.New(Column.NotEqual(Lit(rhs)));
 
     /// <summary>Apply equality test that is safe for null values.</summary>
     /// <param name="obj">Object to apply equality test</param>
     /// <returns>New column after applying the equality test</returns>
-    public BooleanColumn EqNullSafe(TThis obj) => BooleanColumn.New(Column.EqNullSafe((Column)obj));
+    public BooleanColumn EqNullSafe(TThis obj) => BooleanColumn.New(Column.EqNullSafe(obj.Column));
 
     /// <summary>
     /// Evaluates a condition and returns one of multiple possible result expressions.
@@ -129,7 +132,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     /// <param name="value">The value to set if the condition is true</param>
     /// <returns>New column after applying the when method</returns>
     public TThis When(BooleanColumn condition, TThis value) =>
-        new() { Column = Column.When((Column)condition, (Column)value) };
+        new() { Column = Column.When(condition, value) };
 
     /// <summary>
     /// Evaluates a list of conditions and returns one of multiple possible result expressions.
@@ -138,7 +141,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     /// </summary>
     /// <param name="value">The value to set</param>
     /// <returns>New column after applying otherwise method</returns>
-    public TThis Otherwise(TThis value) => new() { Column = Column.Otherwise((Column)value) };
+    public TThis Otherwise(TThis value) => new() { Column = Column.Otherwise(value) };
 
     /// <summary>
     /// True if the current column is between the lower bound and upper bound, inclusive.
@@ -147,7 +150,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn
     /// <param name="upperBound">The upper bound</param>
     /// <returns>New column after applying the between method</returns>
     public BooleanColumn Between(TThis lowerBound, TThis upperBound) =>
-        BooleanColumn.New(Column.Between((Column)lowerBound, (Column)upperBound));
+        BooleanColumn.New(Column.Between(lowerBound, upperBound));
 
     /// <summary>True if the current expression is null.</summary>
     /// <returns>

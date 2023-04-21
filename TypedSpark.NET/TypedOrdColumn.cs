@@ -35,7 +35,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Gt(rhs);
 
     public BooleanColumn Gt(TypedOrdColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.Gt((Column)rhs));
+        BooleanColumn.New(Column.Gt(rhs));
 
     public BooleanColumn Gt(TNativeType rhs) => BooleanColumn.New(Column.Gt(Lit(rhs)));
 
@@ -59,7 +59,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Geq(rhs);
 
     public BooleanColumn Geq(TypedOrdColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.Geq((Column)rhs));
+        BooleanColumn.New(Column.Geq(rhs));
 
     public BooleanColumn Geq(TNativeType rhs) => BooleanColumn.New(Column.Geq(Lit(rhs)));
 

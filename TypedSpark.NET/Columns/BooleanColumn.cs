@@ -55,7 +55,7 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// <summary>Apply boolean OR operator with the given column.</summary>
     /// <param name="other">Column to apply OR operator</param>
     /// <returns>New column after applying the operator</returns>
-    public BooleanColumn Or(BooleanColumn other) => New(Column.Or((Column)other));
+    public BooleanColumn Or(BooleanColumn other) => New(Column.Or(other));
 
     /// <summary>Apply boolean AND operator for the given two columns.</summary>
     /// <param name="lhs">Column on the left side of the operator</param>
@@ -66,7 +66,7 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// <summary>Apply boolean AND operator with the given column.</summary>
     /// <param name="other">Column to apply AND operator</param>
     /// <returns>New column after applying the operator</returns>
-    public BooleanColumn And(BooleanColumn other) => New(Column.And((Column)other));
+    public BooleanColumn And(BooleanColumn other) => New(Column.And(other));
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string

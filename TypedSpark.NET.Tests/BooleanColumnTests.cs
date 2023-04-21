@@ -25,7 +25,7 @@ namespace TypedSpark.NET.Test
                         new { Bool = false },
                         new { Bool = true }
                     );
-                    return df.Select((Column)!col);
+                    return df.Select(!col);
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -45,7 +45,7 @@ namespace TypedSpark.NET.Test
                         new { Bool1 = true, Bool2 = false },
                         new { Bool1 = true, Bool2 = true }
                     );
-                    return df.Select((Column)(col1 | col2));
+                    return df.Select(col1 | col2);
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -67,7 +67,7 @@ namespace TypedSpark.NET.Test
                         new { Bool1 = true, Bool2 = false },
                         new { Bool1 = true, Bool2 = true }
                     );
-                    return df.Select((Column)(col1 & col2));
+                    return df.Select(col1 & col2);
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -83,7 +83,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false });
-                    return df.Select((Column)Fn.Length(col1));
+                    return df.Select(Fn.Length(col1));
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(5));
@@ -94,7 +94,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToByte());
+                    return df.Select(col1.CastToByte());
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -107,7 +107,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToByte());
+                    return df.Select(col1.CastToByte());
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -120,7 +120,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToShort());
+                    return df.Select(col1.CastToShort());
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -134,7 +134,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToInteger());
+                    return df.Select(col1.CastToInteger());
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(0, 1));
@@ -145,7 +145,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToLong());
+                    return df.Select(col1.CastToLong());
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(0L, 1L));
@@ -156,7 +156,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToFloat());
+                    return df.Select(col1.CastToFloat());
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -172,7 +172,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToDecimal());
+                    return df.Select(col1.CastToDecimal());
                 })
                 .Act(df => df.Collect())
                 .Assert(
@@ -188,7 +188,7 @@ namespace TypedSpark.NET.Test
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false }, new { Bool1 = true });
-                    return df.Select((Column)col1.CastToDouble());
+                    return df.Select(col1.CastToDouble());
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(0.0, 1.0));
@@ -200,7 +200,7 @@ namespace TypedSpark.NET.Test
                     B a = true;
                     B b = false;
                     var df = s.CreateEmptyFrame();
-                    return df.Select((Column)a.As("A"), (Column)b.As("B"));
+                    return df.Select(a.As("A"), b.As("B"));
                 })
                 .Act(df => df.Collect())
                 .Assert(

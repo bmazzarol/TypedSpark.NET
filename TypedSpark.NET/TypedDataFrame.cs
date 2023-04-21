@@ -143,7 +143,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <param name="predicate">predicate function</param>
     /// <returns>new DataFrame filtered by the given boolean column</returns>
     public TypedDataFrame<TSchema> Filter(Func<TSchema, BooleanColumn> predicate) =>
-        new(DataFrame.Where((Column)predicate(Schema)), Schema, AliasSchemaBuilder);
+        new(DataFrame.Where(predicate(Schema)), Schema, AliasSchemaBuilder);
 
     /// <summary>
     /// Filters a `DataFrame` using a given boolean column
@@ -213,7 +213,7 @@ public sealed class TypedDataFrame<TSchema>
         var schema = project(Schema, other.Schema);
         return new TypedDataFrame<TB>(
             DataFrame
-                .Join(other.DataFrame, (Column)join(Schema, other.Schema), type)
+                .Join(other.DataFrame, join(Schema, other.Schema), type)
                 .Select(schema.ExtractColumns(true).ToArray()),
             schema,
             _ => schema
