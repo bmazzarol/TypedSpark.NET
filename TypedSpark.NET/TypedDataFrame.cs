@@ -393,8 +393,6 @@ public sealed class TypedDataFrame<TSchema>
 /// </summary>
 public static class TypedDataFrame
 {
-    
-    
     // Review this code if performance becomes an issue
     private static Func<string, T> AliasSchemaFn<T>() =>
         alias =>
