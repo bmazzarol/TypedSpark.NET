@@ -4,9 +4,9 @@ using FluentAssertions;
 using TypedSpark.NET.Columns;
 using VerifyXunit;
 using Xunit;
-using static TypedSpark.NET.Test.SparkTestExtensions;
+using static TypedSpark.NET.Tests.SparkTestExtensions;
 
-namespace TypedSpark.NET.Test
+namespace TypedSpark.NET.Tests
 {
     [UsesVerify]
     public static class TypedSchemaTests

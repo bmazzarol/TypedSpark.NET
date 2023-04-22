@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Spark.Interop.Ipc;
 using Microsoft.Spark.Sql;
 using TypedSpark.NET.Columns;
-using TypedSpark.NET.Extensions;
 
 namespace TypedSpark.NET;
 
@@ -38,30 +36,6 @@ public sealed class TypedDataFrame<TSchema>
 
     public static explicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
         typedDataFrame.DataFrame;
-
-    /// <summary>
-    /// Returns the plans (logical and physical) with a format specified by a given explain mode.
-    /// </summary>
-    /// <param name="mode">Specifies the expected output format of plans. </param>
-    public string Explain(ExplainMode mode = ExplainMode.Extended) =>
-        (string)
-            ((JvmObjectReference)DataFrame.Reference.Invoke("queryExecution")).Invoke(
-                "explainString",
-                (JvmObjectReference)
-                    DataFrame.Reference.Jvm.CallStaticJavaMethod(
-                        "org.apache.spark.sql.execution.ExplainMode",
-                        "fromString",
-                        mode switch
-                        {
-                            ExplainMode.Simple => "simple",
-                            ExplainMode.Extended => "extended",
-                            ExplainMode.CodeGen => "codegen",
-                            ExplainMode.Cost => "cost",
-                            ExplainMode.Formatted => "formatted",
-                            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
-                        }
-                    )
-            );
 
     /// <summary>Returns a new `DataFrame` with an alias set.</summary>
     /// <param name="alias">Alias name</param>
@@ -419,6 +393,8 @@ public sealed class TypedDataFrame<TSchema>
 /// </summary>
 public static class TypedDataFrame
 {
+    
+    
     // Review this code if performance becomes an issue
     private static Func<string, T> AliasSchemaFn<T>() =>
         alias =>

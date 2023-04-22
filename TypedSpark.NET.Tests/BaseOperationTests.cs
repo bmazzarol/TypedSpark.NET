@@ -6,10 +6,9 @@ using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
 using Xunit;
-using static TypedSpark.NET.Test.SparkTestExtensions;
-using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
+using static TypedSpark.NET.Tests.SparkTestExtensions;
 
-namespace TypedSpark.NET.Test
+namespace TypedSpark.NET.Tests
 {
     public abstract class BaseOperationTests<TColumn, TSparkType, TNativeType>
         where TColumn : TypedColumn<TColumn, TSparkType, TNativeType>, new()

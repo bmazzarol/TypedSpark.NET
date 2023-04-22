@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Spark.Sql;
 using static Microsoft.Spark.Sql.Functions;
 
-namespace TypedSpark.NET.Extensions;
+namespace TypedSpark.NET;
 
 internal static class ColumnExtensions
 {

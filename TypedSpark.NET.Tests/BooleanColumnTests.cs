@@ -6,12 +6,11 @@ using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
 using Xunit;
-using static TypedSpark.NET.Test.SparkTestExtensions;
-using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
+using static TypedSpark.NET.Tests.SparkTestExtensions;
 using Fn = TypedSpark.NET.Functions;
 using B = TypedSpark.NET.Columns.BooleanColumn;
 
-namespace TypedSpark.NET.Test
+namespace TypedSpark.NET.Tests
 {
     public static class BooleanColumnTests
     {

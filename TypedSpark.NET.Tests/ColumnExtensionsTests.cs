@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using BunsenBurner;
 using FluentAssertions;
-using static Microsoft.Spark.Sql.Functions;
 using Xunit;
-using TypedSpark.NET.Extensions;
-using static TypedSpark.NET.Test.SparkTestExtensions;
+using static Microsoft.Spark.Sql.Functions;
+using static TypedSpark.NET.Tests.SparkTestExtensions;
 
-namespace TypedSpark.NET.Test
+namespace TypedSpark.NET.Tests
 {
     public static class ColumnExtensionsTests
     {

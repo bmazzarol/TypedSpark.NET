@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.Spark.Sql;
 using static Microsoft.Spark.Sql.Functions;
 using Microsoft.Spark.Sql.Types;
-using TypedSpark.NET.Extensions;
 
 namespace TypedSpark.NET;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TypedSpark.NET.Extensions;
+namespace TypedSpark.NET;
 
 internal static class ArrayExtensions
 {

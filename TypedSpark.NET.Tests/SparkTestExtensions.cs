@@ -7,7 +7,7 @@ using VerifyXunit;
 using static SparkTest.NET.SparkSessionFactory;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
 
-namespace TypedSpark.NET.Test
+namespace TypedSpark.NET.Tests
 {
     public static class SparkTestExtensions
     {
