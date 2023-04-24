@@ -16,19 +16,15 @@ Join Cross
 == Optimized Logical Plan ==
 Join Cross
 :- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-:     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 BroadcastNestedLoopJoin BuildRight, Cross
 :- InMemoryTableScan [A, B, C]
 :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-:           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 +- BroadcastExchange IdentityBroadcastMode, [id=]
    +- InMemoryTableScan [A, B, C]
          +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A:string,B:integer,C:date,A:string,B:integer,C:date>
 

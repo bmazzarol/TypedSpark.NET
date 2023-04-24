@@ -10,12 +10,10 @@ Project [A AS A]
 == Optimized Logical Plan ==
 Project [A]
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 InMemoryTableScan [A]
    +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-         +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A:string>
 

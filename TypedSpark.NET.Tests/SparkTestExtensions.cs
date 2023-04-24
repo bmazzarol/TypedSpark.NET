@@ -55,6 +55,8 @@ namespace TypedSpark.NET.Tests
         > SnapshotDataframe<TSchema>(Func<SparkSession, TypedDataFrame<TSchema>> dfFn) =>
             ArrangeUsingSpark(dfFn)
                 .Act(df => $"{df.Explain().ReIndexExplainPlan(true)}\n{df.DataFrame.Debug()}")
-                .AssertResultIsUnchanged();
+                .AssertResultIsUnchanged(
+                    matchConfiguration: x => x.ScrubLinesContaining("+- FileScan json")
+                );
     }
 }

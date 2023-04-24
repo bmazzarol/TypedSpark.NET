@@ -10,14 +10,12 @@ Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
 == Optimized Logical Plan ==
 Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(1) Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true, 0
 +- Exchange rangepartitioning(A DESC NULLS LAST, B ASC NULLS FIRST, 1), true, [id=]
    +- InMemoryTableScan [A, B, C]
          +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A:string,B:integer,C:date>
 

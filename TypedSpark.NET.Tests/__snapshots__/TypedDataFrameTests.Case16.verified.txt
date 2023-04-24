@@ -21,10 +21,8 @@ Project [A AS A1, A AS A2]
    :- Project [A, B]
    :  +- Filter isnotnull(B)
    :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- Project [A, B]
       +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(2) Project [A AS A1, A AS A2]
@@ -33,10 +31,8 @@ Project [A AS A1, A AS A2]
    :  +- *(1) Filter isnotnull(B)
    :     +- InMemoryTableScan [A, B], [isnotnull(B)]
    :           +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   :                 +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- InMemoryTableScan [A, B]
          +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A1:string,A2:string>
 

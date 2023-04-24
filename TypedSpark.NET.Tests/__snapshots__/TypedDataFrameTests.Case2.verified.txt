@@ -10,13 +10,11 @@ Filter ((A = 2) AND (B > 1))
 == Optimized Logical Plan ==
 Filter (((isnotnull(A) AND isnotnull(B)) AND (A = 2)) AND (B > 1))
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(1) Filter (((isnotnull(A) AND isnotnull(B)) AND (A = 2)) AND (B > 1))
 +- InMemoryTableScan [A, B, C], [isnotnull(A), isnotnull(B), (A = 2), (B > 1)]
       +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A:string,B:integer,C:date>
 

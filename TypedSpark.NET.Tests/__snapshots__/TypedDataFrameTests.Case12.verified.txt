@@ -20,10 +20,8 @@ Project [A AS A1, A AS A2]
 +- Join FullOuter, (B = B)
    :- Project [A, B]
    :  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   :        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- Project [A, B]
       +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(3) Project [A AS A1, A AS A2]
@@ -32,12 +30,10 @@ Project [A AS A1, A AS A2]
    :  +- Exchange hashpartitioning(B, 1), true, [id=]
    :     +- InMemoryTableScan [A, B]
    :           +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   :                 +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- *(2) Sort [B ASC NULLS FIRST], false, 0
       +- Exchange hashpartitioning(B, 1), true, [id=]
          +- InMemoryTableScan [A, B]
                +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-                     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A1:string,A2:string>
 

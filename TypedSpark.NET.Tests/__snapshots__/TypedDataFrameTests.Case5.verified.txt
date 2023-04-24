@@ -13,9 +13,7 @@ Intersect false
 Aggregate [A, B, C], [A, B, C]
 +- Join LeftSemi, (((A <=> A) AND (B <=> B)) AND (C <=> C))
    :- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   :     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-         +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(2) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
@@ -24,11 +22,9 @@ Aggregate [A, B, C], [A, B, C]
       +- *(1) BroadcastHashJoin [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], LeftSemi, BuildRight
          :- InMemoryTableScan [A, B, C]
          :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-         :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
          +- BroadcastExchange HashedRelationBroadcastMode(List(coalesce(input[0, string, true], ), isnull(input[0, string, true]), coalesce(input[1, int, true], 0), isnull(input[1, int, true]), coalesce(input[2, date, true], 0), isnull(input[2, date, true]))), [id=]
             +- InMemoryTableScan [A, B, C]
                   +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-                        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 struct<A:string,B:integer,C:date>
 
