@@ -1,0 +1,49 @@
+﻿== Parsed Logical Plan ==
+'Project ['a.A AS A1, 'b.A AS A2]
++- Join RightOuter, (B = B)
+   :- SubqueryAlias a
+   :  +- Relation[A,B,C] json
+   +- SubqueryAlias b
+      +- Relation[A,B,C] json
+
+== Analyzed Logical Plan ==
+A1: string, A2: string
+Project [A AS A1, A AS A2]
++- Join RightOuter, (B = B)
+   :- SubqueryAlias a
+   :  +- Relation[A,B,C] json
+   +- SubqueryAlias b
+      +- Relation[A,B,C] json
+
+== Optimized Logical Plan ==
+Project [A AS A1, A AS A2]
++- Join RightOuter, (B = B)
+   :- Project [A, B]
+   :  +- Filter isnotnull(B)
+   :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- Project [A, B]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+
+== Physical Plan ==
+*(2) Project [A AS A1, A AS A2]
++- *(2) BroadcastHashJoin [B], [B], RightOuter, BuildLeft
+   :- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[1, int, false] as bigint))), [id=]
+   :  +- *(1) Filter isnotnull(B)
+   :     +- InMemoryTableScan [A, B], [isnotnull(B)]
+   :           +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :                 +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- InMemoryTableScan [A, B]
+         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+
+struct<A1:string,A2:string>
+
+(top = 20)
++---+---+
+|A1 |A2 |
++---+---+
+|2  |3  |
+|1  |4  |
++---+---+

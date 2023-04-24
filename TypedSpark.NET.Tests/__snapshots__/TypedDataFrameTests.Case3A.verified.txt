@@ -2,31 +2,48 @@
 'Project ['a.A AS A1, 'b.A AS A2, ('a.B + 'b.B) AS C]
 +- Join Cross
    :- SubqueryAlias a
-   :  +- LocalRelation [A, B, C]
+   :  +- Relation[A,B,C] json
    +- SubqueryAlias b
-      +- LocalRelation [A, B, C]
+      +- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A1: string, A2: string, C: int
 Project [A AS A1, A AS A2, (B + B) AS C]
 +- Join Cross
    :- SubqueryAlias a
-   :  +- LocalRelation [A, B, C]
+   :  +- Relation[A,B,C] json
    +- SubqueryAlias b
-      +- LocalRelation [A, B, C]
+      +- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A AS A1, A AS A2, (B + B) AS C]
 +- Join Cross
-   :- LocalRelation [A, B]
-   +- LocalRelation [A, B]
+   :- Project [A, B]
+   :  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- Project [A, B]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(1) Project [A AS A1, A AS A2, (B + B) AS C]
 +- BroadcastNestedLoopJoin BuildRight, Cross
-   :- LocalTableScan [A, B]
+   :- InMemoryTableScan [A, B]
+   :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
    +- BroadcastExchange IdentityBroadcastMode, [id=]
-      +- LocalTableScan [A, B]
+      +- InMemoryTableScan [A, B]
+            +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                  +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A1:string,A2:string,C:integer>
+
+(top = 20)
++---+---+---+
+|A1 |A2 |C  |
++---+---+---+
+|1  |1  |2  |
+|1  |2  |3  |
+|2  |1  |3  |
+|2  |2  |4  |
++---+---+---+

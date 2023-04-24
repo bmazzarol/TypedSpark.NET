@@ -1,28 +1,43 @@
 ﻿== Parsed Logical Plan ==
 'Join Cross
 :- SubqueryAlias a
-:  +- LocalRelation [A, B, C]
+:  +- Relation[A,B,C] json
 +- SubqueryAlias b
-   +- LocalRelation [A, B, C]
+   +- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date, A: string, B: int, C: date
 Join Cross
 :- SubqueryAlias a
-:  +- LocalRelation [A, B, C]
+:  +- Relation[A,B,C] json
 +- SubqueryAlias b
-   +- LocalRelation [A, B, C]
+   +- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Join Cross
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+:     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
++- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 BroadcastNestedLoopJoin BuildRight, Cross
-:- LocalTableScan [A, B, C]
+:- InMemoryTableScan [A, B, C]
+:     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+:           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 +- BroadcastExchange IdentityBroadcastMode, [id=]
-   +- LocalTableScan [A, B, C]
+   +- InMemoryTableScan [A, B, C]
+         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date,A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+---+---+----------+
+|A  |B  |C         |A  |B  |C         |
++---+---+----------+---+---+----------+
+|1  |1  |0001-01-01|1  |1  |0001-01-01|
+|1  |1  |0001-01-01|2  |2  |9999-12-31|
+|2  |2  |9999-12-31|1  |1  |0001-01-01|
+|2  |2  |9999-12-31|2  |2  |9999-12-31|
++---+---+----------+---+---+----------+

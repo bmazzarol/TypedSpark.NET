@@ -1,0 +1,8 @@
+﻿struct<a:integer,test:array<integer>,array_contains(test, 3):boolean,array_contains(test, 0):boolean,array_contains(test, a):boolean>
+
+(top = 20)
++---+---------------+-----------------------+-----------------------+-----------------------+
+|a  |test           |array_contains(test, 3)|array_contains(test, 0)|array_contains(test, a)|
++---+---------------+-----------------------+-----------------------+-----------------------+
+|2  |[1, 2, 3, 4, 5]|true                   |false                  |true                   |
++---+---------------+-----------------------+-----------------------+-----------------------+

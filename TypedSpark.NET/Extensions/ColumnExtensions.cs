@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Microsoft.Spark.Sql;
+using TypedSpark.NET.Columns;
 using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET;
@@ -78,7 +79,7 @@ internal static class ColumnExtensions
                             p.GetValue(o) as TypedColumn
                             ?? throw new InvalidOperationException("Only columns are supported");
 
-                        return alias ? ((Column)col).As(p.Name) : (Column)col;
+                        return alias ? ((Column)col).As(p.Name) : col;
                     }),
             _ => Enumerable.Empty<Column>()
         };

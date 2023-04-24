@@ -1,20 +1,31 @@
 ﻿== Parsed Logical Plan ==
 'Sort ['A DESC NULLS LAST, 'B ASC NULLS FIRST], true
-+- LocalRelation [A, B, C]
++- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
-+- LocalRelation [A, B, C]
++- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
-+- LocalRelation [A, B, C]
++- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(1) Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true, 0
 +- Exchange rangepartitioning(A DESC NULLS LAST, B ASC NULLS FIRST, 1), true, [id=]
-   +- LocalTableScan [A, B, C]
+   +- InMemoryTableScan [A, B, C]
+         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|2  |2  |9999-12-31|
+|2  |3  |9999-12-31|
+|1  |1  |0001-01-01|
++---+---+----------+

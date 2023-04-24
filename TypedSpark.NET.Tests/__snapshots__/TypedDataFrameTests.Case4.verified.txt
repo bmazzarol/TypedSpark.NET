@@ -1,28 +1,43 @@
 ﻿== Parsed Logical Plan ==
 Union
 :- SubqueryAlias a
-:  +- LocalRelation [A, B, C]
+:  +- Relation[A,B,C] json
 +- SubqueryAlias b
-   +- LocalRelation [A, B, C]
+   +- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Union
 :- SubqueryAlias a
-:  +- LocalRelation [A, B, C]
+:  +- Relation[A,B,C] json
 +- Project [A AS A, B AS B, C AS C]
    +- SubqueryAlias b
-      +- LocalRelation [A, B, C]
+      +- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Union
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+:     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
++- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 Union
-:- LocalTableScan [A, B, C]
-+- LocalTableScan [A, B, C]
+:- InMemoryTableScan [A, B, C]
+:     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+:           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
++- InMemoryTableScan [A, B, C]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|1  |1  |0001-01-01|
+|2  |2  |9999-12-31|
+|1  |1  |0001-01-01|
+|2  |2  |9999-12-31|
++---+---+----------+

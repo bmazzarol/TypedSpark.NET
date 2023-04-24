@@ -59,7 +59,7 @@ public sealed class TypedDataFrame<TSchema>
     public TypedDataFrame<T> Map<T>(Func<TSchema, T> project)
     {
         var newSchema = project(Schema);
-        var columns = newSchema.ExtractColumns(true).ToArray();
+        var columns = newSchema.ExtractColumns(alias: true).ToArray();
         return new(DataFrame.Select(columns), newSchema, _ => newSchema);
     }
 
@@ -328,36 +328,6 @@ public sealed class TypedDataFrame<TSchema>
         Func<TSchema, TA, BooleanColumn> join,
         Func<TSchema, TA, TB> project
     ) => Join(other, join, project, "right_outer");
-
-    /// <summary>
-    /// Left semi join the other `DataFrame` with this one
-    /// </summary>
-    /// <param name="other">other data frame</param>
-    /// <param name="join">join function</param>
-    /// <param name="project">project function</param>
-    /// <typeparam name="TA">other schema</typeparam>
-    /// <typeparam name="TB">projected schema</typeparam>
-    /// <returns>new data frame from the left semi join of this frame and the other one</returns>
-    public TypedDataFrame<TB> LeftSemiJoin<TA, TB>(
-        TypedDataFrame<TA> other,
-        Func<TSchema, TA, BooleanColumn> join,
-        Func<TSchema, TA, TB> project
-    ) => Join(other, join, project, "left_semi");
-
-    /// <summary>
-    /// Left anti join the other `DataFrame` with this one
-    /// </summary>
-    /// <param name="other">other data frame</param>
-    /// <param name="join">join function</param>
-    /// <param name="project">project function</param>
-    /// <typeparam name="TA">other schema</typeparam>
-    /// <typeparam name="TB">projected schema</typeparam>
-    /// <returns>new data frame from the left anti join of this frame and the other one</returns>
-    public TypedDataFrame<TB> LeftAntiJoin<TA, TB>(
-        TypedDataFrame<TA> other,
-        Func<TSchema, TA, BooleanColumn> join,
-        Func<TSchema, TA, TB> project
-    ) => Join(other, join, project, "left_anti");
 
     /// <summary>
     /// Returns a new `DataFrame` sorted by the given expressions.

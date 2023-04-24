@@ -10,7 +10,7 @@ using static TypedSpark.NET.Tests.SparkTestExtensions;
 using Fn = TypedSpark.NET.Functions;
 using B = TypedSpark.NET.Columns.BooleanColumn;
 
-namespace TypedSpark.NET.Tests
+namespace TypedSpark.NET.Tests.Columns
 {
     public static class BooleanColumnTests
     {

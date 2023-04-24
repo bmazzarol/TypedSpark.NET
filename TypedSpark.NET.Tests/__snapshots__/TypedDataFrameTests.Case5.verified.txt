@@ -1,28 +1,40 @@
 ﻿== Parsed Logical Plan ==
 Intersect false
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- Relation[A,B,C] json
++- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Intersect false
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- Relation[A,B,C] json
++- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Aggregate [A, B, C], [A, B, C]
 +- Join LeftSemi, (((A <=> A) AND (B <=> B)) AND (C <=> C))
-   :- LocalRelation [A, B, C]
-   +- LocalRelation [A, B, C]
+   :- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+         +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
 *(2) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
 +- Exchange hashpartitioning(A, B, C, 1), true, [id=]
    +- *(1) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
       +- *(1) BroadcastHashJoin [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], LeftSemi, BuildRight
-         :- *(1) LocalTableScan [A, B, C]
+         :- InMemoryTableScan [A, B, C]
+         :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+         :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
          +- BroadcastExchange HashedRelationBroadcastMode(List(coalesce(input[0, string, true], ), isnull(input[0, string, true]), coalesce(input[1, int, true], 0), isnull(input[1, int, true]), coalesce(input[2, date, true], 0), isnull(input[2, date, true]))), [id=]
-            +- LocalTableScan [A, B, C]
+            +- InMemoryTableScan [A, B, C]
+                  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|2  |2  |9999-12-31|
++---+---+----------+

@@ -1,13 +1,13 @@
 ﻿== Parsed Logical Plan ==
 IntersectAll true
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- Relation[A,B,C] json
++- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 IntersectAll true
-:- LocalRelation [A, B, C]
-+- LocalRelation [A, B, C]
+:- Relation[A,B,C] json
++- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A, B, C]
@@ -16,20 +16,37 @@ Project [A, B, C]
       +- Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
          +- Aggregate [A, B, C], [count(vcol1) AS vcol1_countL, count(vcol2) AS vcol2_countL, A, B, C]
             +- Union
-               :- LocalRelation [vcol1, vcol2, A, B, C]
-               +- LocalRelation [vcol1, vcol2, A, B, C]
+               :- Project [true AS vcol1, null AS vcol2, A, B, C]
+               :  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+               :        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+               +- Project [null AS vcol1, true AS vcol2, A, B, C]
+                  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                        +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
-*(3) Project [A, B, C]
+*(5) Project [A, B, C]
 +- Generate replicaterows(min_countL, A, B, C), [A, B, C], false, [A, B, C]
-   +- *(2) Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
-      +- *(2) Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
-         +- *(2) HashAggregate(keys=[A, B, C], functions=[count(vcol1), count(vcol2)], output=[vcol1_countL, vcol2_countL, A, B, C])
+   +- *(4) Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
+      +- *(4) Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
+         +- *(4) HashAggregate(keys=[A, B, C], functions=[count(vcol1), count(vcol2)], output=[vcol1_countL, vcol2_countL, A, B, C])
             +- Exchange hashpartitioning(A, B, C, 1), true, [id=]
-               +- *(1) HashAggregate(keys=[A, B, C], functions=[partial_count(vcol1), partial_count(vcol2)], output=[A, B, C, countL, countL])
+               +- *(3) HashAggregate(keys=[A, B, C], functions=[partial_count(vcol1), partial_count(vcol2)], output=[A, B, C, countL, countL])
                   +- Union
-                     :- LocalTableScan [vcol1, vcol2, A, B, C]
-                     +- LocalTableScan [vcol1, vcol2, A, B, C]
+                     :- *(1) Project [true AS vcol1, null AS vcol2, A, B, C]
+                     :  +- InMemoryTableScan [A, B, C]
+                     :        +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                     :              +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+                     +- *(2) Project [null AS vcol1, true AS vcol2, A, B, C]
+                        +- InMemoryTableScan [A, B, C]
+                              +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                    +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|2  |2  |9999-12-31|
+|2  |2  |9999-12-31|
++---+---+----------+

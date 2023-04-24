@@ -1,9 +1,8 @@
 ﻿using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
-using TypedSpark.NET.Columns;
 
-namespace TypedSpark.NET;
+namespace TypedSpark.NET.Columns;
 
 /// <summary>
 /// Ordering operators

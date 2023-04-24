@@ -1,19 +1,31 @@
 ﻿== Parsed Logical Plan ==
 GlobalLimit 1
 +- LocalLimit 1
-   +- LocalRelation [A, B, C]
+   +- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 GlobalLimit 1
 +- LocalLimit 1
-   +- LocalRelation [A, B, C]
+   +- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
-LocalRelation [A, B, C]
+GlobalLimit 1
++- LocalLimit 1
+   +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+         +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
-LocalTableScan [A, B, C]
+CollectLimit 1
++- InMemoryTableScan [A, B, C]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|1  |1  |0001-01-01|
++---+---+----------+

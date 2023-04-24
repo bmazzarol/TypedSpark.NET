@@ -5,7 +5,7 @@ using Xunit;
 using static Microsoft.Spark.Sql.Functions;
 using static TypedSpark.NET.Tests.SparkTestExtensions;
 
-namespace TypedSpark.NET.Tests
+namespace TypedSpark.NET.Tests.Columns
 {
     public static class ColumnExtensionsTests
     {

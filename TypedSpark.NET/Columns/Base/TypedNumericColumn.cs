@@ -2,7 +2,7 @@
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
 
-namespace TypedSpark.NET;
+namespace TypedSpark.NET.Columns;
 
 /// <summary>
 /// Numeric operators

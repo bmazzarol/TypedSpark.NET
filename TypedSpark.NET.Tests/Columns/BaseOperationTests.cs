@@ -5,10 +5,11 @@ using FluentAssertions;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
+using TypedSpark.NET.Columns;
 using Xunit;
 using static TypedSpark.NET.Tests.SparkTestExtensions;
 
-namespace TypedSpark.NET.Tests
+namespace TypedSpark.NET.Tests.Columns
 {
     public abstract class BaseOperationTests<TColumn, TSparkType, TNativeType>
         where TColumn : TypedColumn<TColumn, TSparkType, TNativeType>, new()

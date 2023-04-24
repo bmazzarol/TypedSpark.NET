@@ -2,8 +2,9 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using BunsenBurner;
+using BunsenBurner.Verify.Xunit;
 using Microsoft.Spark.Sql;
-using VerifyXunit;
+using SparkTest.NET.Extensions;
 using static SparkTest.NET.SparkSessionFactory;
 using Scenario = BunsenBurner.Scenario<BunsenBurner.Syntax.Aaa>;
 
@@ -49,20 +50,11 @@ namespace TypedSpark.NET.Tests
         }
 
         internal static Scenario.Asserted<
-            TData,
-            TypedDataFrame<TSchema>
-        > AndExplainPlanHasNotChanged<TData, TSchema>(
-            this Scenario.Asserted<TData, TypedDataFrame<TSchema>> scenario,
-            ExplainMode mode = ExplainMode.Extended,
-            bool removeIndexes = true
-        ) =>
-            scenario.And(
-                s =>
-                    Verifier
-                        .Verify(
-                            $"{s.Explain(mode).ReIndexExplainPlan(removeIndexes)}\n== DataFrame Schema ==\n{s.DataFrame.Schema().SimpleString}"
-                        )
-                        .UseDirectory("__snapshots__")
-            );
+            TypedDataFrame<TSchema>,
+            string
+        > SnapshotDataframe<TSchema>(Func<SparkSession, TypedDataFrame<TSchema>> dfFn) =>
+            ArrangeUsingSpark(dfFn)
+                .Act(df => $"{df.Explain().ReIndexExplainPlan(true)}\n{df.DataFrame.Debug()}")
+                .AssertResultIsUnchanged();
     }
 }

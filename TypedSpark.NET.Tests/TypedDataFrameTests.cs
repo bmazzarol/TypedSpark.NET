@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using BunsenBurner;
-using FluentAssertions;
-using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
 using TypedSpark.NET.Columns;
 using VerifyXunit;
@@ -28,294 +25,334 @@ namespace TypedSpark.NET.Tests
 
         [Fact(DisplayName = "Select can be used on a typed data frame")]
         public static async Task Case1() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.Select(x => new { x.A }))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(2);
-
-                    var first = result.First();
-                    first.Schema.Fields.Should().HaveCount(1);
-                    first.Schema.Fields[0].Name.Should().Be("A");
-                    first.Schema.Fields[0].DataType.TypeName.Should().Be("string");
-                    first.Values[0].Should().Be("1");
-
-                    var second = result.Last();
-                    second.Schema.Fields.Should().HaveCount(1);
-                    second.Schema.Fields[0].Name.Should().Be("A");
-                    second.Schema.Fields[0].DataType.TypeName.Should().Be("string");
-                    second.Values[0].Should().Be("2");
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(
+                s =>
+                    s.CreateDataFrameFromData(
+                            new { A = "1", B = 1, C = DateTime.MinValue },
+                            new { A = "2", B = 2, C = DateTime.MaxValue }
+                        )
+                        .AsTyped<TestSchema>()
+                        .Select(x => new { x.A })
+            );
 
         [Fact(DisplayName = "Where can be used on a typed data frame")]
         public static async Task Case2() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.Where(x => x.A == "2" & x.B > 1))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(1);
-
-                    var first = result.First();
-                    first.Schema.Fields.Should().HaveCount(3);
-                    first.Schema.Fields[0].Name.Should().Be("A");
-                    first.Schema.Fields[0].DataType.TypeName.Should().Be("string");
-                    first.Schema.Fields[1].Name.Should().Be("B");
-                    first.Schema.Fields[1].DataType.TypeName.Should().Be("integer");
-                    first.Values[0].Should().Be("2");
-                    first.Values[1].Should().Be(2);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(
+                s =>
+                    s.CreateDataFrameFromData(
+                            new { A = "1", B = 1, C = DateTime.MinValue },
+                            new { A = "2", B = 2, C = DateTime.MaxValue }
+                        )
+                        .AsTyped<TestSchema>()
+                        .Where(x => x.A == "2" & x.B > 1)
+            );
 
         [Fact(DisplayName = "SelectMany can be used on a typed data frame")]
         public static async Task Case3() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.Alias("a").SelectMany(a => tdf.Alias("b")))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Count();
-                    result.Should().Be(4);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var tdf = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                return tdf.Alias("a").SelectMany(a => tdf.Alias("b"));
+            });
 
         [Fact(DisplayName = "SelectMany with projection can be used on a typed data frame")]
         public static async Task Case3A() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(
-                    tdf =>
-                        from a in tdf.Alias("a")
-                        from b in tdf.Alias("b")
-                        select new { A1 = a.A, A2 = b.A, C = a.B + b.B }
-                )
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Count();
-                    result.Should().Be(4);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var tdf = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                return from a in tdf.Alias("a")
+                from b in tdf.Alias("b")
+                select new { A1 = a.A, A2 = b.A, C = a.B + b.B };
+            });
 
         [Fact(DisplayName = "Union can be used on typed data frames")]
         public static async Task Case4() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.Alias("a") & tdf.Alias("b"))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Count();
-                    result.Should().Be(4);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var tdf = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                return tdf.Alias("a") & tdf.Alias("b");
+            });
 
         [Fact(DisplayName = "Intersect can be used on typed data frames")]
         public static async Task Case5() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        (
-                            a: s.CreateDataFrameFromData(
-                                    new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>(),
-                            b: s.CreateDataFrameFromData(
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "3", B = 3, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                        )
-                )
-                .Act(t => t.a | t.b)
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Count();
-                    result.Should().Be(1);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var a = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                var b = s.CreateDataFrameFromData(
+                        new { A = "2", B = 2, C = DateTime.MaxValue },
+                        new { A = "3", B = 3, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                return a | b;
+            });
 
         [Fact(DisplayName = "Intersect all can be used on typed data frames")]
         public static async Task Case6() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        (
-                            a: s.CreateDataFrameFromData(
-                                    new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>(),
-                            b: s.CreateDataFrameFromData(
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "3", B = 3, C = new Date(DateTime.MaxValue) },
-                                    new { A = "3", B = 3, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                        )
-                )
-                .Act(t => t.a.IntersectAll(t.b))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Count();
-                    result.Should().Be(2);
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var a = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                var b = s.CreateDataFrameFromData(
+                        new { A = "2", B = 2, C = DateTime.MaxValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue },
+                        new { A = "3", B = 3, C = DateTime.MaxValue },
+                        new { A = "3", B = 3, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>();
+                return a.IntersectAll(b);
+            });
 
         [Fact(DisplayName = "Inner join can be used on typed data frames")]
         public static async Task Case7() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        (
-                            a: s.CreateDataFrameFromData(
-                                    new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                                .Alias("a"),
-                            b: s.CreateDataFrameFromData(
-                                    new { A = "3", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "4", B = 1, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                                .Alias("b")
-                        )
-                )
-                .Act(
-                    t =>
-                        t.a.InnerJoin(
-                            t.b,
-                            (a, b) => a.B == b.B,
-                            (a, b) => new { A1 = a.A, A2 = b.A }
-                        )
-                )
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(2);
-                    result.First().Values.Should().BeEquivalentTo(new[] { "1", "4" });
-                    result.Last().Values.Should().BeEquivalentTo(new[] { "2", "3" });
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.InnerJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
 
         [Fact(DisplayName = "Cross join can be used on typed data frames")]
         public static async Task Case8() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        (
-                            a: s.CreateDataFrameFromData(
-                                    new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                    new { A = "2", B = 2, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                                .Alias("a"),
-                            b: s.CreateDataFrameFromData(
-                                    new { A = "3", B = 2, C = new Date(DateTime.MaxValue) },
-                                    new { A = "4", B = 1, C = new Date(DateTime.MaxValue) }
-                                )
-                                .AsTyped<TestSchema>()
-                                .Alias("b")
-                        )
-                )
-                .Act(
-                    t =>
-                        t.a.CrossJoin(
-                            t.b,
-                            (a, b) => a.B == b.B,
-                            (a, b) => new { A1 = a.A, A2 = b.A }
-                        )
-                )
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(2);
-                    result.First().Values.Should().BeEquivalentTo(new[] { "1", "4" });
-                    result.Last().Values.Should().BeEquivalentTo(new[] { "2", "3" });
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.CrossJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
 
         [Fact(DisplayName = "Sort can be used on typed data frames")]
         public static async Task Case9() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                new { A = "2", B = 3, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.OrderBy(x => new { A = x.A.Desc(), x.B }))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(3);
-                    result[0].Values
-                        .Should()
-                        .BeEquivalentTo(new object[] { "2", 2, new Date(DateTime.MaxValue) });
-                    result[1].Values
-                        .Should()
-                        .BeEquivalentTo(new object[] { "2", 3, new Date(DateTime.MaxValue) });
-                    result[2].Values
-                        .Should()
-                        .BeEquivalentTo(new object[] { "1", 1, new Date(DateTime.MinValue) });
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(
+                s =>
+                    s.CreateDataFrameFromData(
+                            new { A = "1", B = 1, C = DateTime.MinValue },
+                            new { A = "2", B = 2, C = DateTime.MaxValue },
+                            new { A = "2", B = 3, C = DateTime.MaxValue }
+                        )
+                        .AsTyped<TestSchema>()
+                        .OrderBy(x => new { A = x.A.Desc(), x.B })
+            );
 
         [Fact(DisplayName = "Limit can be used on typed data frames")]
         public static async Task Case10() =>
-            await ArrangeUsingSpark(
-                    s =>
-                        s.CreateDataFrameFromData(
-                                new { A = "1", B = 1, C = new Date(DateTime.MinValue) },
-                                new { A = "2", B = 2, C = new Date(DateTime.MaxValue) },
-                                new { A = "2", B = 3, C = new Date(DateTime.MaxValue) }
-                            )
-                            .AsTyped<TestSchema>()
-                )
-                .Act(tdf => tdf.Limit(1))
-                .Assert(df =>
-                {
-                    var result = df.DataFrame.Collect().ToList();
-                    result.Should().HaveCount(1);
-                    result
-                        .First()
-                        .Values.Should()
-                        .BeEquivalentTo(new object[] { "1", 1, new Date(DateTime.MinValue) });
-                })
-                .AndExplainPlanHasNotChanged();
+            await SnapshotDataframe(
+                s =>
+                    s.CreateDataFrameFromData(
+                            new { A = "1", B = 1, C = DateTime.MinValue },
+                            new { A = "2", B = 2, C = DateTime.MaxValue },
+                            new { A = "2", B = 3, C = DateTime.MaxValue }
+                        )
+                        .AsTyped<TestSchema>()
+                        .Limit(1)
+            );
+
+        [Fact(DisplayName = "Outer join can be used on typed data frames")]
+        public static async Task Case11() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.OuterJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Full join can be used on typed data frames")]
+        public static async Task Case12() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.FullJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Full outer join can be used on typed data frames")]
+        public static async Task Case13() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.FullOuterJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Left join can be used on typed data frames")]
+        public static async Task Case14() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.LeftJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Left outer join can be used on typed data frames")]
+        public static async Task Case15() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.LeftOuterJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Right join can be used on typed data frames")]
+        public static async Task Case16() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.RightJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
+
+        [Fact(DisplayName = "Right outer join can be used on typed data frames")]
+        public static async Task Case17() =>
+            await SnapshotDataframe(s =>
+            {
+                var df1 = s.CreateDataFrameFromData(
+                        new { A = "1", B = 1, C = DateTime.MinValue },
+                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("a");
+                var df2 = s.CreateDataFrameFromData(
+                        new { A = "3", B = 2, C = DateTime.MaxValue },
+                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                    )
+                    .AsTyped<TestSchema>()
+                    .Alias("b");
+                return df1.RightOuterJoin(
+                    df2,
+                    (a, b) => a.B == b.B,
+                    (a, b) => new { A1 = a.A, A2 = b.A }
+                );
+            });
     }
 }

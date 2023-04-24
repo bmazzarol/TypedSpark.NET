@@ -1,17 +1,28 @@
 ﻿== Parsed Logical Plan ==
 'Filter (('A = 2) AND ('B > 1))
-+- LocalRelation [A, B, C]
++- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Filter ((A = 2) AND (B > 1))
-+- LocalRelation [A, B, C]
++- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
-LocalRelation [A, B, C]
+Filter (((isnotnull(A) AND isnotnull(B)) AND (A = 2)) AND (B > 1))
++- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
-LocalTableScan [A, B, C]
+*(1) Filter (((isnotnull(A) AND isnotnull(B)) AND (A = 2)) AND (B > 1))
++- InMemoryTableScan [A, B, C], [isnotnull(A), isnotnull(B), (A = 2), (B > 1)]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A:string,B:integer,C:date>
+
+(top = 20)
++---+---+----------+
+|A  |B  |C         |
++---+---+----------+
+|2  |2  |9999-12-31|
++---+---+----------+

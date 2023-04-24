@@ -2,31 +2,50 @@
 'Project ['a.A AS A1, 'b.A AS A2]
 +- Join Inner, (B = B)
    :- SubqueryAlias a
-   :  +- LocalRelation [A, B, C]
+   :  +- Relation[A,B,C] json
    +- SubqueryAlias b
-      +- LocalRelation [A, B, C]
+      +- Relation[A,B,C] json
 
 == Analyzed Logical Plan ==
 A1: string, A2: string
 Project [A AS A1, A AS A2]
 +- Join Inner, (B = B)
    :- SubqueryAlias a
-   :  +- LocalRelation [A, B, C]
+   :  +- Relation[A,B,C] json
    +- SubqueryAlias b
-      +- LocalRelation [A, B, C]
+      +- Relation[A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A AS A1, A AS A2]
 +- Join Inner, (B = B)
-   :- LocalRelation [A, B]
-   +- LocalRelation [A, B]
+   :- Project [A, B]
+   :  +- Filter isnotnull(B)
+   :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :           +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- Project [A, B]
+      +- Filter isnotnull(B)
+         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+               +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
 == Physical Plan ==
-*(1) Project [A AS A1, A AS A2]
-+- *(1) BroadcastHashJoin [B], [B], Inner, BuildRight
-   :- *(1) LocalTableScan [A, B]
-   +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[1, int, true] as bigint))), [id=]
-      +- LocalTableScan [A, B]
+*(2) Project [A AS A1, A AS A2]
++- *(2) BroadcastHashJoin [B], [B], Inner, BuildRight
+   :- *(2) Filter isnotnull(B)
+   :  +- InMemoryTableScan [A, B], [isnotnull(B)]
+   :        +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   :              +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
+   +- BroadcastExchange HashedRelationBroadcastMode(List(cast(input[1, int, false] as bigint))), [id=]
+      +- *(1) Filter isnotnull(B)
+         +- InMemoryTableScan [A, B], [isnotnull(B)]
+               +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                     +- FileScan json [A,B,C] Batched: false, DataFilters: [], Format: JSON, Location: InMemoryFileIndex[file:/{ProjectDirectory}..., PartitionFilters: [], PushedFilters: [], ReadSchema: struct<A:string,B:int,C:date>
 
-== DataFrame Schema ==
 struct<A1:string,A2:string>
+
+(top = 20)
++---+---+
+|A1 |A2 |
++---+---+
+|1  |4  |
+|2  |3  |
++---+---+
