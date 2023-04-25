@@ -384,8 +384,8 @@ public static class TypedDataFrame
     /// <param name="dataFrame">data frame</param>
     /// <typeparam name="T">schema type</typeparam>
     /// <returns>new typed data frame</returns>
-    public static TypedDataFrame<T> New<T>(DataFrame dataFrame) where T : TypedSchema, new() =>
-        new(dataFrame, new T(), AliasSchemaFn<T>());
+    public static TypedDataFrame<T> New<T>(DataFrame dataFrame)
+        where T : TypedSchema, new() => new(dataFrame, new T(), AliasSchemaFn<T>());
 
     /// <summary>
     /// Creates a new typed data frame

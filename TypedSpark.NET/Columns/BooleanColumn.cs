@@ -9,9 +9,11 @@ namespace TypedSpark.NET.Columns;
 /// </summary>
 public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, bool>
 {
-    private BooleanColumn(Column column) : base(new BooleanType(), column) { }
+    private BooleanColumn(Column column)
+        : base(new BooleanType(), column) { }
 
-    public BooleanColumn() : this(Col(string.Empty)) { }
+    public BooleanColumn()
+        : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column

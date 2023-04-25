@@ -41,8 +41,18 @@ namespace TypedSpark.NET.Tests.Columns
             await ArrangeUsingSpark(s =>
                 {
                     var df = s.CreateDataFrameFromData(
-                        new { A = 1, B = 2, C = 3 },
-                        new { A = 4, B = 5, C = 6 }
+                        new
+                        {
+                            A = 1,
+                            B = 2,
+                            C = 3
+                        },
+                        new
+                        {
+                            A = 4,
+                            B = 5,
+                            C = 6
+                        }
                     );
                     return df.Select(
                         ArrayColumn.New(

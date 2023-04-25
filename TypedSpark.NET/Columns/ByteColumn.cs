@@ -10,9 +10,11 @@ namespace TypedSpark.NET.Columns;
 /// <remarks>Spark side only, cannot be serialized to Java at this stage</remarks>
 public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
 {
-    private ByteColumn(Column column) : base(new ByteType(), column) { }
+    private ByteColumn(Column column)
+        : base(new ByteType(), column) { }
 
-    public ByteColumn() : this(Col(string.Empty)) { }
+    public ByteColumn()
+        : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column

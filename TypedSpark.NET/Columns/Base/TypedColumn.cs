@@ -61,8 +61,8 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// </summary>
     public new TSparkType ColumnType { get; }
 
-    protected TypedColumn(TSparkType columnType, Column column) : base(columnType, column) =>
-        ColumnType = columnType;
+    protected TypedColumn(TSparkType columnType, Column column)
+        : base(columnType, column) => ColumnType = columnType;
 
     /// <summary>Apply equality test that is safe for null values.</summary>
     /// <param name="obj">Object to apply equality test</param>
@@ -199,8 +199,8 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     /// </summary>
     public new TSparkType ColumnType { get; }
 
-    protected TypedColumn(TSparkType columnType, Column column) : base(columnType, column) =>
-        ColumnType = columnType;
+    protected TypedColumn(TSparkType columnType, Column column)
+        : base(columnType, column) => ColumnType = columnType;
 
     //
     // Equals Operations

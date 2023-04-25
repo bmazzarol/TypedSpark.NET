@@ -6,9 +6,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
 {
-    private DoubleColumn(Column column) : base(new DoubleType(), column) { }
+    private DoubleColumn(Column column)
+        : base(new DoubleType(), column) { }
 
-    public DoubleColumn() : this(Col(string.Empty)) { }
+    public DoubleColumn()
+        : this(Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column

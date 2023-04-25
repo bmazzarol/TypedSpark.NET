@@ -11,9 +11,11 @@ namespace TypedSpark.NET.Columns;
 public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     where T : TypedColumn, new()
 {
-    internal ArrayColumn(Column column) : base(new ArrayType(new T().ColumnType), column) { }
+    internal ArrayColumn(Column column)
+        : base(new ArrayType(new T().ColumnType), column) { }
 
-    public ArrayColumn() : this(F.Col(string.Empty)) { }
+    public ArrayColumn()
+        : this(F.Col(string.Empty)) { }
 
     /// <summary>
     /// Gets the value at the index
@@ -188,7 +190,8 @@ public static class ArrayColumn
     /// </summary>
     /// <param name="column">column</param>
     /// <returns>column</returns>
-    public static ArrayColumn<T> New<T>(Column column) where T : TypedColumn, new() => new(column);
+    public static ArrayColumn<T> New<T>(Column column)
+        where T : TypedColumn, new() => new(column);
 
     /// <summary>
     /// Creates a new array column

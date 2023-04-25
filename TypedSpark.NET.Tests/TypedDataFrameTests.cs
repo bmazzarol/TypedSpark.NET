@@ -18,9 +18,11 @@ namespace TypedSpark.NET.Tests
             public IntegerColumn B { get; private set; } = default(int);
             public DateColumn C { get; private set; } = DateTime.Now;
 
-            public TestSchema(string? alias) : base(alias) { }
+            public TestSchema(string? alias)
+                : base(alias) { }
 
-            public TestSchema() : base(default) { }
+            public TestSchema()
+                : base(default) { }
         }
 
         [Fact(DisplayName = "Select can be used on a typed data frame")]
@@ -28,8 +30,18 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(
                 s =>
                     s.CreateDataFrameFromData(
-                            new { A = "1", B = 1, C = DateTime.MinValue },
-                            new { A = "2", B = 2, C = DateTime.MaxValue }
+                            new
+                            {
+                                A = "1",
+                                B = 1,
+                                C = DateTime.MinValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 2,
+                                C = DateTime.MaxValue
+                            }
                         )
                         .AsTyped<TestSchema>()
                         .Select(x => new { x.A })
@@ -40,8 +52,18 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(
                 s =>
                     s.CreateDataFrameFromData(
-                            new { A = "1", B = 1, C = DateTime.MinValue },
-                            new { A = "2", B = 2, C = DateTime.MaxValue }
+                            new
+                            {
+                                A = "1",
+                                B = 1,
+                                C = DateTime.MinValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 2,
+                                C = DateTime.MaxValue
+                            }
                         )
                         .AsTyped<TestSchema>()
                         .Where(x => x.A == "2" & x.B > 1)
@@ -52,8 +74,18 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var tdf = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 return tdf.Alias("a").SelectMany(a => tdf.Alias("b"));
@@ -64,13 +96,28 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var tdf = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 return from a in tdf.Alias("a")
-                from b in tdf.Alias("b")
-                select new { A1 = a.A, A2 = b.A, C = a.B + b.B };
+                    from b in tdf.Alias("b")
+                    select new
+                    {
+                        A1 = a.A,
+                        A2 = b.A,
+                        C = a.B + b.B
+                    };
             });
 
         [Fact(DisplayName = "Union can be used on typed data frames")]
@@ -78,8 +125,18 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var tdf = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 return tdf.Alias("a") & tdf.Alias("b");
@@ -90,13 +147,33 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var a = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 var b = s.CreateDataFrameFromData(
-                        new { A = "2", B = 2, C = DateTime.MaxValue },
-                        new { A = "3", B = 3, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "3",
+                            B = 3,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 return a | b;
@@ -107,16 +184,51 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var a = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 var b = s.CreateDataFrameFromData(
-                        new { A = "2", B = 2, C = DateTime.MaxValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue },
-                        new { A = "3", B = 3, C = DateTime.MaxValue },
-                        new { A = "3", B = 3, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "3",
+                            B = 3,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "3",
+                            B = 3,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>();
                 return a.IntersectAll(b);
@@ -127,14 +239,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -150,14 +282,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -173,9 +325,24 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(
                 s =>
                     s.CreateDataFrameFromData(
-                            new { A = "1", B = 1, C = DateTime.MinValue },
-                            new { A = "2", B = 2, C = DateTime.MaxValue },
-                            new { A = "2", B = 3, C = DateTime.MaxValue }
+                            new
+                            {
+                                A = "1",
+                                B = 1,
+                                C = DateTime.MinValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 2,
+                                C = DateTime.MaxValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 3,
+                                C = DateTime.MaxValue
+                            }
                         )
                         .AsTyped<TestSchema>()
                         .OrderBy(x => new { A = x.A.Desc(), x.B })
@@ -186,9 +353,24 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(
                 s =>
                     s.CreateDataFrameFromData(
-                            new { A = "1", B = 1, C = DateTime.MinValue },
-                            new { A = "2", B = 2, C = DateTime.MaxValue },
-                            new { A = "2", B = 3, C = DateTime.MaxValue }
+                            new
+                            {
+                                A = "1",
+                                B = 1,
+                                C = DateTime.MinValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 2,
+                                C = DateTime.MaxValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 3,
+                                C = DateTime.MaxValue
+                            }
                         )
                         .AsTyped<TestSchema>()
                         .Limit(1)
@@ -199,14 +381,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -222,14 +424,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -245,14 +467,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -268,14 +510,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -291,14 +553,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -314,14 +596,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");
@@ -337,14 +639,34 @@ namespace TypedSpark.NET.Tests
             await SnapshotDataframe(s =>
             {
                 var df1 = s.CreateDataFrameFromData(
-                        new { A = "1", B = 1, C = DateTime.MinValue },
-                        new { A = "2", B = 2, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "1",
+                            B = 1,
+                            C = DateTime.MinValue
+                        },
+                        new
+                        {
+                            A = "2",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("a");
                 var df2 = s.CreateDataFrameFromData(
-                        new { A = "3", B = 2, C = DateTime.MaxValue },
-                        new { A = "4", B = 1, C = DateTime.MaxValue }
+                        new
+                        {
+                            A = "3",
+                            B = 2,
+                            C = DateTime.MaxValue
+                        },
+                        new
+                        {
+                            A = "4",
+                            B = 1,
+                            C = DateTime.MaxValue
+                        }
                     )
                     .AsTyped<TestSchema>()
                     .Alias("b");

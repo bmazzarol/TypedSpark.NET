@@ -13,9 +13,11 @@ namespace TypedSpark.NET.Tests
     {
         private class EmptySchema : TypedSchema<EmptySchema>
         {
-            public EmptySchema(string? alias) : base(alias) { }
+            public EmptySchema(string? alias)
+                : base(alias) { }
 
-            public EmptySchema() : base(default) { }
+            public EmptySchema()
+                : base(default) { }
         }
 
         [Fact(DisplayName = "Empty schemas will fail with an exception")]
@@ -31,9 +33,11 @@ namespace TypedSpark.NET.Tests
         {
             public string A { get; private set; } = string.Empty;
 
-            public NonColumnProperty(string? alias) : base(alias) { }
+            public NonColumnProperty(string? alias)
+                : base(alias) { }
 
-            public NonColumnProperty() : base(default) { }
+            public NonColumnProperty()
+                : base(default) { }
         }
 
         [Fact(DisplayName = "Schemas with non TypedColumn properties will fail with an exception")]
@@ -54,9 +58,11 @@ namespace TypedSpark.NET.Tests
         {
             public StringColumn A { get; set; } = default!;
 
-            public PublicSetter(string? alias) : base(alias) { }
+            public PublicSetter(string? alias)
+                : base(alias) { }
 
-            public PublicSetter() : base(default) { }
+            public PublicSetter()
+                : base(default) { }
         }
 
         [Fact(
@@ -80,9 +86,11 @@ namespace TypedSpark.NET.Tests
             public StringColumn A { get; private set; } = default!;
             public IntegerColumn B { get; private set; } = default!;
 
-            public ValidSchema(string? alias) : base(alias) { }
+            public ValidSchema(string? alias)
+                : base(alias) { }
 
-            public ValidSchema() : base(default) { }
+            public ValidSchema()
+                : base(default) { }
         }
 
         [Fact(DisplayName = "Valid schema column takes its name from the property name")]
@@ -100,9 +108,11 @@ namespace TypedSpark.NET.Tests
         {
             public readonly StringColumn InvalidField;
 
-            public InvalidFieldSchema(string? alias) : base(alias) { }
+            public InvalidFieldSchema(string? alias)
+                : base(alias) { }
 
-            public InvalidFieldSchema() : base(default) { }
+            public InvalidFieldSchema()
+                : base(default) { }
         }
 
         [Fact(DisplayName = "Fields are not supported on a typed schema")]

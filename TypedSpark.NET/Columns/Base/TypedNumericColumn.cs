@@ -12,8 +12,8 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {
-    protected TypedNumericColumn(TSparkType columnType, Column column) : base(columnType, column)
-    { }
+    protected TypedNumericColumn(TSparkType columnType, Column column)
+        : base(columnType, column) { }
 
     /// <summary>Negate the given column.</summary>
     /// <param name="self">Column to negate</param>

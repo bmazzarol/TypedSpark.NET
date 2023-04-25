@@ -77,7 +77,9 @@ public abstract class TypedSchema
     public IEnumerable<string> ColumnNames() => Type.Fields.Select(x => x.Name);
 }
 
-public abstract class TypedSchema<T> : TypedSchema where T : TypedSchema<T>, new()
+public abstract class TypedSchema<T> : TypedSchema
+    where T : TypedSchema<T>, new()
 {
-    protected TypedSchema(string? alias) : base(alias) { }
+    protected TypedSchema(string? alias)
+        : base(alias) { }
 }

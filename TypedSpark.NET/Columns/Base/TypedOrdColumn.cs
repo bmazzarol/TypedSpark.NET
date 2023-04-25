@@ -21,7 +21,8 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {
-    protected TypedOrdColumn(TSparkType columnType, Column column) : base(columnType, column) { }
+    protected TypedOrdColumn(TSparkType columnType, Column column)
+        : base(columnType, column) { }
 
     //
     // Greater Than Operations
