@@ -1,0 +1,8 @@
+﻿struct<Sentence:string,sentences(This is a test. It should be split into sentences and words., , ):array<array<string>>,sentences(This is a test. It should be split into sentences and words., en, au):array<array<string>>>
+
+(top = 20)
++------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+|Sentence                                                    |sentences(This is a test. It should be split into sentences and words., , )|sentences(This is a test. It should be split into sentences and words., en, au)|
++------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------------------------------------+
+|This is a test. It should be split into sentences and words.|[[This, is, a, test], [It, should, be, split, into, sentences, and, words]]|[[This, is, a, test], [It, should, be, split, into, sentences, and, words]]    |
++------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------------------------------------+

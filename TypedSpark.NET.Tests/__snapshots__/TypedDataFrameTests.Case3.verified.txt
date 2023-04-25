@@ -1,17 +1,17 @@
 ﻿== Parsed Logical Plan ==
 'Join Cross
 :- SubqueryAlias a
-:  +- Relation[A,B,C] json
+:  +- Relation [A,B,C] json
 +- SubqueryAlias b
-   +- Relation[A,B,C] json
+   +- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date, A: string, B: int, C: date
 Join Cross
 :- SubqueryAlias a
-:  +- Relation[A,B,C] json
+:  +- Relation [A,B,C] json
 +- SubqueryAlias b
-   +- Relation[A,B,C] json
+   +- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Join Cross
@@ -19,12 +19,13 @@ Join Cross
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-BroadcastNestedLoopJoin BuildRight, Cross
-:- InMemoryTableScan [A, B, C]
-:     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-+- BroadcastExchange IdentityBroadcastMode, [id=]
-   +- InMemoryTableScan [A, B, C]
-         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- BroadcastNestedLoopJoin BuildRight, Cross
+   :- InMemoryTableScan [A, B, C]
+   :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+   +- BroadcastExchange IdentityBroadcastMode, [id=]
+      +- InMemoryTableScan [A, B, C]
+            +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A:string,B:integer,C:date,A:string,B:integer,C:date>
 

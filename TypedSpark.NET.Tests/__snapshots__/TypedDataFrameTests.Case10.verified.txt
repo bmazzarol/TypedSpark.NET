@@ -1,13 +1,13 @@
 ﻿== Parsed Logical Plan ==
 GlobalLimit 1
 +- LocalLimit 1
-   +- Relation[A,B,C] json
+   +- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 GlobalLimit 1
 +- LocalLimit 1
-   +- Relation[A,B,C] json
+   +- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 GlobalLimit 1

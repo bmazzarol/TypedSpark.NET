@@ -1,13 +1,13 @@
 ﻿== Parsed Logical Plan ==
 IntersectAll true
-:- Relation[A,B,C] json
-+- Relation[A,B,C] json
+:- Relation [A,B,C] json
++- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 IntersectAll true
-:- Relation[A,B,C] json
-+- Relation[A,B,C] json
+:- Relation [A,B,C] json
++- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A, B, C]
@@ -15,27 +15,28 @@ Project [A, B, C]
    +- Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
       +- Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
          +- Aggregate [A, B, C], [count(vcol1) AS vcol1_countL, count(vcol2) AS vcol2_countL, A, B, C]
-            +- Union
+            +- Union false, false
                :- Project [true AS vcol1, null AS vcol2, A, B, C]
                :  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
                +- Project [null AS vcol1, true AS vcol2, A, B, C]
                   +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-*(5) Project [A, B, C]
-+- Generate replicaterows(min_countL, A, B, C), [A, B, C], false, [A, B, C]
-   +- *(4) Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
-      +- *(4) Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
-         +- *(4) HashAggregate(keys=[A, B, C], functions=[count(vcol1), count(vcol2)], output=[vcol1_countL, vcol2_countL, A, B, C])
-            +- Exchange hashpartitioning(A, B, C, 1), true, [id=]
-               +- *(3) HashAggregate(keys=[A, B, C], functions=[partial_count(vcol1), partial_count(vcol2)], output=[A, B, C, countL, countL])
-                  +- Union
-                     :- *(1) Project [true AS vcol1, null AS vcol2, A, B, C]
-                     :  +- InMemoryTableScan [A, B, C]
-                     :        +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-                     +- *(2) Project [null AS vcol1, true AS vcol2, A, B, C]
-                        +- InMemoryTableScan [A, B, C]
-                              +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- Project [A, B, C]
+   +- Generate replicaterows(min_countL, A, B, C), [A, B, C], false, [A, B, C]
+      +- Project [A, B, C, if ((vcol1_countL > vcol2_countL)) vcol2_countL else vcol1_countL AS min_countL]
+         +- Filter ((vcol1_countL >= 1) AND (vcol2_countL >= 1))
+            +- HashAggregate(keys=[A, B, C], functions=[count(vcol1), count(vcol2)], output=[vcol1_countL, vcol2_countL, A, B, C])
+               +- Exchange hashpartitioning(A, B, C, 1), ENSURE_REQUIREMENTS, [id=]
+                  +- HashAggregate(keys=[A, B, C], functions=[partial_count(vcol1), partial_count(vcol2)], output=[A, B, C, countL, countL])
+                     +- Union
+                        :- Project [true AS vcol1, null AS vcol2, A, B, C]
+                        :  +- InMemoryTableScan [A, B, C]
+                        :        +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+                        +- Project [null AS vcol1, true AS vcol2, A, B, C]
+                           +- InMemoryTableScan [A, B, C]
+                                 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A:string,B:integer,C:date>
 

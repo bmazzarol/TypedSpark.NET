@@ -1,11 +1,11 @@
 ﻿== Parsed Logical Plan ==
 'Project ['A AS A]
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string
 Project [A AS A]
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A]

@@ -1,21 +1,20 @@
 ﻿== Parsed Logical Plan ==
-Union
+Union false, false
 :- SubqueryAlias a
-:  +- Relation[A,B,C] json
+:  +- Relation [A,B,C] json
 +- SubqueryAlias b
-   +- Relation[A,B,C] json
+   +- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
-Union
+Union false, false
 :- SubqueryAlias a
-:  +- Relation[A,B,C] json
-+- Project [A AS A, B AS B, C AS C]
-   +- SubqueryAlias b
-      +- Relation[A,B,C] json
+:  +- Relation [A,B,C] json
++- SubqueryAlias b
+   +- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
-Union
+Union false, false
 :- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 

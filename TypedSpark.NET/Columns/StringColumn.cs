@@ -1,6 +1,6 @@
 ﻿using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -8,7 +8,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
 {
     private StringColumn(Column column) : base(new StringType(), column) { }
 
-    public StringColumn() : this(Col(string.Empty)) { }
+    public StringColumn() : this(F.Col(string.Empty)) { }
 
     /// <summary>
     /// Creates a new column
@@ -17,7 +17,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <param name="column">column</param>
     /// <returns></returns>
     public static StringColumn New(string name, Column? column = default) =>
-        new(column ?? Col(name));
+        new(column ?? F.Col(name));
 
     /// <summary>
     /// Creates a new column
@@ -31,7 +31,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// </summary>
     /// <param name="lit">literal</param>
     /// <returns>typed column</returns>
-    public static implicit operator StringColumn(string lit) => New(Lit(lit));
+    public static implicit operator StringColumn(string lit) => New(F.Lit(lit));
 
     /// <summary>Apply sum of two expressions.</summary>
     /// <param name="lhs">Column on the left side of the operator</param>
@@ -157,4 +157,22 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <returns>Column object</returns>
     public StringColumn IsIn(string first, params string[] rest) =>
         New(Column.IsIn(first.CombinedWith(rest)));
+
+    /// <summary>
+    /// Splits this string into arrays of sentences, where each sentence is an array of words.
+    /// </summary>
+    /// <returns>Column object</returns>
+    public ArrayColumn<ArrayColumn<StringColumn>> Sentences() =>
+        new() { Column = F.Sentences(Column) };
+
+    /// <summary>
+    /// Splits this string into arrays of sentences, where each sentence is an array of words.
+    /// </summary>
+    /// <param name="language">Language of the locale</param>
+    /// <param name="country">Country of the locale</param>
+    /// <returns>Column object</returns>
+    public ArrayColumn<ArrayColumn<StringColumn>> Sentences(
+        StringColumn language,
+        StringColumn country
+    ) => new() { Column = F.Sentences(Column, language, country) };
 }

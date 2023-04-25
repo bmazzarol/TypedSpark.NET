@@ -1,21 +1,22 @@
 ﻿== Parsed Logical Plan ==
 'Sort ['A DESC NULLS LAST, 'B ASC NULLS FIRST], true
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-*(1) Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true, 0
-+- Exchange rangepartitioning(A DESC NULLS LAST, B ASC NULLS FIRST, 1), true, [id=]
-   +- InMemoryTableScan [A, B, C]
-         +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [A DESC NULLS LAST, B ASC NULLS FIRST], true, 0
+   +- Exchange rangepartitioning(A DESC NULLS LAST, B ASC NULLS FIRST, 1), ENSURE_REQUIREMENTS, [id=]
+      +- InMemoryTableScan [A, B, C]
+            +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A:string,B:integer,C:date>
 

@@ -1,14 +1,14 @@
 ﻿== Parsed Logical Plan ==
 'Filter (('A = 2) AND ('B > 1))
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Filter ((A = 2) AND (B > 1))
-+- Relation[A,B,C] json
++- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
-Filter (((isnotnull(A) AND isnotnull(B)) AND (A = 2)) AND (B > 1))
+Filter ((isnotnull(A) AND isnotnull(B)) AND ((A = 2) AND (B > 1)))
 +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==

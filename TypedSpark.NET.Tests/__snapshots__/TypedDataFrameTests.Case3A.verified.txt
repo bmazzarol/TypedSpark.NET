@@ -2,18 +2,18 @@
 'Project ['a.A AS A1, 'b.A AS A2, ('a.B + 'b.B) AS C]
 +- Join Cross
    :- SubqueryAlias a
-   :  +- Relation[A,B,C] json
+   :  +- Relation [A,B,C] json
    +- SubqueryAlias b
-      +- Relation[A,B,C] json
+      +- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A1: string, A2: string, C: int
 Project [A AS A1, A AS A2, (B + B) AS C]
 +- Join Cross
    :- SubqueryAlias a
-   :  +- Relation[A,B,C] json
+   :  +- Relation [A,B,C] json
    +- SubqueryAlias b
-      +- Relation[A,B,C] json
+      +- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A AS A1, A AS A2, (B + B) AS C]
@@ -24,13 +24,14 @@ Project [A AS A1, A AS A2, (B + B) AS C]
       +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-*(1) Project [A AS A1, A AS A2, (B + B) AS C]
-+- BroadcastNestedLoopJoin BuildRight, Cross
-   :- InMemoryTableScan [A, B]
-   :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   +- BroadcastExchange IdentityBroadcastMode, [id=]
-      +- InMemoryTableScan [A, B]
-            +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- Project [A AS A1, A AS A2, (B + B) AS C]
+   +- BroadcastNestedLoopJoin BuildRight, Cross
+      :- InMemoryTableScan [A, B]
+      :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- BroadcastExchange IdentityBroadcastMode, [id=]
+         +- InMemoryTableScan [A, B]
+               +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A1:string,A2:string,C:integer>
 

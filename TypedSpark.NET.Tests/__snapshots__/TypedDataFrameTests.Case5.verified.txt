@@ -1,13 +1,13 @@
 ﻿== Parsed Logical Plan ==
 Intersect false
-:- Relation[A,B,C] json
-+- Relation[A,B,C] json
+:- Relation [A,B,C] json
++- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A: string, B: int, C: date
 Intersect false
-:- Relation[A,B,C] json
-+- Relation[A,B,C] json
+:- Relation [A,B,C] json
++- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Aggregate [A, B, C], [A, B, C]
@@ -16,15 +16,16 @@ Aggregate [A, B, C], [A, B, C]
    +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-*(2) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
-+- Exchange hashpartitioning(A, B, C, 1), true, [id=]
-   +- *(1) HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
-      +- *(1) BroadcastHashJoin [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 0), isnull(C)], LeftSemi, BuildRight
-         :- InMemoryTableScan [A, B, C]
-         :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-         +- BroadcastExchange HashedRelationBroadcastMode(List(coalesce(input[0, string, true], ), isnull(input[0, string, true]), coalesce(input[1, int, true], 0), isnull(input[1, int, true]), coalesce(input[2, date, true], 0), isnull(input[2, date, true]))), [id=]
-            +- InMemoryTableScan [A, B, C]
-                  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
+   +- Exchange hashpartitioning(A, B, C, 1), ENSURE_REQUIREMENTS, [id=]
+      +- HashAggregate(keys=[A, B, C], functions=[], output=[A, B, C])
+         +- BroadcastHashJoin [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 1970-01-01), isnull(C)], [coalesce(A, ), isnull(A), coalesce(B, 0), isnull(B), coalesce(C, 1970-01-01), isnull(C)], LeftSemi, BuildRight, false
+            :- InMemoryTableScan [A, B, C]
+            :     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- BroadcastExchange HashedRelationBroadcastMode(List(coalesce(input[0, string, true], ), isnull(input[0, string, true]), coalesce(input[1, int, true], 0), isnull(input[1, int, true]), coalesce(input[2, date, true], 1970-01-01), isnull(input[2, date, true])),false), [id=]
+               +- InMemoryTableScan [A, B, C]
+                     +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A:string,B:integer,C:date>
 

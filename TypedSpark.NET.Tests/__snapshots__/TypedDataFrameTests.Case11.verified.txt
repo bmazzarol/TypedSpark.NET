@@ -2,18 +2,18 @@
 'Project ['a.A AS A1, 'b.A AS A2]
 +- Join FullOuter, (B = B)
    :- SubqueryAlias a
-   :  +- Relation[A,B,C] json
+   :  +- Relation [A,B,C] json
    +- SubqueryAlias b
-      +- Relation[A,B,C] json
+      +- Relation [A,B,C] json
 
 == Analyzed Logical Plan ==
 A1: string, A2: string
 Project [A AS A1, A AS A2]
 +- Join FullOuter, (B = B)
    :- SubqueryAlias a
-   :  +- Relation[A,B,C] json
+   :  +- Relation [A,B,C] json
    +- SubqueryAlias b
-      +- Relation[A,B,C] json
+      +- Relation [A,B,C] json
 
 == Optimized Logical Plan ==
 Project [A AS A1, A AS A2]
@@ -24,16 +24,17 @@ Project [A AS A1, A AS A2]
       +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 == Physical Plan ==
-*(3) Project [A AS A1, A AS A2]
-+- SortMergeJoin [B], [B], FullOuter
-   :- *(1) Sort [B ASC NULLS FIRST], false, 0
-   :  +- Exchange hashpartitioning(B, 1), true, [id=]
-   :     +- InMemoryTableScan [A, B]
-   :           +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
-   +- *(2) Sort [B ASC NULLS FIRST], false, 0
-      +- Exchange hashpartitioning(B, 1), true, [id=]
-         +- InMemoryTableScan [A, B]
-               +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+AdaptiveSparkPlan isFinalPlan=false
++- Project [A AS A1, A AS A2]
+   +- SortMergeJoin [B], [B], FullOuter
+      :- Sort [B ASC NULLS FIRST], false, 0
+      :  +- Exchange hashpartitioning(B, 1), ENSURE_REQUIREMENTS, [id=]
+      :     +- InMemoryTableScan [A, B]
+      :           +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- Sort [B ASC NULLS FIRST], false, 0
+         +- Exchange hashpartitioning(B, 1), ENSURE_REQUIREMENTS, [id=]
+            +- InMemoryTableScan [A, B]
+                  +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
 struct<A1:string,A2:string>
 
