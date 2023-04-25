@@ -1,0 +1,8 @@
+﻿struct<array_repeat(a, 6):array<string>>
+
+(top = 20)
++------------------+
+|array_repeat(a, 6)|
++------------------+
+|[a, a, a, a, a, a]|
++------------------+

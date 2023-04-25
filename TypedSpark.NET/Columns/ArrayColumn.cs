@@ -5,6 +5,9 @@ using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Array column
+/// </summary>
 public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     where T : TypedColumn, new()
 {
@@ -155,6 +158,18 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// </summary>
     /// <returns>Column object</returns>
     public IntegerColumn Length() => Size();
+
+    /// <summary>
+    /// Returns a random permutation of the given array.
+    /// </summary>
+    /// <returns>Column object</returns>
+    public ArrayColumn<T> Shuffle() => new() { Column = F.Shuffle(Column) };
+
+    /// <summary>
+    /// Reverses the array column and returns it as a new array column.
+    /// </summary>
+    /// <returns>Column object</returns>
+    public ArrayColumn<T> Reverse() => new() { Column = F.Reverse(Column) };
 }
 
 public static class ArrayColumn
@@ -213,4 +228,65 @@ public static class ArrayColumn
     /// <returns>Column object</returns>
     public static ArrayColumn<T> Sort<T>(this ArrayColumn<T> column)
         where T : TypedColumn, TypedOrdColumn, new() => new() { Column = F.ArraySort(column) };
+
+    /// <summary>
+    /// Returns the minimum value in the array.
+    /// </summary>
+    /// <param name="column">Column to apply</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<T> Min<T>(this ArrayColumn<T> column)
+        where T : TypedColumn, TypedOrdColumn, new() => new() { Column = F.ArrayMin(column) };
+
+    /// <summary>
+    /// Returns the maximum value in the array.
+    /// </summary>
+    /// <param name="column">Column to apply</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<T> Max<T>(this ArrayColumn<T> column)
+        where T : TypedColumn, TypedOrdColumn, new() => new() { Column = F.ArrayMax(column) };
+
+    /// <summary>
+    /// Creates a single array from an array of arrays. If a structure of nested arrays
+    /// is deeper than two levels, only one level of nesting is removed.
+    /// </summary>
+    /// <param name="column">Column to apply</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<T> Flatten<T>(this ArrayColumn<ArrayColumn<T>> column)
+        where T : TypedColumn, new() => new() { Column = F.Flatten(column) };
+
+    /// <summary>
+    /// Generate a sequence of integers from `start` to `stop`, incrementing by `step`.
+    /// </summary>
+    /// <param name="start">Start expression</param>
+    /// <param name="stop">Stop expression</param>
+    /// <param name="step">Step to increment</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<IntegerColumn> Sequence(
+        IntegerColumn start,
+        IntegerColumn stop,
+        IntegerColumn? step = default
+    ) => new() { Column = F.Sequence(start, stop, step ?? 1) };
+
+    /// <summary>
+    /// Generate a sequence of integers from `start` to `stop`, incrementing by `step`.
+    /// </summary>
+    /// <param name="start">Start expression</param>
+    /// <param name="stop">Stop expression</param>
+    /// <param name="step">Step to increment</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<IntegerColumn> Range(
+        IntegerColumn start,
+        IntegerColumn stop,
+        IntegerColumn? step = default
+    ) => Sequence(start, stop, step);
+
+    /// <summary>
+    /// Creates an array containing the `left` argument repeated the number of times given by
+    /// the `right` argument.
+    /// </summary>
+    /// <param name="left">Left column expression</param>
+    /// <param name="right">Right column expression</param>
+    /// <returns>Column object</returns>
+    public static ArrayColumn<T> Repeat<T>(this T left, IntegerColumn right)
+        where T : TypedColumn, new() => new() { Column = F.ArrayRepeat(left, right) };
 }

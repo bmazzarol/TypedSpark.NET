@@ -250,5 +250,74 @@ namespace TypedSpark.NET.Tests.Columns
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Min can be called on an array column")]
+        public static async Task Case17() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col, col.Min());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Max can be called on an array column")]
+        public static async Task Case18() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col, col.Max());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Shuffle can be called on an array column")]
+        public static async Task Case19() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col, !col.Shuffle().EqNullSafe(col));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Reverse can be called on an array column")]
+        public static async Task Case20() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col, col.Reverse());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Flatten can be called on an array column")]
+        public static async Task Case21() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<ArrayColumn<IntegerColumn>>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new { test = new[] { new[] { 1, 2 }, new[] { 3, 4, 5 } } }
+                    );
+                    return df.Select(col, col.Flatten());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Sequence can be used to create an array column")]
+        public static async Task Case22() =>
+            await ArrangeUsingSpark(s => s.CreateEmptyFrame().Select(ArrayColumn.Range(1, 10, 2)))
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Repeat can be used to create an array column")]
+        public static async Task Case23() =>
+            await ArrangeUsingSpark(s => s.CreateEmptyFrame().Select(((StringColumn)"a").Repeat(6)))
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
     }
 }
