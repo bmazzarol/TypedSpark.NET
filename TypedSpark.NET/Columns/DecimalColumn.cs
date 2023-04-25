@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
 {
-    private DecimalColumn(Column column) : base(new DecimalType(), column) { }
+    private DecimalColumn(Column column)
+        : base(new DecimalType(), column) { }
 
-    public DecimalColumn() : this(Col(string.Empty)) { }
+    public DecimalColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         decimal.TryParse(

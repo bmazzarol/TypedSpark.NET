@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
 {
-    private IntegerColumn(Column column) : base(new IntegerType(), column) { }
+    private IntegerColumn(Column column)
+        : base(new IntegerType(), column) { }
 
-    public IntegerColumn() : this(Col(string.Empty)) { }
+    public IntegerColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         int.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)

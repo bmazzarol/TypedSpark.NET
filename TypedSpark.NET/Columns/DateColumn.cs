@@ -11,9 +11,11 @@ namespace TypedSpark.NET.Columns;
 /// </summary>
 public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
 {
-    private DateColumn(Column column) : base(new DateType(), column) { }
+    private DateColumn(Column column)
+        : base(new DateType(), column) { }
 
-    public DateColumn() : this(Col(string.Empty)) { }
+    public DateColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         DateTime.TryParse(

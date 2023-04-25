@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
 {
-    private LongColumn(Column column) : base(new LongType(), column) { }
+    private LongColumn(Column column)
+        : base(new LongType(), column) { }
 
-    public LongColumn() : this(Col(string.Empty)) { }
+    public LongColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         long.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)

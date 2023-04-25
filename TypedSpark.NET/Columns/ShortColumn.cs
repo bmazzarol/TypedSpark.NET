@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class ShortColumn : TypedNumericColumn<ShortColumn, ShortType, short>
 {
-    private ShortColumn(Column column) : base(new ShortType(), column) { }
+    private ShortColumn(Column column)
+        : base(new ShortType(), column) { }
 
-    public ShortColumn() : this(Col(string.Empty)) { }
+    public ShortColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         short.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)

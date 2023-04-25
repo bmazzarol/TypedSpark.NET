@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
 {
-    private DoubleColumn(Column column) : base(new DoubleType(), column) { }
+    private DoubleColumn(Column column)
+        : base(new DoubleType(), column) { }
 
-    public DoubleColumn() : this(Col(string.Empty)) { }
+    public DoubleColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         double.TryParse(

@@ -16,7 +16,8 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     internal MapColumn(Column column)
         : base(new MapType(new TKey().ColumnType, new TValue().ColumnType), column) { }
 
-    public MapColumn() : this(F.Col(string.Empty)) { }
+    public MapColumn()
+        : this(F.Col(string.Empty)) { }
 
     /// <summary>
     /// Gets the value at the key

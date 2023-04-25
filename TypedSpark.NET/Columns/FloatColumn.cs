@@ -7,9 +7,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, float>
 {
-    private FloatColumn(Column column) : base(new FloatType(), column) { }
+    private FloatColumn(Column column)
+        : base(new FloatType(), column) { }
 
-    public FloatColumn() : this(Col(string.Empty)) { }
+    public FloatColumn()
+        : this(Col(string.Empty)) { }
 
     protected internal override object? CoerceToNative() =>
         float.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)
