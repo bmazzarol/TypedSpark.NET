@@ -239,13 +239,14 @@ namespace TypedSpark.NET.Tests.Columns
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
+
         [Fact(DisplayName = "Size can be called on an array column")]
         public static async Task Case16() =>
             await ArrangeUsingSpark(s =>
                 {
                     var col = ArrayColumn.New<IntegerColumn>("test");
                     var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
-                    return df.Select(col,col.Length());
+                    return df.Select(col, col.Length());
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
