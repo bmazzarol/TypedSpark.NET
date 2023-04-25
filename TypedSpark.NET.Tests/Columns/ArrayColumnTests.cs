@@ -104,5 +104,150 @@ namespace TypedSpark.NET.Tests.Columns
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array position function can be used to return index of given element")]
+        public static async Task Case7() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col, col.Position(3), col.Position(6));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array join can be used on array of string column")]
+        public static async Task Case8() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<StringColumn>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new { test = new[] { "a", "b", "c", "d", "e", null } }
+                    );
+                    return df.Select(col, col.Join(":", "f"));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array sort can be used on array of order-able type column")]
+        public static async Task Case9() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var saCol = ArrayColumn.New<StringColumn>("StringArray");
+                    var intCol = ArrayColumn.New<IntegerColumn>("IntegerArray");
+                    var df = s.CreateDataFrameFromData(
+                        new
+                        {
+                            StringArray = new[] { "e", "d", "c", "b", "a" },
+                            IntegerArray = new[] { 5, 4, 3, 2, 1 }
+                        }
+                    );
+                    return df.Select(saCol, saCol.Sort(), intCol, intCol.Sort());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array remove can be used on array column")]
+        public static async Task Case10() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var a = IntegerColumn.New("a");
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new { a = 3, test = new[] { 1, 2, 3, 4, 5 } }
+                    );
+                    return df.Select(a, col, col.Remove(a), col.Remove(5));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(
+            DisplayName = "Array distinct function can be used to remove duplicates from an array column"
+        )]
+        public static async Task Case11() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new { test = new[] { 1, 1, 1, 2, 2, 3, 4, 4, 5, 5, 5, 5 } }
+                    );
+                    return df.Select(col, col.Distinct());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array intersect function can be used to intersect 2 array columns")]
+        public static async Task Case12() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var a = ArrayColumn.New<IntegerColumn>("a");
+                    var b = ArrayColumn.New<IntegerColumn>("b");
+                    var df = s.CreateDataFrameFromData(
+                        new { a = new[] { 1, 2, 3, 4 }, b = new[] { 3, 4, 5, 6 } }
+                    );
+                    return df.Select(a, b, a | b);
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array union function can be used to union 2 array columns")]
+        public static async Task Case13() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var a = ArrayColumn.New<IntegerColumn>("a");
+                    var b = ArrayColumn.New<IntegerColumn>("b");
+                    var df = s.CreateDataFrameFromData(
+                        new { a = new[] { 1, 2, 3, 4 }, b = new[] { 3, 4, 5, 6 } }
+                    );
+                    return df.Select(a, b, a & b);
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Array except function can be used to except 2 array columns")]
+        public static async Task Case14() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var a = ArrayColumn.New<IntegerColumn>("a");
+                    var b = ArrayColumn.New<IntegerColumn>("b");
+                    var df = s.CreateDataFrameFromData(
+                        new { a = new[] { 1, 2, 3, 4 }, b = new[] { 3, 4, 5, 6 } }
+                    );
+                    return df.Select(a, b, a.Except(b));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "ExplodeOuter can be called on an array column with values")]
+        public static async Task Case15a() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col.ExplodeOuter());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "ExplodeOuter can be called on an empty array column")]
+        public static async Task Case15b() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new int[] { } });
+                    return df.Select(col.ExplodeOuter());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+        [Fact(DisplayName = "Size can be called on an array column")]
+        public static async Task Case16() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                    return df.Select(col,col.Length());
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
     }
 }

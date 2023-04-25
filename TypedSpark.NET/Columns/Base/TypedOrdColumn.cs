@@ -1,14 +1,23 @@
-﻿using Microsoft.Spark.Sql;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
 /// <summary>
+/// Marker interface for all order-able columns
+/// </summary>
+[SuppressMessage("Naming", "CA1715:Identifiers should have correct prefix")]
+[SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase")]
+public interface TypedOrdColumn { }
+
+/// <summary>
 /// Ordering operators
 /// </summary>
 public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
-    : TypedColumn<TThis, TSparkType, TNativeType>
+    : TypedColumn<TThis, TSparkType, TNativeType>,
+        TypedOrdColumn
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {

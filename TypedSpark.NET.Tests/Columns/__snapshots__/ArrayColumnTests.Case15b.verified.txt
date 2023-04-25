@@ -1,0 +1,8 @@
+﻿struct<col:integer>
+
+(top = 20)
++----+
+|col |
++----+
+|null|
++----+
