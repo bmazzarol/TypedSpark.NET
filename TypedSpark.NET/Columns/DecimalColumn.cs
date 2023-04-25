@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark.Sql;
+﻿using System.Globalization;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
 
@@ -6,11 +7,19 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
 {
-    private DecimalColumn(Column column)
-        : base(new DecimalType(), column) { }
+    private DecimalColumn(Column column) : base(new DecimalType(), column) { }
 
-    public DecimalColumn()
-        : this(Col(string.Empty)) { }
+    public DecimalColumn() : this(Col(string.Empty)) { }
+
+    protected internal override object? CoerceToNative() =>
+        decimal.TryParse(
+            Column.ToString(),
+            NumberStyles.Any,
+            CultureInfo.InvariantCulture,
+            out var b
+        )
+            ? b
+            : null;
 
     /// <summary>
     /// Creates a new column

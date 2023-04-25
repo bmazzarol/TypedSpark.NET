@@ -6,11 +6,11 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, string>
 {
-    private StringColumn(Column column)
-        : base(new StringType(), column) { }
+    private StringColumn(Column column) : base(new StringType(), column) { }
 
-    public StringColumn()
-        : this(F.Col(string.Empty)) { }
+    public StringColumn() : this(F.Col(string.Empty)) { }
+
+    protected internal override object? CoerceToNative() => Column.ToString();
 
     /// <summary>
     /// Creates a new column

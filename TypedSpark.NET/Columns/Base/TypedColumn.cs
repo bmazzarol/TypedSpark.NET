@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CS0660, CS0661
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Expressions;
 using Microsoft.Spark.Sql.Types;
@@ -24,6 +25,8 @@ public abstract class TypedColumn
         ColumnType = columnType;
         Column = column;
     }
+
+    protected internal abstract object? CoerceToNative();
 
     /// <summary>
     /// Prints the expression to the console for debugging purposes.
@@ -63,6 +66,13 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
 
     protected TypedColumn(TSparkType columnType, Column column)
         : base(columnType, column) => ColumnType = columnType;
+
+    [SuppressMessage(
+        "Design",
+        "MA0025:Implement the functionality instead of throwing NotImplementedException"
+    )]
+    protected internal override object? CoerceToNative() =>
+        throw new System.NotImplementedException();
 
     /// <summary>Apply equality test that is safe for null values.</summary>
     /// <param name="obj">Object to apply equality test</param>

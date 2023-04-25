@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using static Microsoft.Spark.Sql.Functions;
@@ -7,11 +8,19 @@ namespace TypedSpark.NET.Columns;
 
 public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampType, Timestamp>
 {
-    private TimestampColumn(Column column)
-        : base(new TimestampType(), column) { }
+    private TimestampColumn(Column column) : base(new TimestampType(), column) { }
 
-    public TimestampColumn()
-        : this(Col(string.Empty)) { }
+    public TimestampColumn() : this(Col(string.Empty)) { }
+
+    protected internal override object? CoerceToNative() =>
+        DateTime.TryParse(
+            Column.ToString(),
+            CultureInfo.InvariantCulture,
+            DateTimeStyles.AssumeUniversal,
+            out var b
+        )
+            ? b
+            : null;
 
     /// <summary>
     /// Creates a new column
