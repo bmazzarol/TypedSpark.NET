@@ -1,0 +1,8 @@
+﻿struct<test:struct<A:string,B:integer,C:date>,update_fields(test, WithField(D)):struct<C:date,D:long>>
+
+(top = 20)
++------------------+---------------------------------+
+|test              |update_fields(test, WithField(D))|
++------------------+---------------------------------+
+|{a, 1, 0001-01-01}|{0001-01-01, 100}                |
++------------------+---------------------------------+
