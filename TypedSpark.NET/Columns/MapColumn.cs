@@ -48,6 +48,32 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// </summary>
     /// <returns>Column object</returns>
     public ArrayColumn<TValue> Values() => new() { Column = F.MapValues(Column) };
+
+    /// <summary>
+    /// Returns an unordered array of all entries in the given map.
+    /// </summary>
+    /// <returns>Column object</returns>
+    public StructColumn<EntrySchema<TKey, TValue>> Entries() =>
+        new() { Column = F.MapEntries(Column) };
+
+    /// <summary>
+    /// Returns a map of the elements in the union of the given two maps.
+    /// </summary>
+    /// <param name="other">Right side column to apply</param>
+    /// <returns>Column object</returns>
+    public MapColumn<TKey, TValue> Union(MapColumn<TKey, TValue> other) =>
+        MapColumn.Concat(this, other);
+
+    /// <summary>
+    /// Returns a map of the elements in the union of the given two maps.
+    /// </summary>
+    /// <param name="lhs">Left side column to apply</param>
+    /// <param name="rhs">Right side column to apply</param>
+    /// <returns>Column object</returns>
+    public static MapColumn<TKey, TValue> operator &(
+        MapColumn<TKey, TValue> lhs,
+        MapColumn<TKey, TValue> rhs
+    ) => lhs.Union(rhs);
 }
 
 public static class MapColumn
@@ -100,4 +126,16 @@ public static class MapColumn
     )
         where TKey : TypedColumn, TypedOrdColumn, new()
         where TValue : TypedColumn, new() => new() { Column = F.MapFromArrays(keys, values) };
+
+    /// <summary>
+    /// Returns the union of all the given maps.
+    /// </summary>
+    /// <param name="maps">maps</param>
+    /// <returns>column</returns>
+    public static MapColumn<TKey, TValue> Concat<TKey, TValue>(
+        params MapColumn<TKey, TValue>[] maps
+    )
+        where TKey : TypedColumn, TypedOrdColumn, new()
+        where TValue : TypedColumn, new() =>
+        new() { Column = F.MapConcat(maps.Select(x => (Column)x).ToArray()) };
 }

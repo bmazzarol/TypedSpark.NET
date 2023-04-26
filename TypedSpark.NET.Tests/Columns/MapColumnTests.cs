@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using BunsenBurner;
 using BunsenBurner.Verify.Xunit;
@@ -91,7 +90,7 @@ namespace TypedSpark.NET.Tests.Columns
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
 
-        [Fact(DisplayName = "Keys and values can be called on a map column")]
+        [Fact(DisplayName = "Keys, values and entries can be called on a map column")]
         public static async Task Case5() =>
             await ArrangeUsingSpark(s =>
                 {
@@ -109,7 +108,37 @@ namespace TypedSpark.NET.Tests.Columns
                             }
                         }
                     );
-                    return df.Select(col, col.Keys(), col.Values());
+                    return df.Select(
+                        col,
+                        col.Keys(),
+                        col.Values(),
+                        col.Entries(),
+                        col.Entries().Get(c => c.Key),
+                        col.Entries().Get(c => c.Value)
+                    );
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Concat can be called on a map column")]
+        public static async Task Case6() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var a = MapColumn.New<IntegerColumn, StringColumn>("a");
+                    var b = MapColumn.New<IntegerColumn, StringColumn>("b");
+                    var df = s.CreateDataFrameFromData(
+                        new
+                        {
+                            a = new Dictionary<string, int>
+                            {
+                                ["a"] = 1,
+                                ["b"] = 2,
+                                ["c"] = 3,
+                            },
+                            b = new Dictionary<string, int> { ["d"] = 4, ["e"] = 5, }
+                        }
+                    );
+                    return df.Select(a, b, a & b);
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();

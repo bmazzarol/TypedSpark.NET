@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Spark.Sql;
 using static Microsoft.Spark.Sql.Functions;
 using Microsoft.Spark.Sql.Types;
@@ -48,15 +49,16 @@ public abstract class TypedSchema
                     );
                 }
 
+                var name = p.GetCustomAttribute(typeof(SparkNameAttribute))
+                    is SparkNameAttribute sna
+                    ? sna.Name
+                    : p.Name;
+
                 var tc =
                     Activator.CreateInstance(p.PropertyType) as TypedColumn
                     ?? throw new InvalidCastException($"Failed to create {p.PropertyType.Name}");
 
-                return (
-                    TypedColumn: tc,
-                    Field: new StructField(p.Name, tc.ColumnType),
-                    Property: p
-                );
+                return (TypedColumn: tc, Field: new StructField(name, tc.ColumnType), Property: p);
             })
             .ToList();
 
