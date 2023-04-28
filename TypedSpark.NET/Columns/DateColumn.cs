@@ -9,7 +9,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Date column
 /// </summary>
-public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
+public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
 {
     private DateColumn(Column column)
         : base(new DateType(), column) { }
@@ -62,4 +62,45 @@ public sealed class DateColumn : TypedOrdColumn<DateColumn, DateType, Date>
     /// </summary>
     /// <returns>Column object</returns>
     public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
+
+    /// <summary>
+    /// Subtract 2 dates, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateColumn lhs, DateColumn rhs) =>
+        new() { Column = lhs.Column - rhs.Column };
+
+    /// <summary>
+    /// Subtract 2 dates, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateColumn lhs, Date rhs) => lhs - (DateColumn)rhs;
+
+    /// <summary>
+    /// Subtract 2 dates, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(Date lhs, DateColumn rhs) => (DateColumn)lhs - rhs;
+
+    /// <summary>
+    /// Subtract 2 dates, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateColumn lhs, DateTime rhs) => lhs - new Date(rhs);
+
+    /// <summary>
+    /// Subtract 2 dates, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateTime lhs, DateColumn rhs) => new Date(lhs) - rhs;
 }

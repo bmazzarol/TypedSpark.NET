@@ -6,7 +6,10 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
-public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampType, Timestamp>
+/// <summary>
+/// Timestamp column
+/// </summary>
+public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, TimestampType, Timestamp>
 {
     private TimestampColumn(Column column)
         : base(new TimestampType(), column) { }
@@ -67,4 +70,67 @@ public sealed class TimestampColumn : TypedOrdColumn<TimestampColumn, TimestampT
     /// </summary>
     /// <returns>Column object</returns>
     public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(TimestampColumn lhs, TimestampColumn rhs) =>
+        new() { Column = lhs.Column - rhs.Column };
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(TimestampColumn lhs, Timestamp rhs) =>
+        lhs - (TimestampColumn)rhs;
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(Timestamp lhs, TimestampColumn rhs) =>
+        (TimestampColumn)lhs - rhs;
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(TimestampColumn lhs, DateTime rhs) =>
+        lhs - new Timestamp(rhs);
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateTime lhs, TimestampColumn rhs) =>
+        new Timestamp(lhs) - rhs;
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(TimestampColumn lhs, DateTimeOffset rhs) =>
+        lhs - rhs.UtcDateTime;
+
+    /// <summary>
+    /// Subtract 2 timestamps, returns an interval
+    /// </summary>
+    /// <param name="lhs">left hand side</param>
+    /// <param name="rhs">right hand side</param>
+    /// <returns>interval column</returns>
+    public static IntervalColumn operator -(DateTimeOffset lhs, TimestampColumn rhs) =>
+        lhs.UtcDateTime - rhs;
 }
