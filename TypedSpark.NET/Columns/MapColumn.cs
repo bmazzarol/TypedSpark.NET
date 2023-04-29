@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
@@ -74,6 +76,22 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
         MapColumn<TKey, TValue> lhs,
         MapColumn<TKey, TValue> rhs
     ) => lhs.Union(rhs);
+
+    /// <summary>
+    /// Filters entries in a map using the function
+    /// </summary>
+    /// <param name="pred">predicate</param>
+    /// <returns>map column</returns>
+    [Since("3.0.0")]
+    public MapColumn<TKey, TValue> Filter(Func<TKey, TValue, BooleanColumn> pred)
+    {
+        var res =
+            $"map_filter({Column}, (k, v) -> {pred(new TKey { Column = F.Col("k") }, new TValue { Column = F.Col("v") })})";
+        return new MapColumn<TKey, TValue>
+        {
+            Column = F.Expr(res)
+        };
+    }
 }
 
 public static class MapColumn

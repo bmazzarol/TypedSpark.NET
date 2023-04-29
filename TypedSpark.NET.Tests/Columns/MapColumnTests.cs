@@ -142,5 +142,26 @@ namespace TypedSpark.NET.Tests.Columns
                 })
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Filter can be called on a map column")]
+        public static async Task Case7() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = MapColumn.New<StringColumn, IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new
+                        {
+                            test = new Dictionary<string, int>
+                            {
+                                ["1"] = 0,
+                                ["2"] = 2,
+                                ["3"] = -1,
+                            }
+                        }
+                    );
+                    return df.Select(col, col.Filter((k, v) => k > v));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
     }
 }

@@ -329,5 +329,40 @@ namespace TypedSpark.NET.Tests.Columns
             await ArrangeUsingSpark(s => s.CreateEmptyFrame().Select(((StringColumn)"a").Repeat(6)))
                 .Act(df => df.Debug())
                 .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Filter can be called on an array column")]
+        public static async Task Case24() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3 } });
+                    return df.Select(col, col.Filter(x => x % 2 == 1));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Filter with index can be called on an array column")]
+        public static async Task Case25() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(new { test = new[] { 0, 2, 3 } });
+                    return df.Select(col, col.Filter((x, i) => x > i));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
+
+        [Fact(DisplayName = "Filter can be called on an array column to remove null")]
+        public static async Task Case26() =>
+            await ArrangeUsingSpark(s =>
+                {
+                    var col = ArrayColumn.New<IntegerColumn>("test");
+                    var df = s.CreateDataFrameFromData(
+                        new { test = new int?[] { 0, null, 2, 3, null } }
+                    );
+                    return df.Select(col, col.Filter(x => x.IsNotNull()));
+                })
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged();
     }
 }

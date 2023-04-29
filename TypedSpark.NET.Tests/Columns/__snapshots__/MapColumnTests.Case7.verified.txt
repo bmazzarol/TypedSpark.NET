@@ -1,0 +1,8 @@
+﻿struct<test:map<string,integer>,map_filter(test, lambdafunction((namedlambdavariable() > CAST(namedlambdavariable() AS STRING)), namedlambdavariable(), namedlambdavariable())):map<string,integer>>
+
+(top = 20)
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+|test                     |map_filter(test, lambdafunction((namedlambdavariable() > CAST(namedlambdavariable() AS STRING)), namedlambdavariable(), namedlambdavariable()))|
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+
+|{1 -> 0, 2 -> 2, 3 -> -1}|{1 -> 0, 3 -> -1}                                                                                                                              |
++-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+

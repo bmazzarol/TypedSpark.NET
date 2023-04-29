@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
@@ -172,6 +174,29 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// </summary>
     /// <returns>Column object</returns>
     public ArrayColumn<T> Reverse() => new() { Column = F.Reverse(Column) };
+
+    /// <summary>
+    /// Filters the input array using the given predicate
+    /// </summary>
+    /// <param name="pred">predicate</param>
+    /// <returns>array column</returns>
+    [Since("2.4.0")]
+    public ArrayColumn<T> Filter(Func<T, BooleanColumn> pred) =>
+        new() { Column = F.Expr($"filter({Column}, x -> {pred(new T { Column = F.Col("x") })})") };
+
+    /// <summary>
+    /// Filters the input array using the given predicate
+    /// </summary>
+    /// <param name="pred">predicate</param>
+    /// <returns>array column</returns>
+    [Since("3.0.0")]
+    public ArrayColumn<T> Filter(Func<T, IntegerColumn, BooleanColumn> pred) =>
+        new()
+        {
+            Column = F.Expr(
+                $"filter({Column}, (x, i) -> {pred(new T { Column = F.Col("x") }, IntegerColumn.New("i"))})"
+            )
+        };
 }
 
 public static class ArrayColumn

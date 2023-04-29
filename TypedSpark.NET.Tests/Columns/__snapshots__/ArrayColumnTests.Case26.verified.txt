@@ -1,0 +1,8 @@
+﻿struct<test:array<integer>,filter(test, lambdafunction((namedlambdavariable() IS NOT NULL), namedlambdavariable())):array<integer>>
+
+(top = 20)
++---------------------+----------------------------------------------------------------------------------------+
+|test                 |filter(test, lambdafunction((namedlambdavariable() IS NOT NULL), namedlambdavariable()))|
++---------------------+----------------------------------------------------------------------------------------+
+|[0, null, 2, 3, null]|[0, 2, 3]                                                                               |
++---------------------+----------------------------------------------------------------------------------------+
