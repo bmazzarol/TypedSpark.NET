@@ -306,5 +306,23 @@ namespace TypedSpark.NET.Tests.Columns
                 );
                 return df.Select(col, col.Filter(x => x.IsNotNull()));
             });
+
+        [Fact(DisplayName = "PosExplode can be called on an array column")]
+        public static async Task Case27() =>
+            await DebugDataframe(s =>
+            {
+                var col = ArrayColumn.New<IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                return df.Select(col.PosExplode(out var pos, out var c), pos, c);
+            });
+
+        [Fact(DisplayName = "PosExplodeOuter can be called on an array column")]
+        public static async Task Case28() =>
+            await DebugDataframe(s =>
+            {
+                var col = ArrayColumn.New<IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
+                return df.Select(col.PosExplodeOuter(out var pos, out var c), pos, c);
+            });
     }
 }

@@ -164,6 +164,29 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public T ExplodeOuter() => new() { Column = F.ExplodeOuter(Column) };
 
     /// <summary>
+    /// Creates a new row for each element with position in the given array column
+    /// </summary>
+    /// <returns>pos and col columns</returns>
+    public ExplodedColumn PosExplode(out IntegerColumn pos, out T col)
+    {
+        pos = IntegerColumn.New("pos");
+        col = new T { Column = F.Col("col") };
+        return new ExplodedColumn(F.PosExplode(Column));
+    }
+
+    /// <summary>
+    /// Creates a new row for each element with position in the given array column.
+    /// Unlike Posexplode(), if the array is null or empty then the row(null, null) is produced.
+    /// </summary>
+    /// <returns>pos and col columns</returns>
+    public ExplodedColumn PosExplodeOuter(out IntegerColumn pos, out T col)
+    {
+        pos = IntegerColumn.New("pos");
+        col = new T { Column = F.Col("col") };
+        return new ExplodedColumn(F.PosExplodeOuter(Column));
+    }
+
+    /// <summary>
     /// Returns length of array
     /// </summary>
     /// <returns>integer column</returns>

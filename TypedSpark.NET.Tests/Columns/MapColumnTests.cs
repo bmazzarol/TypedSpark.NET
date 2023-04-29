@@ -145,5 +145,81 @@ namespace TypedSpark.NET.Tests.Columns
                 );
                 return df.Select(col, col.Filter((k, v) => k > v));
             });
+
+        [Fact(DisplayName = "Explode can be called on a map column")]
+        public static async Task Case8() =>
+            await DebugDataframe(s =>
+            {
+                var col = MapColumn.New<StringColumn, IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        test = new Dictionary<string, int>
+                        {
+                            ["1"] = 0,
+                            ["2"] = 2,
+                            ["3"] = -1,
+                        }
+                    }
+                );
+                return df.Select(col.Explode(out var k, out var v), k, v);
+            });
+
+        [Fact(DisplayName = "Explode outer can be called on a map column")]
+        public static async Task Case9() =>
+            await DebugDataframe(s =>
+            {
+                var col = MapColumn.New<StringColumn, IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        test = new Dictionary<string, int>
+                        {
+                            ["1"] = 0,
+                            ["2"] = 2,
+                            ["3"] = -1,
+                        }
+                    }
+                );
+                return df.Select(col.ExplodeOuter(out var k, out var v), k, v);
+            });
+
+        [Fact(DisplayName = "PosExplode can be called on a map column")]
+        public static async Task Case10() =>
+            await DebugDataframe(s =>
+            {
+                var col = MapColumn.New<StringColumn, IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        test = new Dictionary<string, int>
+                        {
+                            ["1"] = 0,
+                            ["2"] = 2,
+                            ["3"] = -1,
+                        }
+                    }
+                );
+                return df.Select(col.PosExplode(out var i, out var k, out var v), i, k, v);
+            });
+
+        [Fact(DisplayName = "PosExplode outer can be called on a map column")]
+        public static async Task Case11() =>
+            await DebugDataframe(s =>
+            {
+                var col = MapColumn.New<StringColumn, IntegerColumn>("test");
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        test = new Dictionary<string, int>
+                        {
+                            ["1"] = 0,
+                            ["2"] = 2,
+                            ["3"] = -1,
+                        }
+                    }
+                );
+                return df.Select(col.PosExplodeOuter(out var i, out var k, out var v), i, k, v);
+            });
     }
 }

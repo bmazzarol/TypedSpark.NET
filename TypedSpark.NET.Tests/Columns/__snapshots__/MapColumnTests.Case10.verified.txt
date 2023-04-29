@@ -1,0 +1,17 @@
+﻿root
+ |-- pos: integer (nullable = false)
+ |-- key: string (nullable = false)
+ |-- value: integer (nullable = true)
+ |-- pos: integer (nullable = false)
+ |-- key: string (nullable = false)
+ |-- value: integer (nullable = true)
+
+
+(top = 20)
++---+---+-----+---+---+-----+
+|pos|key|value|pos|key|value|
++---+---+-----+---+---+-----+
+|0  |1  |0    |0  |1  |0    |
+|1  |2  |2    |1  |2  |2    |
+|2  |3  |-1   |2  |3  |-1   |
++---+---+-----+---+---+-----+

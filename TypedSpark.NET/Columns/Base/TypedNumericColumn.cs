@@ -1,6 +1,6 @@
 ﻿using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -47,7 +47,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public TThis Plus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Plus((Column)rhs) };
 
-    public TThis Plus(TNativeType rhs) => new() { Column = Column.Plus(Lit(rhs)) };
+    public TThis Plus(TNativeType rhs) => new() { Column = Column.Plus(F.Lit(rhs)) };
 
     //
     // Minus Operations
@@ -71,7 +71,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public TThis Minus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Minus((Column)rhs) };
 
-    public TThis Minus(TNativeType rhs) => new() { Column = Column.Minus(Lit(rhs)) };
+    public TThis Minus(TNativeType rhs) => new() { Column = Column.Minus(F.Lit(rhs)) };
 
     //
     // Multiply Operations
@@ -95,7 +95,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public TThis Multiply(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Multiply((Column)rhs) };
 
-    public TThis Multiply(TNativeType rhs) => new() { Column = Column.Multiply(Lit(rhs)) };
+    public TThis Multiply(TNativeType rhs) => new() { Column = Column.Multiply(F.Lit(rhs)) };
 
     //
     // Divide Operations
@@ -109,7 +109,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator /(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => new() { Column = Lit(lhs).Divide((Column)rhs) };
+    ) => new() { Column = F.Lit(lhs).Divide((Column)rhs) };
 
     public static TThis operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
@@ -119,7 +119,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public TThis Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Divide((Column)rhs) };
 
-    public TThis Divide(TNativeType rhs) => new() { Column = Column.Divide(Lit(rhs)) };
+    public TThis Divide(TNativeType rhs) => new() { Column = Column.Divide(F.Lit(rhs)) };
 
     //
     // Mod Operations
@@ -133,7 +133,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator %(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => new() { Column = Lit(lhs).Mod((Column)rhs) };
+    ) => new() { Column = F.Lit(lhs).Mod((Column)rhs) };
 
     public static TThis operator %(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
@@ -143,7 +143,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public TThis Mod(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         new() { Column = Column.Mod((Column)rhs) };
 
-    public TThis Mod(TNativeType rhs) => new() { Column = Column.Mod(Lit(rhs)) };
+    public TThis Mod(TNativeType rhs) => new() { Column = Column.Mod(F.Lit(rhs)) };
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
@@ -192,4 +192,10 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// </summary>
     /// <returns>decimal column</returns>
     public DecimalColumn CastToDecimal() => DecimalColumn.New(Column.Cast("decimal"));
+
+    /// <summary>
+    /// Return true if the column is NaN
+    /// </summary>
+    /// <returns>boolean column</returns>
+    public BooleanColumn IsNaN() => BooleanColumn.New(F.IsNaN(Column));
 }
