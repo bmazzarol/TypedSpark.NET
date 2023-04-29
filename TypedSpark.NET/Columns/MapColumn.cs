@@ -87,10 +87,7 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     {
         var res =
             $"map_filter({Column}, (k, v) -> {pred(new TKey { Column = F.Col("k") }, new TValue { Column = F.Col("v") })})";
-        return new MapColumn<TKey, TValue>
-        {
-            Column = F.Expr(res)
-        };
+        return new MapColumn<TKey, TValue> { Column = F.Expr(res) };
     }
 }
 
