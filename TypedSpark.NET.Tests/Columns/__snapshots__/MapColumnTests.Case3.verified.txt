@@ -1,4 +1,8 @@
-﻿struct<map(1, a, 2, b, 3, c):map<integer,string>>
+﻿root
+ |-- map(1, a, 2, b, 3, c): map (nullable = false)
+ |    |-- key: integer
+ |    |-- value: string (valueContainsNull = false)
+
 
 (top = 20)
 +------------------------+

@@ -1,4 +1,8 @@
-﻿struct<test:array<integer>,array_min(test):integer>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_min(test): integer (nullable = true)
+
 
 (top = 20)
 +---------------+---------------+

@@ -1,4 +1,7 @@
-﻿struct<array_repeat(a, 6):array<string>>
+﻿root
+ |-- array_repeat(a, 6): array (nullable = false)
+ |    |-- element: string (containsNull = false)
+
 
 (top = 20)
 +------------------+

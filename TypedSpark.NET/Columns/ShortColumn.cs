@@ -41,13 +41,6 @@ public sealed class ShortColumn : TypedNumericColumn<ShortColumn, ShortType, sho
     /// <returns>typed column</returns>
     public static implicit operator ShortColumn(short lit) => New(Lit((int)lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a long.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(ShortColumn column) => column.CastToString();
 
     /// <summary>

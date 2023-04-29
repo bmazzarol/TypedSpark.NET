@@ -46,13 +46,6 @@ public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalTyp
     /// <returns>typed column</returns>
     public static implicit operator DecimalColumn(decimal lit) => New(Lit((double)lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a double.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(DecimalColumn column) => column.CastToString();
 
     /// <summary>

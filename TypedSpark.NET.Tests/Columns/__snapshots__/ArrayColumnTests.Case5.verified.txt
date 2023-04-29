@@ -1,4 +1,10 @@
-﻿struct<a:array<integer>,b:array<integer>,arrays_overlap(a, b):boolean>
+﻿root
+ |-- a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_overlap(a, b): boolean (nullable = true)
+
 
 (top = 20)
 +---------------+---------+--------------------+

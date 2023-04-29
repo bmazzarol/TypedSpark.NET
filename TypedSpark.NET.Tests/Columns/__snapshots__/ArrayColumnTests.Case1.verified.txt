@@ -1,4 +1,6 @@
-﻿struct<col:integer>
+﻿root
+ |-- col: integer (nullable = true)
+
 
 (top = 20)
 +---+

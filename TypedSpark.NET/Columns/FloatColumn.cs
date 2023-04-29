@@ -41,13 +41,6 @@ public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, flo
     /// <returns>typed column</returns>
     public static implicit operator FloatColumn(float lit) => New(Lit((double)lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a double.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(FloatColumn column) => column.CastToString();
 
     /// <summary>

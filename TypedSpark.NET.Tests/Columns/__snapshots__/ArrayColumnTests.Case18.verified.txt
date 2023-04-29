@@ -1,4 +1,8 @@
-﻿struct<test:array<integer>,array_max(test):integer>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_max(test): integer (nullable = true)
+
 
 (top = 20)
 +---------------+---------------+

@@ -1,4 +1,11 @@
-﻿struct<test:map<string,integer>,map_filter(test, lambdafunction((namedlambdavariable() > CAST(namedlambdavariable() AS STRING)), namedlambdavariable(), namedlambdavariable())):map<string,integer>>
+﻿root
+ |-- test: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- map_filter(test, lambdafunction((namedlambdavariable() > CAST(namedlambdavariable() AS STRING)), namedlambdavariable(), namedlambdavariable())): map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+
 
 (top = 20)
 +-------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------+

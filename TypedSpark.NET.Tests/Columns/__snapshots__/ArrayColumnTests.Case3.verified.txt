@@ -1,4 +1,7 @@
-﻿struct<D:array<integer>>
+﻿root
+ |-- D: array (nullable = false)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +---------+

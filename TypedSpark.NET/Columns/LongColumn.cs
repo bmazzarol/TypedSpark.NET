@@ -40,13 +40,6 @@ public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
     /// <returns>typed column</returns>
     public static implicit operator LongColumn(long lit) => New(Lit(lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a long.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(LongColumn column) => column.CastToString();
 
     /// <summary>

@@ -1,4 +1,9 @@
-﻿struct<test:map<string,integer>,size(test):integer>
+﻿root
+ |-- test: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- size(test): integer (nullable = false)
+
 
 (top = 20)
 +----------------------------------------+----------+

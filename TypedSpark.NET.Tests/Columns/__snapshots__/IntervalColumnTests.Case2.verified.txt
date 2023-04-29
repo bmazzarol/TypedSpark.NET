@@ -1,4 +1,11 @@
-﻿+-----------------+-----------------+-----------------+
+﻿root
+ |-- a: interval day (nullable = false)
+ |-- b: interval day (nullable = false)
+ |-- c: interval day (nullable = false)
+
+
+(top = 20)
++-----------------+-----------------+-----------------+
 |a                |b                |c                |
 +-----------------+-----------------+-----------------+
 |INTERVAL '15' DAY|INTERVAL '15' DAY|INTERVAL '15' DAY|

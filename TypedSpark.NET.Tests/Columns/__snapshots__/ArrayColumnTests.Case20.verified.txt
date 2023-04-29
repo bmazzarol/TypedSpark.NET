@@ -1,4 +1,9 @@
-﻿struct<test:array<integer>,reverse(test):array<integer>>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- reverse(test): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +---------------+---------------+

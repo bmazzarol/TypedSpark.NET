@@ -1,4 +1,7 @@
-﻿struct<test[1]:integer,test[4]:integer>
+﻿root
+ |-- test[1]: integer (nullable = true)
+ |-- test[4]: integer (nullable = true)
+
 
 (top = 20)
 +-------+-------+

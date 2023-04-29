@@ -1,4 +1,7 @@
-﻿struct<sequence(1, 10, 2):array<integer>>
+﻿root
+ |-- sequence(1, 10, 2): array (nullable = false)
+ |    |-- element: integer (containsNull = false)
+
 
 (top = 20)
 +------------------+

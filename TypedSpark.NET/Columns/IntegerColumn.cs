@@ -41,13 +41,6 @@ public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerTyp
     /// <returns>typed column</returns>
     public static implicit operator IntegerColumn(int lit) => New(Lit(lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a integer.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(IntegerColumn column) => column.CastToString();
 
     /// <summary>

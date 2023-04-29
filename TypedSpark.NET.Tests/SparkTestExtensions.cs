@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using BunsenBurner;
 using BunsenBurner.Verify.Xunit;
@@ -52,11 +53,23 @@ namespace TypedSpark.NET.Tests
         internal static Scenario.Asserted<
             TypedDataFrame<TSchema>,
             string
-        > SnapshotDataframe<TSchema>(Func<SparkSession, TypedDataFrame<TSchema>> dfFn) =>
+        > SnapshotDataframe<TSchema>(
+            Func<SparkSession, TypedDataFrame<TSchema>> dfFn,
+            [CallerFilePath] string sourceFilePath = ""
+        ) =>
             ArrangeUsingSpark(dfFn)
-                .Act(df => $"{df.Explain().ReIndexExplainPlan(true)}\n{df.DataFrame.Debug()}")
+                .Act(df => $"{df.Explain().ReIndexExplainPlan(true)}\n{((DataFrame)df).Debug()}")
                 .AssertResultIsUnchanged(
+                    sourceFilePath: sourceFilePath,
                     matchConfiguration: x => x.ScrubLinesContaining("+- FileScan json")
                 );
+
+        internal static Scenario.Asserted<DataFrame, string> DebugDataframe(
+            Func<SparkSession, DataFrame> dfFn,
+            [CallerFilePath] string sourceFilePath = ""
+        ) =>
+            ArrangeUsingSpark(dfFn)
+                .Act(df => df.Debug())
+                .AssertResultIsUnchanged(sourceFilePath: sourceFilePath);
     }
 }

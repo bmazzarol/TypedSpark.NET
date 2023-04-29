@@ -34,7 +34,7 @@ public sealed class TypedDataFrame<TSchema>
         AliasSchemaBuilder = aliasSchemaFn;
     }
 
-    public static explicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
+    public static implicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
         typedDataFrame.DataFrame;
 
     /// <summary>Returns a new `DataFrame` with an alias set.</summary>

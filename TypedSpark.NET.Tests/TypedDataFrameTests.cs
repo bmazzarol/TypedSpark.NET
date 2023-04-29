@@ -25,6 +25,24 @@ namespace TypedSpark.NET.Tests
                 : base(default) { }
         }
 
+        public class TestSchema2 : TypedSchema<TestSchema2>
+        {
+            public StringColumn D { get; private set; } = null!;
+            public LongColumn E { get; private set; } = null!;
+            public ArrayColumn<IntegerColumn> F { get; private set; } = null!;
+
+            public TestSchema2(
+                StringColumn d,
+                LongColumn e,
+                ArrayColumn<IntegerColumn> f,
+                string? alias = default
+            )
+                : base(alias, new TypedColumn[] { d, e, f }) { }
+
+            public TestSchema2()
+                : this(default!, default!, default!) { }
+        }
+
         [Fact(DisplayName = "Select can be used on a typed data frame")]
         public static async Task Case1() =>
             await SnapshotDataframe(
@@ -45,6 +63,35 @@ namespace TypedSpark.NET.Tests
                         )
                         .AsTyped<TestSchema>()
                         .Select(x => new { x.A })
+            );
+
+        [Fact(DisplayName = "Select can be used on a typed data frame into another typed frame")]
+        public static async Task Case1b() =>
+            await SnapshotDataframe(
+                s =>
+                    s.CreateDataFrameFromData(
+                            new
+                            {
+                                A = "1",
+                                B = 1,
+                                C = DateTime.MinValue
+                            },
+                            new
+                            {
+                                A = "2",
+                                B = 2,
+                                C = DateTime.MaxValue
+                            }
+                        )
+                        .AsTyped<TestSchema>()
+                        .Select(
+                            x =>
+                                new TestSchema2(
+                                    d: x.A,
+                                    e: x.B.CastToLong(),
+                                    f: ArrayColumn.Range(1, 10, x.B)
+                                )
+                        )
             );
 
         [Fact(DisplayName = "Where can be used on a typed data frame")]

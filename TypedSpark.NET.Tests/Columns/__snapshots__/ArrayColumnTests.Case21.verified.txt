@@ -1,4 +1,10 @@
-﻿struct<test:array<array<integer>>,flatten(test):array<integer>>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: array (containsNull = true)
+ |    |    |-- element: integer (containsNull = true)
+ |-- flatten(test): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +-------------------+---------------+

@@ -1,4 +1,12 @@
-﻿struct<a:integer,test:array<integer>,array_remove(test, a):array<integer>,array_remove(test, 5):array<integer>>
+﻿root
+ |-- a: integer (nullable = true)
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_remove(test, a): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_remove(test, 5): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +---+---------------+---------------------+---------------------+

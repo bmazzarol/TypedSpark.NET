@@ -1,4 +1,11 @@
-﻿struct<a:integer,test:array<integer>,array_contains(test, 3):boolean,array_contains(test, 0):boolean,array_contains(test, a):boolean>
+﻿root
+ |-- a: integer (nullable = true)
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_contains(test, 3): boolean (nullable = true)
+ |-- array_contains(test, 0): boolean (nullable = true)
+ |-- array_contains(test, a): boolean (nullable = true)
+
 
 (top = 20)
 +---+---------------+-----------------------+-----------------------+-----------------------+

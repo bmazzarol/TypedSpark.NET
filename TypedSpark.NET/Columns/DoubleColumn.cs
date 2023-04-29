@@ -46,13 +46,6 @@ public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, 
     /// <returns>typed column</returns>
     public static implicit operator DoubleColumn(double lit) => New(Lit(lit));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a double.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(DoubleColumn column) => column.CastToString();
 
     /// <summary>

@@ -1,4 +1,20 @@
-﻿struct<test:map<string,integer>,map_keys(test):array<string>,map_values(test):array<integer>,map_entries(test):array<struct<key:string,value:integer>>,map_entries(test).Key:array<string>,map_entries(test).Value:array<integer>>
+﻿root
+ |-- test: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- map_keys(test): array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- map_values(test): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- map_entries(test): array (nullable = true)
+ |    |-- element: struct (containsNull = false)
+ |    |    |-- key: string (nullable = false)
+ |    |    |-- value: integer (nullable = true)
+ |-- map_entries(test).Key: array (nullable = true)
+ |    |-- element: string (containsNull = false)
+ |-- map_entries(test).Value: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +----------------------------------------+---------------+----------------+----------------------------------------+---------------------+-----------------------+

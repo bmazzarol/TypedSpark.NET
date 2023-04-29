@@ -15,7 +15,9 @@ Project [A]
 InMemoryTableScan [A]
    +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
-struct<A:string>
+root
+ |-- A: string (nullable = true)
+
 
 (top = 20)
 +---+

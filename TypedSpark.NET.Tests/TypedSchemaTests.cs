@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BunsenBurner;
+using BunsenBurner.Utility;
 using FluentAssertions;
 using TypedSpark.NET.Columns;
 using VerifyXunit;
@@ -122,6 +123,31 @@ namespace TypedSpark.NET.Tests
                 .Act(_ => new InvalidFieldSchema())
                 .AssertFailsWith(
                     e => e.Message.Should().Be("Only properties are supported on a schema")
+                );
+
+        private class InvalidFieldSchema2 : TypedSchema<InvalidFieldSchema2>
+        {
+            public StringColumn A { get; private set; } = default!;
+            public IntegerColumn B { get; private set; } = default!;
+
+            public InvalidFieldSchema2(StringColumn a, string? alias = default)
+                : base(alias, new[] { a }) { }
+
+            public InvalidFieldSchema2()
+                : base(default) { }
+        }
+
+        [Fact(DisplayName = "Provided columns need to match number and type of columns")]
+        public static async Task Case6() =>
+            await ArrangeUsingSpark(ManualDisposal.New)
+                .Act(_ => new InvalidFieldSchema2(StringColumn.New("a")))
+                .AssertFailsWith(
+                    e =>
+                        e.Message
+                            .Should()
+                            .Be(
+                                "The number of columns provided 1 need to match the order and number of properties on the schema which is 2 (Parameter 'columns')"
+                            )
                 );
     }
 }

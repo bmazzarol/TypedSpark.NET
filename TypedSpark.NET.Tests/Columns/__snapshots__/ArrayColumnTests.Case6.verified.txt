@@ -1,8 +1,16 @@
-﻿struct<test:array<integer>,slice(test, 2, 2):array<integer>>
+﻿root
+ |-- a: integer (nullable = true)
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- slice(test, 2, 2): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- slice(test, a, a): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
-+---------------+-----------------+
-|test           |slice(test, 2, 2)|
-+---------------+-----------------+
-|[1, 2, 3, 4, 5]|[2, 3]           |
-+---------------+-----------------+
++---+---------------+-----------------+-----------------+
+|a  |test           |slice(test, 2, 2)|slice(test, a, a)|
++---+---------------+-----------------+-----------------+
+|2  |[1, 2, 3, 4, 5]|[2, 3]           |[2, 3]           |
++---+---------------+-----------------+-----------------+

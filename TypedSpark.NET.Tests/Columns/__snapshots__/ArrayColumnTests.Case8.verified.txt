@@ -1,4 +1,8 @@
-﻿struct<test:array<string>,array_join(test, :, f):string>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- array_join(test, :, f): string (nullable = true)
+
 
 (top = 20)
 +---------------------+----------------------+

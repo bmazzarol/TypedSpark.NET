@@ -1,4 +1,16 @@
-﻿struct<A:string,B:integer,C:date,D:long,struct(A, B, C):struct<A:string,B:integer,C:date>,struct(C, D):struct<C:date,D:long>>
+﻿root
+ |-- A: string (nullable = true)
+ |-- B: integer (nullable = true)
+ |-- C: date (nullable = true)
+ |-- D: long (nullable = true)
+ |-- struct(A, B, C): struct (nullable = false)
+ |    |-- A: string (nullable = true)
+ |    |-- B: integer (nullable = true)
+ |    |-- C: date (nullable = true)
+ |-- struct(C, D): struct (nullable = false)
+ |    |-- C: date (nullable = true)
+ |    |-- D: long (nullable = true)
+
 
 (top = 20)
 +---+---+----------+---+------------------+-----------------+

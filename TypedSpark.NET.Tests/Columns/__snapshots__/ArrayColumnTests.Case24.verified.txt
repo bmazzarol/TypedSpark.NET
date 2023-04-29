@@ -1,4 +1,9 @@
-﻿struct<test:array<integer>,filter(test, lambdafunction(((namedlambdavariable() % 2) = 1), namedlambdavariable())):array<integer>>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- filter(test, lambdafunction(((namedlambdavariable() % 2) = 1), namedlambdavariable())): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +---------+--------------------------------------------------------------------------------------+

@@ -1,0 +1,32 @@
+﻿== Parsed Logical Plan ==
+'Project ['A AS D, cast('B as bigint) AS E, sequence(1, 10, Some('B), None) AS F]
++- Relation [A,B,C] json
+
+== Analyzed Logical Plan ==
+D: string, E: bigint, F: array<int>
+Project [A AS D, cast(B as bigint) AS EL, sequence(1, 10, Some(B), Some(UTC)) AS F]
++- Relation [A,B,C] json
+
+== Optimized Logical Plan ==
+Project [A AS D, cast(B as bigint) AS EL, sequence(1, 10, Some(B), Some(UTC)) AS F]
++- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+
+== Physical Plan ==
+*(1) Project [A AS D, cast(B as bigint) AS EL, sequence(1, 10, Some(B), Some(UTC)) AS F]
++- InMemoryTableScan [A, B]
+      +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
+
+root
+ |-- D: string (nullable = true)
+ |-- E: long (nullable = true)
+ |-- F: array (nullable = true)
+ |    |-- element: integer (containsNull = false)
+
+
+(top = 20)
++---+---+-------------------------------+
+|D  |E  |F                              |
++---+---+-------------------------------+
+|1  |1  |[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]|
+|2  |2  |[1, 3, 5, 7, 9]                |
++---+---+-------------------------------+

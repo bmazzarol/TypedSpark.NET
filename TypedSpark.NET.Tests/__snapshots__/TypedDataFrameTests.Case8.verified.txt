@@ -37,7 +37,10 @@ AdaptiveSparkPlan isFinalPlan=false
             +- InMemoryTableScan [A, B], [isnotnull(B)]
                   +- InMemoryRelation [A, B, C], StorageLevel(disk, memory, deserialized, 1 replicas)
 
-struct<A1:string,A2:string>
+root
+ |-- A1: string (nullable = true)
+ |-- A2: string (nullable = true)
+
 
 (top = 20)
 +---+---+

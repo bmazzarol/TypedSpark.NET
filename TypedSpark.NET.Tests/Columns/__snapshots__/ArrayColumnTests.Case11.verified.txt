@@ -1,4 +1,9 @@
-﻿struct<test:array<integer>,array_distinct(test):array<integer>>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_distinct(test): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +------------------------------------+--------------------+

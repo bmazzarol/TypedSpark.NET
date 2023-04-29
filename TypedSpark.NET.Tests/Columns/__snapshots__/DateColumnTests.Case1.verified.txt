@@ -1,4 +1,7 @@
-﻿struct<DATE '2023-04-14':date,year(DATE '2023-04-14'):integer>
+﻿root
+ |-- DATE '2023-04-14': date (nullable = false)
+ |-- year(DATE '2023-04-14'): integer (nullable = false)
+
 
 (top = 20)
 +-----------------+-----------------------+

@@ -1,4 +1,12 @@
-﻿struct<Sentence:string,sentences(This is a test. It should be split into sentences and words., , ):array<array<string>>,sentences(This is a test. It should be split into sentences and words., en, au):array<array<string>>>
+﻿root
+ |-- Sentence: string (nullable = false)
+ |-- sentences(This is a test. It should be split into sentences and words., , ): array (nullable = true)
+ |    |-- element: array (containsNull = false)
+ |    |    |-- element: string (containsNull = false)
+ |-- sentences(This is a test. It should be split into sentences and words., en, au): array (nullable = true)
+ |    |-- element: array (containsNull = false)
+ |    |    |-- element: string (containsNull = false)
+
 
 (top = 20)
 +------------------------------------------------------------+---------------------------------------------------------------------------+-------------------------------------------------------------------------------+

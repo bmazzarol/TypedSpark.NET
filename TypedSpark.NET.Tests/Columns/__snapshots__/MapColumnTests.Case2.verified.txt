@@ -1,4 +1,10 @@
-﻿struct<a:map<string,integer>,a[a]:integer,a[z]:integer>
+﻿root
+ |-- a: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- a[a]: integer (nullable = true)
+ |-- a[z]: integer (nullable = true)
+
 
 (top = 20)
 +----------------------------------------+----+----+

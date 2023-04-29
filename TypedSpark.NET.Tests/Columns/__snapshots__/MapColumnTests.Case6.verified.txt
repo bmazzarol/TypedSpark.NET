@@ -1,4 +1,14 @@
-﻿struct<a:map<string,integer>,b:map<string,integer>,map_concat(a, b):map<string,integer>>
+﻿root
+ |-- a: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- b: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+ |-- map_concat(a, b): map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
+
 
 (top = 20)
 +------------------------+----------------+----------------------------------------+

@@ -1,4 +1,9 @@
-﻿struct<test:array<integer>,array_position(test, 3):long,array_position(test, 6):long>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_position(test, 3): long (nullable = true)
+ |-- array_position(test, 6): long (nullable = true)
+
 
 (top = 20)
 +---------------+-----------------------+-----------------------+

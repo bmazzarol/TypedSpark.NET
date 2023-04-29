@@ -1,4 +1,12 @@
-﻿struct<test:struct<A:string,B:integer,C:date>,update_fields(test, WithField(D)):struct<C:date,D:long>>
+﻿root
+ |-- test: struct (nullable = true)
+ |    |-- A: string (nullable = true)
+ |    |-- B: integer (nullable = true)
+ |    |-- C: date (nullable = true)
+ |-- update_fields(test, WithField(D)): struct (nullable = true)
+ |    |-- C: date (nullable = true)
+ |    |-- D: long (nullable = true)
+
 
 (top = 20)
 +------------------+---------------------------------+

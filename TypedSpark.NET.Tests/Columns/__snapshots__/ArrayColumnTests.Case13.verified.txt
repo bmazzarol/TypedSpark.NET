@@ -1,4 +1,11 @@
-﻿struct<a:array<integer>,b:array<integer>,array_union(a, b):array<integer>>
+﻿root
+ |-- a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- array_union(a, b): array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
 
 (top = 20)
 +------------+------------+------------------+

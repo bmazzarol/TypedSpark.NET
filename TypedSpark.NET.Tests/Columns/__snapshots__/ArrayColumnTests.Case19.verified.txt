@@ -1,4 +1,8 @@
-﻿struct<test:array<integer>,(NOT (shuffle(test) <=> test)):boolean>
+﻿root
+ |-- test: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- (NOT (shuffle(test) <=> test)): boolean (nullable = false)
+
 
 (top = 20)
 +---------------+------------------------------+
