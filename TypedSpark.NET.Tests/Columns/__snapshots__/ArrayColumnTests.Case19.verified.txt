@@ -1,12 +1,12 @@
 ﻿root
  |-- test: array (nullable = true)
  |    |-- element: integer (containsNull = true)
- |-- (NOT (shuffle(test) <=> test)): boolean (nullable = false)
+ |-- (size(shuffle(test)) = size(test)): boolean (nullable = false)
 
 
 (top = 20)
-+---------------+------------------------------+
-|test           |(NOT (shuffle(test) <=> test))|
-+---------------+------------------------------+
-|[1, 2, 3, 4, 5]|true                          |
-+---------------+------------------------------+
++---------------+----------------------------------+
+|test           |(size(shuffle(test)) = size(test))|
++---------------+----------------------------------+
+|[1, 2, 3, 4, 5]|true                              |
++---------------+----------------------------------+

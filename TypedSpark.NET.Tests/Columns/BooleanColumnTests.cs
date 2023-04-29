@@ -1,10 +1,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using BunsenBurner;
+using BunsenBurner.Utility;
 using FluentAssertions;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
+using VerifyXunit;
 using Xunit;
 using static TypedSpark.NET.Tests.SparkTestExtensions;
 using Fn = TypedSpark.NET.Functions;
@@ -12,6 +14,7 @@ using B = TypedSpark.NET.Columns.BooleanColumn;
 
 namespace TypedSpark.NET.Tests.Columns
 {
+    [UsesVerify]
     public static class BooleanColumnTests
     {
         [Fact(DisplayName = "! operator can be applied to the boolean column")]
@@ -205,6 +208,23 @@ namespace TypedSpark.NET.Tests.Columns
                 .Assert(
                     rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(true, false)
                 );
+
+        [Fact(DisplayName = "BooleanColumns can be used in an in clause")]
+        public static async Task Case14() =>
+            await DebugDataframe(s =>
+            {
+                B a = true;
+                var df = s.CreateEmptyFrame();
+                return df.Select(a, a.IsIn(false), a.IsIn(true));
+            });
+
+        [Theory(DisplayName = "Coerce to native works for boolean")]
+        [InlineData(true)]
+        [InlineData(false)]
+        public static async Task Case15(bool v) =>
+            await ArrangeUsingSpark(ManualDisposal.New)
+                .Act(_ => ((B)v).CoerceToNative())
+                .Assert(c => c.Should().Be(v));
     }
 
     public sealed class BooleanBaseOperations : BaseOperationTests<B, BooleanType, bool>

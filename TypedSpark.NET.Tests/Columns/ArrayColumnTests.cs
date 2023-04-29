@@ -247,7 +247,7 @@ namespace TypedSpark.NET.Tests.Columns
             {
                 var col = ArrayColumn.New<IntegerColumn>("test");
                 var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
-                return df.Select(col, !col.Shuffle().EqNullSafe(col));
+                return df.Select(col, col.Shuffle().Length() == col.Length());
             });
 
         [Fact(DisplayName = "Reverse can be called on an array column")]
