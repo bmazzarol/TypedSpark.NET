@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- reverse(a): string (nullable = true)
+
+
+(top = 20)
++-----+----------+
+|a    |reverse(a)|
++-----+----------+
+|Bill |lliB      |
+|Jill |lliJ      |
+|Tom  |moT       |
+|Fred |derF      |
+|James|semaJ     |
++-----+----------+

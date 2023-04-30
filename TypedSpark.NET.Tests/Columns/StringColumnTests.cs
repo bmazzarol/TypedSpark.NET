@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BunsenBurner;
 using SparkTest.NET.Extensions;
@@ -241,7 +242,8 @@ namespace TypedSpark.NET.Tests.Columns
                         test.Lpad(8, "~"),
                         test.Rpad(8, "~"),
                         ("###" + test).Ltrim("#"),
-                        (test + "###").Rtrim("#")
+                        (test + "###").Rtrim("#"),
+                        ("###" + test + "###").Trim("#")
                     );
             });
 
@@ -260,6 +262,164 @@ namespace TypedSpark.NET.Tests.Columns
                         new { a = (string?)null }
                     )
                     .Select(a, F.Coalesce(a, "Unknown"));
+            });
+
+        [Fact(DisplayName = "Reverse can be called on string columns")]
+        public static async Task Case17() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.Reverse());
+            });
+
+        [Fact(DisplayName = "Soundex can be called on string columns")]
+        public static async Task Case18() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.Soundex());
+            });
+
+        [Fact(DisplayName = "Encode can be called on string columns")]
+        public static async Task Case19() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(
+                        a,
+                        a.Encode(Encoding.UTF8),
+                        a.Encode(Encoding.UTF8).Decode(Encoding.UTF8),
+                        a.Encode(Encoding.Unicode),
+                        a.Encode(Encoding.Unicode).Decode(Encoding.Unicode),
+                        a.Encode(Encoding.ASCII),
+                        a.Encode(Encoding.ASCII).Decode(Encoding.ASCII)
+                    );
+            });
+
+        [Fact(DisplayName = "Base64 can be called on string/binary columns")]
+        public static async Task Case20() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(
+                        a,
+                        a.Encode(Encoding.Unicode).Base64(),
+                        a.Encode(Encoding.Unicode).Base64().Unbase64(),
+                        a.Encode(Encoding.Unicode).Base64().Unbase64().Decode(Encoding.Unicode)
+                    );
+            });
+
+        [Fact(DisplayName = "RegexExtract can be called on string columns")]
+        public static async Task Case21() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.RegexpExtract(new Regex("^([^B]).*$"), 1));
+            });
+
+        [Fact(DisplayName = "RegexReplace can be called on string columns")]
+        public static async Task Case22() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.RegexpReplace(new Regex("^[B]"), "G"));
+            });
+
+        [Fact(DisplayName = "Split can be called on string columns")]
+        public static async Task Case23() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill|Jill;John" },
+                        new { a = "Jill;Tom|Murry" },
+                        new { a = "Steve|Ben||" },
+                        new { a = "Fred;Kevin|Jeff;;" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.Split(new Regex("[|;]")), a.Split(new Regex("[|;]"), 2));
+            });
+
+        [Fact(DisplayName = "Translate can be called on string columns")]
+        public static async Task Case24() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(a, a.Translate("i", "e"));
+            });
+
+        [Fact(DisplayName = "Various hash functions can be called on string columns")]
+        public static async Task Case25() =>
+            await DebugDataframe(s =>
+            {
+                var a = StringColumn.New("a");
+                var encoded = a.Encode(Encoding.Unicode);
+                return s.CreateDataFrameFromData(
+                        new { a = "Bill" },
+                        new { a = "Jill" },
+                        new { a = "Tom" },
+                        new { a = "Fred" },
+                        new { a = "James" }
+                    )
+                    .Select(
+                        a,
+                        encoded.Sha1(),
+                        encoded.Md5(),
+                        encoded.Sha224(),
+                        encoded.Sha256(),
+                        encoded.Sha384(),
+                        encoded.Sha512(),
+                        encoded.Crc32()
+                    );
             });
     }
 }

@@ -1,0 +1,18 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- split(a, [|;], -1): array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- split(a, [|;], 2): array (nullable = true)
+ |    |-- element: string (containsNull = true)
+
+
+(top = 20)
++-----------------+-----------------------+--------------------+
+|a                |split(a, [|;], -1)     |split(a, [|;], 2)   |
++-----------------+-----------------------+--------------------+
+|Bill|Jill;John   |[Bill, Jill, John]     |[Bill, Jill;John]   |
+|Jill;Tom|Murry   |[Jill, Tom, Murry]     |[Jill, Tom|Murry]   |
+|Steve|Ben||      |[Steve, Ben, , ]       |[Steve, Ben||]      |
+|Fred;Kevin|Jeff;;|[Fred, Kevin, Jeff, , ]|[Fred, Kevin|Jeff;;]|
+|James            |[James]                |[James]             |
++-----------------+-----------------------+--------------------+

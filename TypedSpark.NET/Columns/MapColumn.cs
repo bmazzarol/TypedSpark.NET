@@ -21,18 +21,25 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     public MapColumn()
         : this(F.Col(string.Empty)) { }
 
+    private static MapColumn<TKey, TValue> New(Column column) =>
+        MapColumn.New<TKey, TValue>(column);
+
+    private static TKey NewKey(Column column) => new() { Column = column };
+
+    private static TValue NewValue(Column column) => new() { Column = column };
+
     /// <summary>
     /// Gets the value at the key
     /// </summary>
     /// <param name="key">key</param>
     /// <returns>TValue column</returns>
-    public TValue this[TKey key] => new() { Column = Column.GetItem(key.CoerceToNative()) };
+    public TValue this[TKey key] => NewValue(Column.GetItem(key.CoerceToNative()));
 
     /// <summary>
     /// Returns length of array
     /// </summary>
     /// <returns>integer column</returns>
-    public IntegerColumn Size() => new() { Column = F.Size(Column) };
+    public IntegerColumn Size() => IntegerColumn.New(F.Size(Column));
 
     /// <summary>
     /// Returns length of array
@@ -44,13 +51,13 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// Map keys
     /// </summary>
     /// <returns>array of TKey column</returns>
-    public ArrayColumn<TKey> Keys() => new() { Column = F.MapKeys(Column) };
+    public ArrayColumn<TKey> Keys() => ArrayColumn.New<TKey>(F.MapKeys(Column));
 
     /// <summary>
     /// Map values
     /// </summary>
     /// <returns>array of TValue column</returns>
-    public ArrayColumn<TValue> Values() => new() { Column = F.MapValues(Column) };
+    public ArrayColumn<TValue> Values() => ArrayColumn.New<TValue>(F.MapValues(Column));
 
     /// <summary>
     /// Returns an unordered array of all entries in the given map
@@ -58,11 +65,7 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// <returns>struct of key value</returns>
     [Since("3.0.0")]
     public Tuple2Column<TKey, TValue> Entries() =>
-        TupleColumn.New(
-            new TKey { Column = F.Col("key") },
-            new TValue { Column = F.Col("value") },
-            F.MapEntries(Column)
-        );
+        TupleColumn.New(NewKey(F.Col("key")), NewValue(F.Col("value")), F.MapEntries(Column));
 
     /// <summary>
     /// Returns a map of the elements in the union of the given two maps
@@ -90,12 +93,11 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// <returns>map column</returns>
     [Since("3.0.0")]
     public MapColumn<TKey, TValue> Filter(Func<TKey, TValue, BooleanColumn> pred) =>
-        new()
-        {
-            Column = F.Expr(
+        New(
+            F.Expr(
                 $"map_filter({Column}, (k, v) -> {pred(new TKey { Column = F.Col("k") }, new TValue { Column = F.Col("v") })})"
             )
-        };
+        );
 
     /// <summary>
     /// Creates a new row for each element in the given map column
@@ -103,8 +105,8 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// <returns>key value columns</returns>
     public ExplodedColumn Explode(out TKey key, out TValue value)
     {
-        key = new TKey { Column = F.Col("key") };
-        value = new TValue { Column = F.Col("value") };
+        key = NewKey(F.Col("key"));
+        value = NewValue(F.Col("value"));
         return new ExplodedColumn(F.Explode(Column));
     }
 
@@ -115,8 +117,8 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// <returns>key value columns</returns>
     public ExplodedColumn ExplodeOuter(out TKey key, out TValue value)
     {
-        key = new TKey { Column = F.Col("key") };
-        value = new TValue { Column = F.Col("value") };
+        key = NewKey(F.Col("key"));
+        value = NewValue(F.Col("value"));
         return new ExplodedColumn(F.ExplodeOuter(Column));
     }
 
@@ -127,8 +129,8 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     public ExplodedColumn PosExplode(out IntegerColumn pos, out TKey key, out TValue value)
     {
         pos = IntegerColumn.New("pos");
-        key = new TKey { Column = F.Col("key") };
-        value = new TValue { Column = F.Col("value") };
+        key = NewKey(F.Col("key"));
+        value = NewValue(F.Col("value"));
         return new ExplodedColumn(F.PosExplode(Column));
     }
 
@@ -140,8 +142,8 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     public ExplodedColumn PosExplodeOuter(out IntegerColumn pos, out TKey key, out TValue value)
     {
         pos = IntegerColumn.New("pos");
-        key = new TKey { Column = F.Col("key") };
-        value = new TValue { Column = F.Col("value") };
+        key = NewKey(F.Col("key"));
+        value = NewValue(F.Col("value"));
         return new ExplodedColumn(F.PosExplodeOuter(Column));
     }
 }

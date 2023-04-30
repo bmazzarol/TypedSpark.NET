@@ -1,0 +1,17 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- base64(encode(a, UTF-16)): string (nullable = true)
+ |-- unbase64(base64(encode(a, UTF-16))): binary (nullable = true)
+ |-- stringdecode(unbase64(base64(encode(a, UTF-16))), UTF-16): string (nullable = true)
+
+
+(top = 20)
++-----+-------------------------+-------------------------------------+---------------------------------------------------------+
+|a    |base64(encode(a, UTF-16))|unbase64(base64(encode(a, UTF-16)))  |stringdecode(unbase64(base64(encode(a, UTF-16))), UTF-16)|
++-----+-------------------------+-------------------------------------+---------------------------------------------------------+
+|Bill |/v8AQgBpAGwAbA==         |[FE FF 00 42 00 69 00 6C 00 6C]      |Bill                                                     |
+|Jill |/v8ASgBpAGwAbA==         |[FE FF 00 4A 00 69 00 6C 00 6C]      |Jill                                                     |
+|Tom  |/v8AVABvAG0=             |[FE FF 00 54 00 6F 00 6D]            |Tom                                                      |
+|Fred |/v8ARgByAGUAZA==         |[FE FF 00 46 00 72 00 65 00 64]      |Fred                                                     |
+|James|/v8ASgBhAG0AZQBz         |[FE FF 00 4A 00 61 00 6D 00 65 00 73]|James                                                    |
++-----+-------------------------+-------------------------------------+---------------------------------------------------------+

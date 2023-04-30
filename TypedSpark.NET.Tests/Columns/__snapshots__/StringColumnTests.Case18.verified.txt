@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- soundex(a): string (nullable = true)
+
+
+(top = 20)
++-----+----------+
+|a    |soundex(a)|
++-----+----------+
+|Bill |B400      |
+|Jill |J400      |
+|Tom  |T500      |
+|Fred |F630      |
+|James|J520      |
++-----+----------+

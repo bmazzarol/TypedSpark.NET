@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
@@ -42,6 +44,13 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <param name="lit">literal</param>
     /// <returns>string column</returns>
     public static implicit operator StringColumn(string lit) => New(F.Lit(lit));
+
+    /// <summary>
+    /// Convert the dotnet regex value to a column
+    /// </summary>
+    /// <param name="lit">literal</param>
+    /// <returns>string column</returns>
+    public static implicit operator StringColumn(Regex lit) => lit.ToString();
 
     public static StringColumn operator +(StringColumn lhs, StringColumn rhs) => lhs.Plus(rhs);
 
@@ -200,6 +209,23 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     public TimestampColumn CastToTimestamp() => TimestampColumn.New(Column.Cast("timestamp"));
 
     /// <summary>
+    /// Convert the string column to a binary column
+    /// </summary>
+    /// <returns>binary column</returns>
+    public BinaryColumn Encode(Encoding encoding) =>
+        BinaryColumn.New(
+            F.Encode(
+                Column,
+                encoding switch
+                {
+                    ASCIIEncoding _ => "US-ASCII",
+                    UnicodeEncoding _ => "UTF-16",
+                    _ => "UTF-8"
+                }
+            )
+        );
+
+    /// <summary>
     ///  A boolean expression that is evaluated to true if the value of this expression
     ///  is contained by the evaluated values of the arguments.
     /// </summary>
@@ -218,7 +244,7 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// </summary>
     /// <returns>array column</returns>
     public ArrayColumn<ArrayColumn<StringColumn>> Sentences() =>
-        new() { Column = F.Sentences(Column) };
+        ArrayColumn.New<ArrayColumn<StringColumn>>(F.Sentences(Column));
 
     /// <summary>
     /// Splits this string into arrays of sentences, where each sentence is an array of words.
@@ -229,7 +255,17 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     public ArrayColumn<ArrayColumn<StringColumn>> Sentences(
         StringColumn language,
         StringColumn country
-    ) => new() { Column = F.Sentences(Column, language, country) };
+    ) => ArrayColumn.New<ArrayColumn<StringColumn>>(F.Sentences(Column, language, country));
+
+    /// <summary>
+    /// Translate any characters that match with the given `matchingString` in the column
+    /// by the given `replaceString`
+    /// </summary>
+    /// <param name="matchingString">String to match</param>
+    /// <param name="replaceString">String to replace with</param>
+    /// <returns>string column</returns>
+    public StringColumn Translate(string matchingString, string replaceString) =>
+        New(F.Translate(Column, matchingString, replaceString));
 
     /// <summary>
     /// Computes the numeric value of the first character of the string column, and returns
@@ -318,5 +354,70 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// Trim the spaces from left and right end for the specified string value
     /// </summary>
     /// <returns>string column</returns>
-    public StringColumn Trim() => Ltrim().Rtrim();
+    public StringColumn Trim() => New(F.Trim(Column));
+
+    /// <summary>
+    /// Trim the spaces from left and right end for the specified string value
+    /// </summary>
+    /// <param name="trimString">String to trim</param>
+    /// <returns>string column</returns>
+    public StringColumn Trim(string trimString) => New(F.Trim(Column, trimString));
+
+    /// <summary>
+    /// Reverses the string column and returns it as a new string column
+    /// </summary>
+    /// <returns>string column</returns>
+    public StringColumn Reverse() => New(F.Reverse(Column));
+
+    /// <summary>
+    /// Returns the soundex code for the specified expression
+    /// </summary>
+    /// <returns>string column</returns>
+    public StringColumn Soundex() => New(F.Soundex(Column));
+
+    /// <summary>
+    /// Decodes a BASE64 encoded string column and returns it as a binary column
+    /// </summary>
+    /// <returns>binary column</returns>
+    public BinaryColumn Unbase64() => BinaryColumn.New(F.Unbase64(Column));
+
+    /// <summary>
+    /// Extract a specific group matched by a Java regex, from the specified string column
+    /// </summary>
+    /// <remarkes>
+    /// If the regex did not match, or the specified group did not match,
+    /// an empty string is returned
+    /// </remarkes>
+    /// <param name="exp">Regular expression to match</param>
+    /// <param name="groupIdx">Group index to extract</param>
+    /// <returns>string column</returns>
+    public StringColumn RegexpExtract(Regex exp, int groupIdx) =>
+        New(F.RegexpExtract(Column, exp.ToString(), groupIdx));
+
+    /// <summary>
+    /// Replace all substrings of the specified string value that match the pattern with
+    /// the given replacement string
+    /// </summary>
+    /// <param name="pattern">Regular expression to match</param>
+    /// <param name="replacement">String to replace with</param>
+    /// <returns>string column</returns>
+    public StringColumn RegexpReplace(StringColumn pattern, StringColumn replacement) =>
+        New(F.RegexpReplace(Column, pattern, replacement));
+
+    /// <summary>
+    /// Splits string with a regular expression pattern
+    /// </summary>
+    /// <param name="pattern">Regular expression pattern</param>
+    /// <param name="limit">
+    /// An integer expression which controls the number of times the regex
+    /// is applied.
+    /// 1. limit greater than 0: The resulting array's length will not be more than limit, and
+    /// the resulting array's last entry will contain all input beyond the last matched regex.
+    /// 2. limit less than or equal to 0: `regex` will be applied as many times as possible,
+    /// and the resulting array can be of any size.
+    /// </param>
+    /// <returns>array column</returns>
+    [Since("3.0.0")]
+    public ArrayColumn<StringColumn> Split(Regex pattern, int limit = -1) =>
+        ArrayColumn.New<StringColumn>(F.Split(Column, pattern.ToString(), limit));
 }

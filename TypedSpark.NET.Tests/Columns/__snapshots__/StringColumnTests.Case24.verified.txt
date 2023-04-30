@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- translate(a, i, e): string (nullable = true)
+
+
+(top = 20)
++-----+------------------+
+|a    |translate(a, i, e)|
++-----+------------------+
+|Bill |Bell              |
+|Jill |Jell              |
+|Tom  |Tom               |
+|Fred |Fred              |
+|James|James             |
++-----+------------------+

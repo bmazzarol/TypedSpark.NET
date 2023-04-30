@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- regexp_extract(a, ^([^B]).*$, 1): string (nullable = true)
+
+
+(top = 20)
++-----+--------------------------------+
+|a    |regexp_extract(a, ^([^B]).*$, 1)|
++-----+--------------------------------+
+|Bill |                                |
+|Jill |J                               |
+|Tom  |T                               |
+|Fred |F                               |
+|James|J                               |
++-----+--------------------------------+

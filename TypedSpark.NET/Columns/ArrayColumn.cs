@@ -21,12 +21,16 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public ArrayColumn()
         : this(F.Col(string.Empty)) { }
 
+    private static ArrayColumn<T> New(Column column) => ArrayColumn.New<T>(column);
+
+    private static T NewValue(Column column) => new() { Column = column };
+
     /// <summary>
     /// Gets the value at the index
     /// </summary>
     /// <param name="index">index</param>
     /// <returns>T column</returns>
-    public T this[int index] => new() { Column = Column.GetItem(index) };
+    public T this[int index] => NewValue(Column.GetItem(index));
 
     /// <summary>
     /// Returns null if the array is null, true if the array contains `value`,
@@ -35,7 +39,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="value">Value to check for existence</param>
     /// <returns>boolean column</returns>
     public BooleanColumn Contains(T value) =>
-        new() { Column = F.ArrayContains(Column, (Column)value) };
+        BooleanColumn.New(F.ArrayContains(Column, (Column)value));
 
     /// <summary>
     /// Returns true if the provided array column has at least one non-null element in common.
@@ -46,7 +50,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <returns>boolean column</returns>
     [Since("2.4.0")]
     public BooleanColumn Overlaps(ArrayColumn<T> col) =>
-        new() { Column = F.ArraysOverlap(Column, (Column)col) };
+        BooleanColumn.New(F.ArraysOverlap(Column, (Column)col));
 
     /// <summary>
     /// Returns an array containing all the elements in `column` from index `start`
@@ -56,8 +60,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="length">Length for slicing</param>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Slice(int start, int length) =>
-        new() { Column = F.Slice(Column, start, length) };
+    public ArrayColumn<T> Slice(int start, int length) => New(F.Slice(Column, start, length));
 
     /// <summary>
     /// Returns an array containing all the elements in `column` from index `start`
@@ -68,7 +71,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <returns>array column</returns>
     [Since("3.1.0")]
     public ArrayColumn<T> Slice(IntegerColumn start, IntegerColumn length) =>
-        new() { Column = F.Slice(Column, start, length) };
+        New(F.Slice(Column, start, length));
 
     /// <summary>
     /// Locates the position of the first occurrence of the value in the given array as long.
@@ -82,7 +85,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <returns>integer column</returns>
     [Since("2.4.0")]
     public IntegerColumn Position(T value) =>
-        new() { Column = F.ArrayPosition(Column, (Column)value) };
+        IntegerColumn.New(F.ArrayPosition(Column, (Column)value));
 
     /// <summary>
     /// Remove all elements that equal to element from the given array
@@ -90,15 +93,14 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="element">Element to remove</param>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Remove(T element) =>
-        new() { Column = F.ArrayRemove(Column, (Column)element) };
+    public ArrayColumn<T> Remove(T element) => New(F.ArrayRemove(Column, (Column)element));
 
     /// <summary>
     /// Removes duplicate values from the array
     /// </summary>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Distinct() => new() { Column = F.ArrayDistinct(Column) };
+    public ArrayColumn<T> Distinct() => New(F.ArrayDistinct(Column));
 
     /// <summary>
     /// Returns an array of the elements in the intersection of the given two arrays,
@@ -107,8 +109,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="other">Right side column to apply</param>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Intersect(ArrayColumn<T> other) =>
-        new() { Column = F.ArrayIntersect(Column, other) };
+    public ArrayColumn<T> Intersect(ArrayColumn<T> other) => New(F.ArrayIntersect(Column, other));
 
     /// <summary>
     /// Returns an array of the elements in the intersection of the given two arrays,
@@ -128,8 +129,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="other">Right side column to apply</param>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Union(ArrayColumn<T> other) =>
-        new() { Column = F.ArrayUnion(Column, other) };
+    public ArrayColumn<T> Union(ArrayColumn<T> other) => New(F.ArrayUnion(Column, other));
 
     /// <summary>
     /// Returns an array of the elements in the union of the given two arrays,
@@ -149,21 +149,20 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="other">Right side column to apply</param>
     /// <returns>Column object</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Except(ArrayColumn<T> other) =>
-        new() { Column = F.ArrayExcept(Column, other) };
+    public ArrayColumn<T> Except(ArrayColumn<T> other) => New(F.ArrayExcept(Column, other));
 
     /// <summary>
     /// Creates a new row for each element in the given array
     /// </summary>
     /// <returns>T column</returns>
-    public T Explode() => new() { Column = F.Explode(Column) };
+    public T Explode() => NewValue(F.Explode(Column));
 
     /// <summary>
     /// Creates a new row for each element in the given array or map column.
     /// Unlike Explode(), if the array/map is null or empty then null is produced.
     /// </summary>
     /// <returns>T column</returns>
-    public T ExplodeOuter() => new() { Column = F.ExplodeOuter(Column) };
+    public T ExplodeOuter() => NewValue(F.ExplodeOuter(Column));
 
     /// <summary>
     /// Creates a new row for each element with position in the given array column
@@ -172,7 +171,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public ExplodedColumn PosExplode(out IntegerColumn pos, out T col)
     {
         pos = IntegerColumn.New("pos");
-        col = new T { Column = F.Col("col") };
+        col = NewValue(F.Col("col"));
         return new ExplodedColumn(F.PosExplode(Column));
     }
 
@@ -184,7 +183,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public ExplodedColumn PosExplodeOuter(out IntegerColumn pos, out T col)
     {
         pos = IntegerColumn.New("pos");
-        col = new T { Column = F.Col("col") };
+        col = NewValue(F.Col("col"));
         return new ExplodedColumn(F.PosExplodeOuter(Column));
     }
 
@@ -192,7 +191,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// Returns length of array
     /// </summary>
     /// <returns>integer column</returns>
-    public IntegerColumn Size() => new() { Column = F.Size(Column) };
+    public IntegerColumn Size() => IntegerColumn.New(F.Size(Column));
 
     /// <summary>
     /// Returns length of array
@@ -205,13 +204,13 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// </summary>
     /// <returns>array column</returns>
     [Since("2.4.0")]
-    public ArrayColumn<T> Shuffle() => new() { Column = F.Shuffle(Column) };
+    public ArrayColumn<T> Shuffle() => New(F.Shuffle(Column));
 
     /// <summary>
     /// Reverses the array column and returns it as a new array column
     /// </summary>
     /// <returns>array column</returns>
-    public ArrayColumn<T> Reverse() => new() { Column = F.Reverse(Column) };
+    public ArrayColumn<T> Reverse() => New(F.Reverse(Column));
 
     /// <summary>
     /// Filters the input array using the given predicate
@@ -220,7 +219,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <returns>array column</returns>
     [Since("2.4.0")]
     public ArrayColumn<T> Filter(Func<T, BooleanColumn> pred) =>
-        new() { Column = F.Expr($"filter({Column}, x -> {pred(new T { Column = F.Col("x") })})") };
+        New(F.Expr($"filter({Column}, x -> {pred(new T { Column = F.Col("x") })})"));
 
     /// <summary>
     /// Filters the input array using the given predicate
@@ -229,12 +228,11 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <returns>array column</returns>
     [Since("3.0.0")]
     public ArrayColumn<T> Filter(Func<T, IntegerColumn, BooleanColumn> pred) =>
-        new()
-        {
-            Column = F.Expr(
+        New(
+            F.Expr(
                 $"filter({Column}, (x, i) -> {pred(new T { Column = F.Col("x") }, IntegerColumn.New("i"))})"
             )
-        };
+        );
 }
 
 public static class ArrayColumn
@@ -277,13 +275,11 @@ public static class ArrayColumn
         string delimiter,
         string? nullReplacement = default
     ) =>
-        new()
-        {
-            Column =
-                nullReplacement != null
-                    ? F.ArrayJoin(column, delimiter, nullReplacement)
-                    : F.ArrayJoin(column, delimiter)
-        };
+        StringColumn.New(
+            nullReplacement != null
+                ? F.ArrayJoin(column, delimiter, nullReplacement)
+                : F.ArrayJoin(column, delimiter)
+        );
 
     /// <summary>
     /// Sorts the input array in ascending order.

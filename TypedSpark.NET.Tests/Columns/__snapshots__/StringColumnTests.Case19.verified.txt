@@ -1,0 +1,20 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- encode(a, UTF-8): binary (nullable = true)
+ |-- stringdecode(encode(a, UTF-8), UTF-8): string (nullable = true)
+ |-- encode(a, UTF-16): binary (nullable = true)
+ |-- stringdecode(encode(a, UTF-16), UTF-16): string (nullable = true)
+ |-- encode(a, US-ASCII): binary (nullable = true)
+ |-- stringdecode(encode(a, US-ASCII), US-ASCII): string (nullable = true)
+
+
+(top = 20)
++-----+----------------+-------------------------------------+-------------------------------------+---------------------------------------+-------------------+-------------------------------------------+
+|a    |encode(a, UTF-8)|stringdecode(encode(a, UTF-8), UTF-8)|encode(a, UTF-16)                    |stringdecode(encode(a, UTF-16), UTF-16)|encode(a, US-ASCII)|stringdecode(encode(a, US-ASCII), US-ASCII)|
++-----+----------------+-------------------------------------+-------------------------------------+---------------------------------------+-------------------+-------------------------------------------+
+|Bill |[42 69 6C 6C]   |Bill                                 |[FE FF 00 42 00 69 00 6C 00 6C]      |Bill                                   |[42 69 6C 6C]      |Bill                                       |
+|Jill |[4A 69 6C 6C]   |Jill                                 |[FE FF 00 4A 00 69 00 6C 00 6C]      |Jill                                   |[4A 69 6C 6C]      |Jill                                       |
+|Tom  |[54 6F 6D]      |Tom                                  |[FE FF 00 54 00 6F 00 6D]            |Tom                                    |[54 6F 6D]         |Tom                                        |
+|Fred |[46 72 65 64]   |Fred                                 |[FE FF 00 46 00 72 00 65 00 64]      |Fred                                   |[46 72 65 64]      |Fred                                       |
+|James|[4A 61 6D 65 73]|James                                |[FE FF 00 4A 00 61 00 6D 00 65 00 73]|James                                  |[4A 61 6D 65 73]   |James                                      |
++-----+----------------+-------------------------------------+-------------------------------------+---------------------------------------+-------------------+-------------------------------------------+

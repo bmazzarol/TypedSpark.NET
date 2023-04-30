@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- regexp_replace(a, ^[B], G, 1): string (nullable = true)
+
+
+(top = 20)
++-----+-----------------------------+
+|a    |regexp_replace(a, ^[B], G, 1)|
++-----+-----------------------------+
+|Bill |Gill                         |
+|Jill |Jill                         |
+|Tom  |Tom                          |
+|Fred |Fred                         |
+|James|James                        |
++-----+-----------------------------+
