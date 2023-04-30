@@ -1,0 +1,17 @@
+﻿root
+ |--  test : string (nullable = false)
+ |-- ltrim( test ): string (nullable = false)
+ |-- rtrim( test ): string (nullable = false)
+ |-- rtrim(ltrim( test )): string (nullable = false)
+ |-- lpad( test , 8, ~): string (nullable = false)
+ |-- rpad( test , 8, ~): string (nullable = false)
+ |-- TRIM(LEADING # FROM concat(###,  test )): string (nullable = false)
+ |-- TRIM(TRAILING # FROM concat( test , ###)): string (nullable = false)
+
+
+(top = 20)
++------+-------------+-------------+--------------------+------------------+------------------+----------------------------------------+-----------------------------------------+
+| test |ltrim( test )|rtrim( test )|rtrim(ltrim( test ))|lpad( test , 8, ~)|rpad( test , 8, ~)|TRIM(LEADING # FROM concat(###,  test ))|TRIM(TRAILING # FROM concat( test , ###))|
++------+-------------+-------------+--------------------+------------------+------------------+----------------------------------------+-----------------------------------------+
+| test |test         | test        |test                |~~ test           | test ~~          | test                                   | test                                    |
++------+-------------+-------------+--------------------+------------------+------------------+----------------------------------------+-----------------------------------------+

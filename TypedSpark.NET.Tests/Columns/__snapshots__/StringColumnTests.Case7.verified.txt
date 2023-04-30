@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- contains(a, ill): boolean (nullable = true)
+
+
+(top = 20)
++-----+----------------+
+|a    |contains(a, ill)|
++-----+----------------+
+|Bill |true            |
+|Jill |true            |
+|Tom  |false           |
+|Fred |false           |
+|James|false           |
++-----+----------------+

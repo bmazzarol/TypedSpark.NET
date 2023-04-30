@@ -1,0 +1,12 @@
+﻿root
+ |-- initcap(test): string (nullable = false)
+ |-- upper(test): string (nullable = false)
+ |-- lower(TEST): string (nullable = false)
+
+
+(top = 20)
++-------------+-----------+-----------+
+|initcap(test)|upper(test)|lower(TEST)|
++-------------+-----------+-----------+
+|Test         |TEST       |test       |
++-------------+-----------+-----------+

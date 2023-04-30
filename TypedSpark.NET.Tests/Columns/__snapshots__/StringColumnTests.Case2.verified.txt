@@ -1,0 +1,16 @@
+﻿root
+ |-- This is a: string (nullable = false)
+ |--  test: string (nullable = false)
+ |-- c: string (nullable = true)
+ |-- d: string (nullable = true)
+ |-- concat(This is a,  test): string (nullable = false)
+ |-- concat(c, which is cool): string (nullable = true)
+ |-- concat(some starting string to combine to , d): string (nullable = true)
+
+
+(top = 20)
++---------+-----+------------------+--------------+------------------------+-------------------------------+-------------------------------------------------+
+|This is a| test|c                 |d             |concat(This is a,  test)|concat(c, which is cool)       |concat(some starting string to combine to , d)   |
++---------+-----+------------------+--------------+------------------------+-------------------------------+-------------------------------------------------+
+|This is a| test|some other string |another string|This is a test          |some other string which is cool|some starting string to combine to another string|
++---------+-----+------------------+--------------+------------------------+-------------------------------+-------------------------------------------------+

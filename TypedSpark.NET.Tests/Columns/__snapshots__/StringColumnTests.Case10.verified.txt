@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- (a IN (Fred, James)): boolean (nullable = true)
+
+
+(top = 20)
++-----+--------------------+
+|a    |(a IN (Fred, James))|
++-----+--------------------+
+|Bill |false               |
+|Jill |false               |
+|Tom  |false               |
+|Fred |true                |
+|James|true                |
++-----+--------------------+

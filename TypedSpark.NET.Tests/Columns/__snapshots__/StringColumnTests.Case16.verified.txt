@@ -1,0 +1,17 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- coalesce(a, Unknown): string (nullable = false)
+
+
+(top = 20)
++-----+--------------------+
+|a    |coalesce(a, Unknown)|
++-----+--------------------+
+|Bill |Bill                |
+|Jill |Jill                |
+|null |Unknown             |
+|Tom  |Tom                 |
+|Fred |Fred                |
+|James|James               |
+|null |Unknown             |
++-----+--------------------+

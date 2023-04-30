@@ -1,0 +1,16 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- startswith(a, B): boolean (nullable = true)
+ |-- endswith(a, ill): boolean (nullable = true)
+
+
+(top = 20)
++-----+----------------+----------------+
+|a    |startswith(a, B)|endswith(a, ill)|
++-----+----------------+----------------+
+|Bill |true            |true            |
+|Jill |false           |true            |
+|Tom  |false           |false           |
+|Fred |false           |false           |
+|James|false           |false           |
++-----+----------------+----------------+

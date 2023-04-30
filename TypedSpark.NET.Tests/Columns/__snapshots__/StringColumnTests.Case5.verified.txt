@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- RLIKE(a, ^[T|F].*$): boolean (nullable = true)
+
+
+(top = 20)
++-----+-------------------+
+|a    |RLIKE(a, ^[T|F].*$)|
++-----+-------------------+
+|Bill |false              |
+|Jill |false              |
+|Tom  |true               |
+|Fred |true               |
+|James|false              |
++-----+-------------------+

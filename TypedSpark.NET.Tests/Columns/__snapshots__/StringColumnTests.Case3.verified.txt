@@ -1,0 +1,11 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- length(a): integer (nullable = true)
+
+
+(top = 20)
++-------+---------+
+|a      |length(a)|
++-------+---------+
+|abcdefg|7        |
++-------+---------+

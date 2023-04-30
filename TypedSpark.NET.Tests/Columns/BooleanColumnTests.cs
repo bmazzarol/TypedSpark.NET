@@ -6,6 +6,7 @@ using FluentAssertions;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using SparkTest.NET.Extensions;
+using TypedSpark.NET.Columns;
 using VerifyXunit;
 using Xunit;
 using static TypedSpark.NET.Tests.SparkTestExtensions;
@@ -85,7 +86,7 @@ namespace TypedSpark.NET.Tests.Columns
                 {
                     var col1 = B.New("Bool1");
                     var df = s.CreateDataFrameFromData(new { Bool1 = false });
-                    return df.Select((Column)Fn.Length(col1));
+                    return df.Select(((StringColumn)col1).Size());
                 })
                 .Act(df => df.Collect())
                 .Assert(rows => rows.SelectMany(x => x.Values).Should().ContainInOrder(5));

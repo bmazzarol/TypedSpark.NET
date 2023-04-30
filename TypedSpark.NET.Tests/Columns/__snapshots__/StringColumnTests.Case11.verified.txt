@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- ascii(a): integer (nullable = true)
+
+
+(top = 20)
++---+--------+
+|a  |ascii(a)|
++---+--------+
+|A  |65      |
+|a  |97      |
+|B  |66      |
+|b  |98      |
+|Zad|90      |
++---+--------+

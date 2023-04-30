@@ -1,0 +1,15 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- a LIKE %ill: boolean (nullable = true)
+
+
+(top = 20)
++-----+-----------+
+|a    |a LIKE %ill|
++-----+-----------+
+|Bill |true       |
+|Jill |true       |
+|Tom  |false      |
+|Fred |false      |
+|James|false      |
++-----+-----------+

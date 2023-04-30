@@ -1,0 +1,14 @@
+﻿root
+ |-- Some test string to test on: string (nullable = false)
+ |-- locate(test, Some test string to test on, 1): integer (nullable = false)
+ |-- locate(test, Some test string to test on, 10): integer (nullable = false)
+ |-- locate(test, Some test string to test on, 22): integer (nullable = false)
+ |-- locate(unknown, Some test string to test on, 1): integer (nullable = false)
+
+
+(top = 20)
++---------------------------+--------------------------------------------+---------------------------------------------+---------------------------------------------+-----------------------------------------------+
+|Some test string to test on|locate(test, Some test string to test on, 1)|locate(test, Some test string to test on, 10)|locate(test, Some test string to test on, 22)|locate(unknown, Some test string to test on, 1)|
++---------------------------+--------------------------------------------+---------------------------------------------+---------------------------------------------+-----------------------------------------------+
+|Some test string to test on|6                                           |21                                           |0                                            |0                                              |
++---------------------------+--------------------------------------------+---------------------------------------------+---------------------------------------------+-----------------------------------------------+

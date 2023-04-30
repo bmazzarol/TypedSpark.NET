@@ -1,0 +1,19 @@
+﻿root
+ |-- CAST(true AS BOOLEAN): boolean (nullable = true)
+ |-- CAST(1 AS TINYINT): byte (nullable = true)
+ |-- CAST(1 AS SMALLINT): short (nullable = true)
+ |-- CAST(1 AS INT): integer (nullable = true)
+ |-- CAST(1 AS BIGINT): long (nullable = true)
+ |-- CAST(1.0 AS FLOAT): float (nullable = true)
+ |-- CAST(1.0 AS DOUBLE): double (nullable = true)
+ |-- CAST(1.0 AS DECIMAL(10,0)): decimal(10,0) (nullable = true)
+ |-- CAST(2023-04-30 AS DATE): date (nullable = true)
+ |-- CAST(2023-04-30T12:00:00 AS TIMESTAMP): timestamp (nullable = true)
+
+
+(top = 20)
++---------------------+------------------+-------------------+--------------+-----------------+------------------+-------------------+--------------------------+------------------------+--------------------------------------+
+|CAST(true AS BOOLEAN)|CAST(1 AS TINYINT)|CAST(1 AS SMALLINT)|CAST(1 AS INT)|CAST(1 AS BIGINT)|CAST(1.0 AS FLOAT)|CAST(1.0 AS DOUBLE)|CAST(1.0 AS DECIMAL(10,0))|CAST(2023-04-30 AS DATE)|CAST(2023-04-30T12:00:00 AS TIMESTAMP)|
++---------------------+------------------+-------------------+--------------+-----------------+------------------+-------------------+--------------------------+------------------------+--------------------------------------+
+|true                 |1                 |1                  |1             |1                |1.0               |1.0                |1                         |2023-04-30              |2023-04-30 12:00:00                   |
++---------------------+------------------+-------------------+--------------+-----------------+------------------+-------------------+--------------------------+------------------------+--------------------------------------+

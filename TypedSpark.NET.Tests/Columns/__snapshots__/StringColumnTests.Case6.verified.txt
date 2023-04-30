@@ -1,0 +1,17 @@
+﻿root
+ |-- a: string (nullable = true)
+ |-- b: integer (nullable = true)
+ |-- substring(a, 0, b): string (nullable = true)
+ |-- substring(a, b, 1): string (nullable = true)
+
+
+(top = 20)
++-----+---+------------------+------------------+
+|a    |b  |substring(a, 0, b)|substring(a, b, 1)|
++-----+---+------------------+------------------+
+|Bill |2  |Bi                |i                 |
+|Jill |1  |J                 |J                 |
+|Tom  |3  |Tom               |m                 |
+|Fred |0  |                  |F                 |
+|James|3  |Jam               |m                 |
++-----+---+------------------+------------------+
