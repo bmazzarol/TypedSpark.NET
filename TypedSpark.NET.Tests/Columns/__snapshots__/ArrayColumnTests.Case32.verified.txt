@@ -1,0 +1,36 @@
+﻿root
+ |-- a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- c: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- d: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- e: array (nullable = true)
+ |    |-- element: float (containsNull = true)
+ |-- arrays_zip(a, b, c, d, e): array (nullable = true)
+ |    |-- element: struct (containsNull = false)
+ |    |    |-- a: integer (nullable = true)
+ |    |    |-- b: integer (nullable = true)
+ |    |    |-- c: string (nullable = true)
+ |    |    |-- d: long (nullable = true)
+ |    |    |-- e: float (nullable = true)
+ |-- arrays_zip(a, b, c, d, e, a, b, c, d, e).a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b, c, d, e, a, b, c, d, e).b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b, c, d, e, a, b, c, d, e).c: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- arrays_zip(a, b, c, d, e, a, b, c, d, e).d: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- arrays_zip(a, b, c, d, e, a, b, c, d, e).e: array (nullable = true)
+ |    |-- element: float (containsNull = true)
+
+
+(top = 20)
++------+------+------+------+-----------+---------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+
+|a     |b     |c     |d     |e          |arrays_zip(a, b, c, d, e)              |arrays_zip(a, b, c, d, e, a, b, c, d, e).a|arrays_zip(a, b, c, d, e, a, b, c, d, e).b|arrays_zip(a, b, c, d, e, a, b, c, d, e).c|arrays_zip(a, b, c, d, e, a, b, c, d, e).d|arrays_zip(a, b, c, d, e, a, b, c, d, e).e|
++------+------+------+------+-----------+---------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+
+|[1, 2]|[3, 4]|[5, 6]|[7, 8]|[9.1, 10.2]|[{1, 3, 5, 7, 9.1}, {2, 4, 6, 8, 10.2}]|[1, 2]                                    |[3, 4]                                    |[5, 6]                                    |[7, 8]                                    |[9.1, 10.2]                               |
++------+------+------+------+-----------+---------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+------------------------------------------+

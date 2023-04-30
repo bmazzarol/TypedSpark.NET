@@ -23,6 +23,25 @@ public abstract class TypedSchema
     /// </summary>
     public StructType Type { get; set; }
 
+    /// <summary>
+    /// Manual construction of a schema
+    /// </summary>
+    /// <param name="type">type</param>
+    /// <param name="columns">columns that make up the schema</param>
+    protected TypedSchema(StructType type, IEnumerable<Column> columns)
+    {
+        _columns = columns.ToList();
+        Type = type;
+    }
+
+    /// <summary>
+    /// Automatic construction of a schema based on its properties
+    /// </summary>
+    /// <param name="alias">provided alias</param>
+    /// <param name="columns">optional columns</param>
+    /// <exception cref="InvalidOperationException">if the schema is composed incorrectly</exception>
+    /// <exception cref="ArgumentException">number of provided columns is not the same as the properties</exception>
+    /// <exception cref="InvalidCastException">if the properties are not of type TypedColumn</exception>
     [SuppressMessage("Design", "MA0051:Method is too long")]
     protected TypedSchema(string? alias, TypedColumn[]? columns = default)
     {
@@ -105,6 +124,9 @@ public abstract class TypedSchema
 public abstract class TypedSchema<T> : TypedSchema
     where T : TypedSchema<T>, new()
 {
-    protected TypedSchema(string? alias, TypedColumn[]? columns = default)
+    protected TypedSchema(string? alias)
+        : base(alias) { }
+
+    protected TypedSchema(string? alias, TypedColumn[] columns)
         : base(alias, columns) { }
 }

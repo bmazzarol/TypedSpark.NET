@@ -57,8 +57,12 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// </summary>
     /// <returns>struct of key value</returns>
     [Since("3.0.0")]
-    public StructColumn<EntrySchema<TKey, TValue>> Entries() =>
-        new() { Column = F.MapEntries(Column) };
+    public Tuple2Column<TKey, TValue> Entries() =>
+        TupleColumn.New(
+            new TKey { Column = F.Col("key") },
+            new TValue { Column = F.Col("value") },
+            F.MapEntries(Column)
+        );
 
     /// <summary>
     /// Returns a map of the elements in the union of the given two maps

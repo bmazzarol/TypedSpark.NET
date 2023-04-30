@@ -10,15 +10,15 @@
  |    |-- element: struct (containsNull = false)
  |    |    |-- key: string (nullable = false)
  |    |    |-- value: integer (nullable = true)
- |-- map_entries(test).Key: array (nullable = true)
+ |-- map_entries(test).key: array (nullable = true)
  |    |-- element: string (containsNull = false)
- |-- map_entries(test).Value: array (nullable = true)
+ |-- map_entries(test).value: array (nullable = true)
  |    |-- element: integer (containsNull = true)
 
 
 (top = 20)
 +----------------------------------------+---------------+----------------+----------------------------------------+---------------------+-----------------------+
-|test                                    |map_keys(test) |map_values(test)|map_entries(test)                       |map_entries(test).Key|map_entries(test).Value|
+|test                                    |map_keys(test) |map_values(test)|map_entries(test)                       |map_entries(test).key|map_entries(test).value|
 +----------------------------------------+---------------+----------------+----------------------------------------+---------------------+-----------------------+
 |{a -> 1, b -> 2, c -> 3, d -> 4, e -> 5}|[a, b, c, d, e]|[1, 2, 3, 4, 5] |[{a, 1}, {b, 2}, {c, 3}, {d, 4}, {e, 5}]|[a, b, c, d, e]      |[1, 2, 3, 4, 5]        |
 +----------------------------------------+---------------+----------------+----------------------------------------+---------------------+-----------------------+

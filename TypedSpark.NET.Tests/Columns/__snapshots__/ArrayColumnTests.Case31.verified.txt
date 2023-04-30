@@ -1,0 +1,31 @@
+﻿root
+ |-- a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- c: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- d: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- arrays_zip(a, b, c, d): array (nullable = true)
+ |    |-- element: struct (containsNull = false)
+ |    |    |-- a: integer (nullable = true)
+ |    |    |-- b: integer (nullable = true)
+ |    |    |-- c: string (nullable = true)
+ |    |    |-- d: long (nullable = true)
+ |-- arrays_zip(a, b, c, d, a, b, c, d).a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b, c, d, a, b, c, d).b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b, c, d, a, b, c, d).c: array (nullable = true)
+ |    |-- element: string (containsNull = true)
+ |-- arrays_zip(a, b, c, d, a, b, c, d).d: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+
+
+(top = 20)
++------+------+------+------+----------------------------+------------------------------------+------------------------------------+------------------------------------+------------------------------------+
+|a     |b     |c     |d     |arrays_zip(a, b, c, d)      |arrays_zip(a, b, c, d, a, b, c, d).a|arrays_zip(a, b, c, d, a, b, c, d).b|arrays_zip(a, b, c, d, a, b, c, d).c|arrays_zip(a, b, c, d, a, b, c, d).d|
++------+------+------+------+----------------------------+------------------------------------+------------------------------------+------------------------------------+------------------------------------+
+|[1, 2]|[3, 4]|[5, 6]|[7, 8]|[{1, 3, 5, 7}, {2, 4, 6, 8}]|[1, 2]                              |[3, 4]                              |[5, 6]                              |[7, 8]                              |
++------+------+------+------+----------------------------+------------------------------------+------------------------------------+------------------------------------+------------------------------------+

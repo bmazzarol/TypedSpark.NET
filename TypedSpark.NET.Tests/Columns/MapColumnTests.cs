@@ -101,8 +101,8 @@ namespace TypedSpark.NET.Tests.Columns
                     col.Keys(),
                     col.Values(),
                     col.Entries(),
-                    col.Entries().Get(c => c.Key),
-                    col.Entries().Get(c => c.Value)
+                    col.Entries().Get(c => c.Item1),
+                    col.Entries().Get(c => c.Item2)
                 );
             });
 

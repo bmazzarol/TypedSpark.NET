@@ -51,7 +51,6 @@ namespace TypedSpark.NET.Tests.Columns
                 );
                 return df.Select(
                     ArrayColumn.New(
-                        "D",
                         IntegerColumn.New("A"),
                         IntegerColumn.New("B"),
                         IntegerColumn.New("C")
@@ -323,6 +322,121 @@ namespace TypedSpark.NET.Tests.Columns
                 var col = ArrayColumn.New<IntegerColumn>("test");
                 var df = s.CreateDataFrameFromData(new { test = new[] { 1, 2, 3, 4, 5 } });
                 return df.Select(col.PosExplodeOuter(out var pos, out var c), pos, c);
+            });
+
+        [Fact(DisplayName = "Zip can be called on an array column")]
+        public static async Task Case29() =>
+            await DebugDataframe(s =>
+            {
+                var a = ArrayColumn.New<IntegerColumn>("a");
+                var b = ArrayColumn.New<IntegerColumn>("b");
+                var zip = a.Zip(b);
+                var df = s.CreateDataFrameFromData(new { a = new[] { 1, 2 }, b = new[] { 3, 4 } });
+                return df.Select(a, b, zip, zip.Get(x => x.Item1), zip.Get(x => x.Item2));
+            });
+
+        [Fact(DisplayName = "Zip can be called on an inline array column")]
+        public static async Task Case29b() =>
+            await DebugDataframe(s =>
+            {
+                var a = ArrayColumn.New<IntegerColumn>(1, 2);
+                var b = ArrayColumn.New<IntegerColumn>(3, 4);
+                var zip = a.Zip(b);
+                var df = s.CreateEmptyFrame();
+                return df.Select(a, b, zip, zip.Get(x => x.Item1), zip.Get(x => x.Item2));
+            });
+
+        [Fact(DisplayName = "Zip can be called on 3 array columns")]
+        public static async Task Case30() =>
+            await DebugDataframe(s =>
+            {
+                var a = ArrayColumn.New<IntegerColumn>("a");
+                var b = ArrayColumn.New<IntegerColumn>("b");
+                var c = ArrayColumn.New<StringColumn>("c");
+                var zip = a.Zip(b, c);
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        a = new[] { 1, 2 },
+                        b = new[] { 3, 4 },
+                        c = new[] { "5", "6" }
+                    }
+                );
+                return df.Select(
+                    a,
+                    b,
+                    c,
+                    zip,
+                    zip.Get(x => x.Item1),
+                    zip.Get(x => x.Item2),
+                    zip.Get(x => x.Item3)
+                );
+            });
+
+        [Fact(DisplayName = "Zip can be called on 4 array columns")]
+        public static async Task Case31() =>
+            await DebugDataframe(s =>
+            {
+                var a = ArrayColumn.New<IntegerColumn>("a");
+                var b = ArrayColumn.New<IntegerColumn>("b");
+                var c = ArrayColumn.New<StringColumn>("c");
+                var d = ArrayColumn.New<LongColumn>("d");
+                var zip = a.Zip(b, c, d);
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        a = new[] { 1, 2 },
+                        b = new[] { 3, 4 },
+                        c = new[] { "5", "6" },
+                        d = new[] { 7L, 8L },
+                    }
+                );
+                return df.Select(
+                    a,
+                    b,
+                    c,
+                    d,
+                    zip,
+                    zip.Get(x => x.Item1),
+                    zip.Get(x => x.Item2),
+                    zip.Get(x => x.Item3),
+                    zip.Get(x => x.Item4)
+                );
+            });
+
+        [Fact(DisplayName = "Zip can be called on 5 array columns")]
+        public static async Task Case32() =>
+            await DebugDataframe(s =>
+            {
+                var a = ArrayColumn.New<IntegerColumn>("a");
+                var b = ArrayColumn.New<IntegerColumn>("b");
+                var c = ArrayColumn.New<StringColumn>("c");
+                var d = ArrayColumn.New<LongColumn>("d");
+                var e = ArrayColumn.New<FloatColumn>("e");
+                var zip = a.Zip(b, c, d, e);
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        a = new[] { 1, 2 },
+                        b = new[] { 3, 4 },
+                        c = new[] { "5", "6" },
+                        d = new[] { 7L, 8L },
+                        e = new[] { 9.1F, 10.2F },
+                    }
+                );
+                return df.Select(
+                    a,
+                    b,
+                    c,
+                    d,
+                    e,
+                    zip,
+                    zip.Get(x => x.Item1),
+                    zip.Get(x => x.Item2),
+                    zip.Get(x => x.Item3),
+                    zip.Get(x => x.Item4),
+                    zip.Get(x => x.Item5)
+                );
             });
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+using System.Globalization;
 using System.Linq;
 using Microsoft.Spark;
 using Microsoft.Spark.Sql;
@@ -257,12 +259,10 @@ public static class ArrayColumn
     /// <summary>
     /// Creates a new array column
     /// </summary>
-    /// <param name="name">name</param>
     /// <param name="columns">existing columns of the correct type</param>
     /// <returns>array column</returns>
-    public static ArrayColumn<T> New<T>(string name, params T[] columns)
-        where T : TypedColumn, new() =>
-        New<T>(F.Array(columns.Select(x => (Column)x).ToArray()).As(name));
+    public static ArrayColumn<T> New<T>(params T[] columns)
+        where T : TypedColumn, new() => New<T>(F.Array(columns.Select(x => (Column)x).ToArray()));
 
     /// <summary>
     /// Concatenates the elements of `column` using the `delimiter`
@@ -361,4 +361,133 @@ public static class ArrayColumn
     [Since("2.4.0")]
     public static ArrayColumn<T> Repeat<T>(this T left, IntegerColumn right)
         where T : TypedColumn, new() => New<T>(F.ArrayRepeat(left, right));
+
+    [Pure]
+    private static string ArrayTupleName(this string currentName, int index) =>
+        currentName.StartsWith("array(", StringComparison.Ordinal)
+        && currentName.EndsWith(")", StringComparison.Ordinal)
+            ? index.ToString(CultureInfo.InvariantCulture)
+            : currentName;
+
+    /// <summary>
+    /// Returns a merged array of structs in which the N-th struct contains all
+    /// N-th values of input arrays
+    /// </summary>
+    /// <param name="first">first array</param>
+    /// <param name="second">second array</param>
+    /// <returns>map/struct column</returns>
+    [Since("2.4.0")]
+    public static Tuple2Column<TA, TB> Zip<TA, TB>(
+        this ArrayColumn<TA> first,
+        ArrayColumn<TB> second
+    )
+        where TA : TypedColumn, new()
+        where TB : TypedColumn, new()
+    {
+        var firstValue = new TA { Column = F.Col(first.ToString().ArrayTupleName(0)) };
+        var secondValue = new TB { Column = F.Col(second.ToString().ArrayTupleName(1)) };
+        return TupleColumn.New(firstValue, secondValue, F.ArraysZip(first, second));
+    }
+
+    /// <summary>
+    /// Returns a merged array of structs in which the N-th struct contains all
+    /// N-th values of input arrays
+    /// </summary>
+    /// <param name="first">first array</param>
+    /// <param name="second">second array</param>
+    /// <param name="third">third array</param>
+    /// <returns>map/struct column</returns>
+    [Since("2.4.0")]
+    public static Tuple3Column<TA, TB, TC> Zip<TA, TB, TC>(
+        this ArrayColumn<TA> first,
+        ArrayColumn<TB> second,
+        ArrayColumn<TC> third
+    )
+        where TA : TypedColumn, new()
+        where TB : TypedColumn, new()
+        where TC : TypedColumn, new()
+    {
+        var firstValue = new TA { Column = F.Col(first.ToString().ArrayTupleName(0)) };
+        var secondValue = new TB { Column = F.Col(second.ToString().ArrayTupleName(1)) };
+        var thirdValue = new TC { Column = F.Col(third.ToString().ArrayTupleName(2)) };
+        return TupleColumn.New(
+            firstValue,
+            secondValue,
+            thirdValue,
+            F.ArraysZip(first, second, third)
+        );
+    }
+
+    /// <summary>
+    /// Returns a merged array of structs in which the N-th struct contains all
+    /// N-th values of input arrays
+    /// </summary>
+    /// <param name="first">first array</param>
+    /// <param name="second">second array</param>
+    /// <param name="third">third array</param>
+    /// <param name="fourth">fourth array</param>
+    /// <returns>map/struct column</returns>
+    [Since("2.4.0")]
+    public static Tuple4Column<TA, TB, TC, TD> Zip<TA, TB, TC, TD>(
+        this ArrayColumn<TA> first,
+        ArrayColumn<TB> second,
+        ArrayColumn<TC> third,
+        ArrayColumn<TD> fourth
+    )
+        where TA : TypedColumn, new()
+        where TB : TypedColumn, new()
+        where TC : TypedColumn, new()
+        where TD : TypedColumn, new()
+    {
+        var firstValue = new TA { Column = F.Col(first.ToString().ArrayTupleName(0)) };
+        var secondValue = new TB { Column = F.Col(second.ToString().ArrayTupleName(1)) };
+        var thirdValue = new TC { Column = F.Col(third.ToString().ArrayTupleName(2)) };
+        var fourthValue = new TD { Column = F.Col(fourth.ToString().ArrayTupleName(3)) };
+        return TupleColumn.New(
+            firstValue,
+            secondValue,
+            thirdValue,
+            fourthValue,
+            F.ArraysZip(first, second, third, fourth)
+        );
+    }
+
+    /// <summary>
+    /// Returns a merged array of structs in which the N-th struct contains all
+    /// N-th values of input arrays
+    /// </summary>
+    /// <param name="first">first array</param>
+    /// <param name="second">second array</param>
+    /// <param name="third">third array</param>
+    /// <param name="fourth">fourth array</param>
+    /// <param name="fifth">fifth array</param>
+    /// <returns>map/struct column</returns>
+    [Since("2.4.0")]
+    public static Tuple5Column<TA, TB, TC, TD, TE> Zip<TA, TB, TC, TD, TE>(
+        this ArrayColumn<TA> first,
+        ArrayColumn<TB> second,
+        ArrayColumn<TC> third,
+        ArrayColumn<TD> fourth,
+        ArrayColumn<TE> fifth
+    )
+        where TA : TypedColumn, new()
+        where TB : TypedColumn, new()
+        where TC : TypedColumn, new()
+        where TD : TypedColumn, new()
+        where TE : TypedColumn, new()
+    {
+        var firstValue = new TA { Column = F.Col(first.ToString().ArrayTupleName(0)) };
+        var secondValue = new TB { Column = F.Col(second.ToString().ArrayTupleName(1)) };
+        var thirdValue = new TC { Column = F.Col(third.ToString().ArrayTupleName(2)) };
+        var fourthValue = new TD { Column = F.Col(fourth.ToString().ArrayTupleName(3)) };
+        var fifthValue = new TE { Column = F.Col(fifth.ToString().ArrayTupleName(4)) };
+        return TupleColumn.New(
+            firstValue,
+            secondValue,
+            thirdValue,
+            fourthValue,
+            fifthValue,
+            F.ArraysZip(first, second, third, fourth, fifth)
+        );
+    }
 }

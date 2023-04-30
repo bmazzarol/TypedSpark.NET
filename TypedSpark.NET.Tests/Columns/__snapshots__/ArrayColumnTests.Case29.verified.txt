@@ -1,0 +1,21 @@
+﻿root
+ |-- a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b): array (nullable = true)
+ |    |-- element: struct (containsNull = false)
+ |    |    |-- a: integer (nullable = true)
+ |    |    |-- b: integer (nullable = true)
+ |-- arrays_zip(a, b, a, b).a: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- arrays_zip(a, b, a, b).b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+
+
+(top = 20)
++------+------+----------------+------------------------+------------------------+
+|a     |b     |arrays_zip(a, b)|arrays_zip(a, b, a, b).a|arrays_zip(a, b, a, b).b|
++------+------+----------------+------------------------+------------------------+
+|[1, 2]|[3, 4]|[{1, 3}, {2, 4}]|[1, 2]                  |[3, 4]                  |
++------+------+----------------+------------------------+------------------------+
