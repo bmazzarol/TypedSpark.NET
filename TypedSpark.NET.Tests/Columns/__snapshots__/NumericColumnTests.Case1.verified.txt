@@ -1,0 +1,15 @@
+﻿root
+ |-- -1: integer (nullable = false)
+ |-- abs(-1): integer (nullable = false)
+ |-- 1: integer (nullable = false)
+ |-- abs(1): integer (nullable = false)
+ |-- -123.0: double (nullable = false)
+ |-- abs(-123.0): double (nullable = false)
+
+
+(top = 20)
++---+-------+---+------+------+-----------+
+|-1 |abs(-1)|1  |abs(1)|-123.0|abs(-123.0)|
++---+-------+---+------+------+-----------+
+|-1 |1      |1  |1     |-123.0|123.0      |
++---+-------+---+------+------+-----------+

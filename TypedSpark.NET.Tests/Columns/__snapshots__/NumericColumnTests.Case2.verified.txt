@@ -1,0 +1,16 @@
+﻿root
+ |-- 1: integer (nullable = false)
+ |-- ACOS(1): double (nullable = true)
+ |-- 2: integer (nullable = false)
+ |-- ACOS(2): double (nullable = true)
+ |-- 1.2: double (nullable = false)
+ |-- ACOS(1.2): double (nullable = true)
+ |-- isnan(ACOS(1.2)): boolean (nullable = false)
+
+
+(top = 20)
++---+-------+---+-------+---+---------+----------------+
+|1  |ACOS(1)|2  |ACOS(2)|1.2|ACOS(1.2)|isnan(ACOS(1.2))|
++---+-------+---+-------+---+---------+----------------+
+|1  |0.0    |2  |NaN    |1.2|NaN      |true            |
++---+-------+---+-------+---+---------+----------------+

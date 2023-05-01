@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// Byte Column
 /// </summary>
 /// <remarks>Spark side only, cannot be serialized to Java at this stage</remarks>
-public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
+public sealed class ByteColumn : TypedNumericColumn<ByteColumn, ByteType, byte>
 {
     private ByteColumn(Column column)
         : base(new ByteType(), column) { }
@@ -68,21 +68,7 @@ public sealed class ByteColumn : TypedOrdColumn<ByteColumn, ByteType, byte>
     /// <returns>New column after applying bitwise XOR operator</returns>
     public ByteColumn BitwiseXOR(ByteColumn other) => New(Column.BitwiseXOR(other.Column));
 
-    /// <summary>
-    /// Casts the column to a string column, using the canonical string
-    /// representation of a byte.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
-
     public static implicit operator StringColumn(ByteColumn column) => column.CastToString();
-
-    /// <summary>
-    /// Casts the column to a int column, using the canonical int
-    /// representation of a byte.
-    /// </summary>
-    /// <returns>Column object</returns>
-    public IntegerColumn CastToInteger() => IntegerColumn.New(Column.Cast("int"));
 
     public static implicit operator IntegerColumn(ByteColumn column) => column.CastToInteger();
 }

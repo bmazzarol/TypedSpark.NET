@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark.Sql;
+﻿using Microsoft.Spark;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
 
@@ -15,6 +16,8 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     protected TypedNumericColumn(TSparkType columnType, Column column)
         : base(columnType, column) { }
 
+    private static TThis New(Column column) => new() { Column = column };
+
     /// <summary>Negate the given column.</summary>
     /// <param name="self">Column to negate</param>
     /// <returns>New column after applying negation</returns>
@@ -23,7 +26,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
 
     /// <summary>Negate the column.</summary>
     /// <returns>New column after applying negation</returns>
-    public TThis Negate() => new() { Column = -Column };
+    public TThis Negate() => New(-Column);
 
     //
     // Plus Operations
@@ -45,9 +48,9 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Plus(rhs);
 
     public TThis Plus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        new() { Column = Column.Plus((Column)rhs) };
+        New(Column.Plus((Column)rhs));
 
-    public TThis Plus(TNativeType rhs) => new() { Column = Column.Plus(F.Lit(rhs)) };
+    public TThis Plus(TNativeType rhs) => New(Column.Plus(F.Lit(rhs)));
 
     //
     // Minus Operations
@@ -69,9 +72,9 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Minus(rhs);
 
     public TThis Minus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        new() { Column = Column.Minus((Column)rhs) };
+        New(Column.Minus((Column)rhs));
 
-    public TThis Minus(TNativeType rhs) => new() { Column = Column.Minus(F.Lit(rhs)) };
+    public TThis Minus(TNativeType rhs) => New(Column.Minus(F.Lit(rhs)));
 
     //
     // Multiply Operations
@@ -93,9 +96,9 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Multiply(rhs);
 
     public TThis Multiply(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        new() { Column = Column.Multiply((Column)rhs) };
+        New(Column.Multiply((Column)rhs));
 
-    public TThis Multiply(TNativeType rhs) => new() { Column = Column.Multiply(F.Lit(rhs)) };
+    public TThis Multiply(TNativeType rhs) => New(Column.Multiply(F.Lit(rhs)));
 
     //
     // Divide Operations
@@ -109,7 +112,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator /(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => new() { Column = F.Lit(lhs).Divide((Column)rhs) };
+    ) => New(F.Lit(lhs).Divide((Column)rhs));
 
     public static TThis operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
@@ -117,9 +120,9 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Divide(rhs);
 
     public TThis Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        new() { Column = Column.Divide((Column)rhs) };
+        New(Column.Divide((Column)rhs));
 
-    public TThis Divide(TNativeType rhs) => new() { Column = Column.Divide(F.Lit(rhs)) };
+    public TThis Divide(TNativeType rhs) => New(Column.Divide(F.Lit(rhs)));
 
     //
     // Mod Operations
@@ -133,7 +136,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator %(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => new() { Column = F.Lit(lhs).Mod((Column)rhs) };
+    ) => New(F.Lit(lhs).Mod((Column)rhs));
 
     public static TThis operator %(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
@@ -141,9 +144,9 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     ) => lhs.Mod(rhs);
 
     public TThis Mod(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        new() { Column = Column.Mod((Column)rhs) };
+        New(Column.Mod((Column)rhs));
 
-    public TThis Mod(TNativeType rhs) => new() { Column = Column.Mod(F.Lit(rhs)) };
+    public TThis Mod(TNativeType rhs) => New(Column.Mod(F.Lit(rhs)));
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
@@ -197,5 +200,27 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// Return true if the column is NaN
     /// </summary>
     /// <returns>boolean column</returns>
+    [Since("1.5.0")]
     public BooleanColumn IsNaN() => BooleanColumn.New(F.IsNaN(Column));
+
+    /// <summary>
+    /// Returns the absolute value of the numeric or interval value
+    /// </summary>
+    /// <returns>numeric column</returns>
+    [Since("1.2.0")]
+    public TThis Abs() => New(F.Abs(Column));
+
+    /// <summary>
+    /// Returns the inverse cosine (a.k.a. arc cosine) of expr, as if computed by
+    /// </summary>
+    /// <returns>numeric column</returns>
+    [Since("1.4.0")]
+    public DoubleColumn Acos() => DoubleColumn.New(F.Acos(Column));
+
+    /// <summary>
+    /// Returns inverse hyperbolic cosine of expr.
+    /// </summary>
+    /// <returns>numeric column</returns>
+    [Since("3.0.0")]
+    public DoubleColumn Acosh() => DoubleColumn.New(F.Acosh(Column));
 }
