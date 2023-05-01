@@ -181,7 +181,7 @@ namespace TypedSpark.NET.Tests.Columns
                         }
                     }
                 );
-                return df.Select(col.ExplodeOuter(out var k, out var v), k, v);
+                return df.Select(col, col.ExplodeOuter(out var k, out var v), k + v);
             });
 
         [Fact(DisplayName = "PosExplode can be called on a map column")]
@@ -196,11 +196,11 @@ namespace TypedSpark.NET.Tests.Columns
                         {
                             ["1"] = 0,
                             ["2"] = 2,
-                            ["3"] = -1,
+                            ["3"] = -1
                         }
                     }
                 );
-                return df.Select(col.PosExplode(out var i, out var k, out var v), i, k, v);
+                return df.Select(col, col.PosExplode(out var i, out var k, out var v), i + k + v);
             });
 
         [Fact(DisplayName = "PosExplode outer can be called on a map column")]

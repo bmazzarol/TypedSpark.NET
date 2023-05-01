@@ -438,5 +438,31 @@ namespace TypedSpark.NET.Tests.Columns
                     zip.Get(x => x.Item5)
                 );
             });
+
+        [Fact(DisplayName = "Aggregate can be called on an array column")]
+        public static async Task Case33() =>
+            await DebugDataframe(s =>
+            {
+                var a = IntegerColumn.New("a");
+                var b = ArrayColumn.New<IntegerColumn>("b");
+                var c = StringColumn.New("c");
+                var d = ArrayColumn.New<StringColumn>("d");
+                var df = s.CreateDataFrameFromData(
+                    new
+                    {
+                        a = 1,
+                        b = new[] { 1, 2, 3, 4, 5 },
+                        c = "",
+                        d = new[] { "a", "b", "c", "1", "2" }
+                    }
+                );
+                return df.Select(
+                    a,
+                    b,
+                    b.Aggregate(a, (acc, x) => acc + x),
+                    c,
+                    d.Aggregate(c, (acc, x) => acc + x.Ascii(), x => x.CastToLong())
+                );
+            });
     }
 }

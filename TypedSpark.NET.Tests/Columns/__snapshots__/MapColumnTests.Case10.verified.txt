@@ -1,17 +1,18 @@
 ﻿root
+ |-- test: map (nullable = true)
+ |    |-- key: string
+ |    |-- value: integer (valueContainsNull = true)
  |-- pos: integer (nullable = false)
  |-- key: string (nullable = false)
  |-- value: integer (nullable = true)
- |-- pos: integer (nullable = false)
- |-- key: string (nullable = false)
- |-- value: integer (nullable = true)
+ |-- concat(concat(CAST(pos AS STRING), key), CAST(value AS STRING)): string (nullable = true)
 
 
 (top = 20)
-+---+---+-----+---+---+-----+
-|pos|key|value|pos|key|value|
-+---+---+-----+---+---+-----+
-|0  |1  |0    |0  |1  |0    |
-|1  |2  |2    |1  |2  |2    |
-|2  |3  |-1   |2  |3  |-1   |
-+---+---+-----+---+---+-----+
++-------------------------+---+---+-----+---------------------------------------------------------------+
+|test                     |pos|key|value|concat(concat(CAST(pos AS STRING), key), CAST(value AS STRING))|
++-------------------------+---+---+-----+---------------------------------------------------------------+
+|{1 -> 0, 2 -> 2, 3 -> -1}|0  |1  |0    |010                                                            |
+|{1 -> 0, 2 -> 2, 3 -> -1}|1  |2  |2    |122                                                            |
+|{1 -> 0, 2 -> 2, 3 -> -1}|2  |3  |-1   |23-1                                                           |
++-------------------------+---+---+-----+---------------------------------------------------------------+

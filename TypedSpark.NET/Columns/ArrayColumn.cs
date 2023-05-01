@@ -233,6 +233,49 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
                 $"filter({Column}, (x, i) -> {pred(new T { Column = F.Col("x") }, IntegerColumn.New("i"))})"
             )
         );
+
+    private TC InternalAggregate<TB, TC>(
+        TB seed,
+        Func<TB, T, TB> merge,
+        Func<TB, TC>? project = default
+    )
+        where TB : TypedColumn, new()
+        where TC : TypedColumn, new() =>
+        new()
+        {
+            Column = F.Expr(
+                $"aggregate({Column},{seed.Column},"
+                    + $"(acc, x) -> {merge(new TB { Column = F.Col("acc") }, new T { Column = F.Col("x") })}"
+                    + (
+                        project != null
+                            ? $",x -> {project(new TB { Column = F.Col("x") })}"
+                            : string.Empty
+                    )
+                    + ")"
+            )
+        };
+
+    /// <summary>
+    /// Applies a binary operator to an initial state and all elements in the array, and reduces this to a single state
+    /// </summary>
+    /// <param name="seed">seed</param>
+    /// <param name="merge">merge function</param>
+    /// <returns>aggregated state</returns>
+    [Since("2.4.0")]
+    public TB Aggregate<TB>(TB seed, Func<TB, T, TB> merge)
+        where TB : TypedColumn, new() => InternalAggregate<TB, TB>(seed, merge);
+
+    /// <summary>
+    /// Applies a binary operator to an initial state and all elements in the array, and reduces this to a single state
+    /// </summary>
+    /// <param name="seed">seed</param>
+    /// <param name="merge">merge function</param>
+    /// <param name="project">projection function</param>
+    /// <returns>aggregated state</returns>
+    [Since("2.4.0")]
+    public TC Aggregate<TB, TC>(TB seed, Func<TB, T, TB> merge, Func<TB, TC> project)
+        where TB : TypedColumn, new()
+        where TC : TypedColumn, new() => InternalAggregate(seed, merge, project);
 }
 
 public static class ArrayColumn

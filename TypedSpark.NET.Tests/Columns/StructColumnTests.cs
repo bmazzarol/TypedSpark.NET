@@ -42,6 +42,7 @@ namespace TypedSpark.NET.Tests.Columns
             await DebugDataframe(s =>
             {
                 var col = StructColumn.New<Schema1>("test");
+                var d = LongColumn.New("D");
                 return s.CreateDataFrameFromData(
                         new
                         {
@@ -54,7 +55,7 @@ namespace TypedSpark.NET.Tests.Columns
                             }
                         }
                     )
-                    .Select(col, col.Migrate<Schema2>());
+                    .Select(d, col, col.Migrate<Schema2>());
             });
 
         [Fact(DisplayName = "Struct column can be created from columns")]

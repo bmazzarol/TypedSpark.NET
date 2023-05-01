@@ -1,0 +1,15 @@
+﻿root
+ |-- a: integer (nullable = true)
+ |-- b: array (nullable = true)
+ |    |-- element: integer (containsNull = true)
+ |-- aggregate(b, a, lambdafunction((namedlambdavariable() + namedlambdavariable()), namedlambdavariable(), namedlambdavariable()), lambdafunction(namedlambdavariable(), namedlambdavariable())): integer (nullable = true)
+ |-- c: string (nullable = true)
+ |-- aggregate(d, c, lambdafunction(concat(namedlambdavariable(), CAST(ascii(namedlambdavariable()) AS STRING)), namedlambdavariable(), namedlambdavariable()), lambdafunction(CAST(namedlambdavariable() AS BIGINT), namedlambdavariable())): long (nullable = true)
+
+
+(top = 20)
++---+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|a  |b              |aggregate(b, a, lambdafunction((namedlambdavariable() + namedlambdavariable()), namedlambdavariable(), namedlambdavariable()), lambdafunction(namedlambdavariable(), namedlambdavariable()))|c  |aggregate(d, c, lambdafunction(concat(namedlambdavariable(), CAST(ascii(namedlambdavariable()) AS STRING)), namedlambdavariable(), namedlambdavariable()), lambdafunction(CAST(namedlambdavariable() AS BIGINT), namedlambdavariable()))|
++---+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|1  |[1, 2, 3, 4, 5]|16                                                                                                                                                                                          |   |9798994950                                                                                                                                                                                                                              |
++---+---------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+---+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
