@@ -7,9 +7,13 @@ using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Day time interval type
+/// </summary>
 [SuppressMessage("Design", "MA0048:File name must match type name")]
 public sealed class DayTimeIntervalType : AtomicType
 {
+    /// <inheritdoc />
     public override string SimpleString => nameof(DayTimeIntervalType);
 }
 
@@ -25,6 +29,9 @@ public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeInterva
     private IntervalColumn(Column column)
         : base(new DayTimeIntervalType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public IntervalColumn()
         : this(F.Col(string.Empty)) { }
 

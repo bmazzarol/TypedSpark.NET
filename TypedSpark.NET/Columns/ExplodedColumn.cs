@@ -12,6 +12,7 @@ public class ExplodedColumn : TypedColumn
     internal ExplodedColumn(Column column)
         : base(new NullType(), column) { }
 
+    /// <inheritdoc />
     [SuppressMessage(
         "Design",
         "MA0025:Implement the functionality instead of throwing NotImplementedException"

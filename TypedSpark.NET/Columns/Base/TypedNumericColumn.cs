@@ -13,6 +13,11 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {
+    /// <summary>
+    /// Constructor that enforces that a typed column has a spark data type and underlying untyped column
+    /// </summary>
+    /// <param name="columnType">spark data type</param>
+    /// <param name="column">untyped column</param>
     protected TypedNumericColumn(TSparkType columnType, Column column)
         : base(columnType, column) { }
 
@@ -28,124 +33,179 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <returns>New column after applying negation</returns>
     public TThis Negate() => New(-Column);
 
-    //
-    // Plus Operations
-    //
-
+    /// <summary>
+    /// Sum
+    /// </summary>
     public static TThis operator +(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Plus(rhs);
 
+    /// <summary>
+    /// Sum
+    /// </summary>
     public static TThis operator +(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => rhs.Plus(lhs);
 
+    /// <summary>
+    /// Sum
+    /// </summary>
     public static TThis operator +(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Plus(rhs);
 
-    public TThis Plus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        New(Column.Plus((Column)rhs));
+    /// <summary>
+    /// Sum
+    /// </summary>
+    public TThis Plus(TypedNumericColumn<TThis, TSparkType, TNativeType> other) =>
+        New(Column.Plus((Column)other));
 
-    public TThis Plus(TNativeType rhs) => New(Column.Plus(F.Lit(rhs)));
+    /// <summary>
+    /// Sum
+    /// </summary>
+    public TThis Plus(TNativeType other) => New(Column.Plus(F.Lit(other)));
 
-    //
-    // Minus Operations
-    //
-
+    /// <summary>
+    /// Subtract
+    /// </summary>
     public static TThis operator -(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Minus(rhs);
 
+    /// <summary>
+    /// Subtract
+    /// </summary>
     public static TThis operator -(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => rhs.Minus(lhs);
 
+    /// <summary>
+    /// Subtract
+    /// </summary>
     public static TThis operator -(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Minus(rhs);
 
-    public TThis Minus(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        New(Column.Minus((Column)rhs));
+    /// <summary>
+    /// Subtract
+    /// </summary>
+    public TThis Minus(TypedNumericColumn<TThis, TSparkType, TNativeType> other) =>
+        New(Column.Minus((Column)other));
 
-    public TThis Minus(TNativeType rhs) => New(Column.Minus(F.Lit(rhs)));
+    /// <summary>
+    /// Subtract
+    /// </summary>
+    public TThis Minus(TNativeType other) => New(Column.Minus(F.Lit(other)));
 
-    //
-    // Multiply Operations
-    //
-
+    /// <summary>
+    /// Multiply
+    /// </summary>
     public static TThis operator *(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Multiply(rhs);
 
+    /// <summary>
+    /// Multiply
+    /// </summary>
     public static TThis operator *(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => rhs.Multiply(lhs);
 
+    /// <summary>
+    /// Multiply
+    /// </summary>
     public static TThis operator *(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Multiply(rhs);
 
+    /// <summary>
+    /// Multiply
+    /// </summary>
     public TThis Multiply(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         New(Column.Multiply((Column)rhs));
 
+    /// <summary>
+    /// Multiply
+    /// </summary>
     public TThis Multiply(TNativeType rhs) => New(Column.Multiply(F.Lit(rhs)));
 
-    //
-    // Divide Operations
-    //
-
+    /// <summary>
+    /// Divide
+    /// </summary>
     public static TThis operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Divide(rhs);
 
+    /// <summary>
+    /// Divide
+    /// </summary>
     public static TThis operator /(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => New(F.Lit(lhs).Divide((Column)rhs));
 
+    /// <summary>
+    /// Divide
+    /// </summary>
     public static TThis operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Divide(rhs);
 
+    /// <summary>
+    /// Divide
+    /// </summary>
     public TThis Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         New(Column.Divide((Column)rhs));
 
+    /// <summary>
+    /// Divide
+    /// </summary>
     public TThis Divide(TNativeType rhs) => New(Column.Divide(F.Lit(rhs)));
 
-    //
-    // Mod Operations
-    //
-
+    /// <summary>
+    /// Mod
+    /// </summary>
     public static TThis operator %(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Mod(rhs);
 
+    /// <summary>
+    /// Mod
+    /// </summary>
     public static TThis operator %(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => New(F.Lit(lhs).Mod((Column)rhs));
 
+    /// <summary>
+    /// Mod
+    /// </summary>
     public static TThis operator %(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Mod(rhs);
 
+    /// <summary>
+    /// Mod
+    /// </summary>
     public TThis Mod(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
         New(Column.Mod((Column)rhs));
 
+    /// <summary>
+    /// Mod
+    /// </summary>
     public TThis Mod(TNativeType rhs) => New(Column.Mod(F.Lit(rhs)));
 
     /// <summary>

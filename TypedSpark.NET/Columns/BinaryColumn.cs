@@ -14,6 +14,9 @@ public sealed class BinaryColumn : TypedOrdColumn<BinaryColumn, BinaryType, byte
     private BinaryColumn(Column column)
         : base(new BinaryType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     [ExcludeFromCodeCoverage]
     public BinaryColumn()
         : this(F.Col(string.Empty)) { }

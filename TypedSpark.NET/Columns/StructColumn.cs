@@ -25,6 +25,9 @@ public class StructColumn<T> : TypedColumn<StructColumn<T>, StructType>
     internal StructColumn(Column column)
         : this(new T(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public StructColumn()
         : this(F.Col(string.Empty)) { }
 
@@ -62,6 +65,9 @@ public class StructColumn<T> : TypedColumn<StructColumn<T>, StructType>
     }
 }
 
+/// <summary>
+/// Static companion class for StructColumn
+/// </summary>
 public static class StructColumn
 {
     /// <summary>

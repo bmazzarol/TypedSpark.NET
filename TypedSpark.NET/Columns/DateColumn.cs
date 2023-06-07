@@ -14,9 +14,13 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     private DateColumn(Column column)
         : base(new DateType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public DateColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         DateTime.TryParse(
             Column.ToString(),

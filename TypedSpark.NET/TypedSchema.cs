@@ -116,17 +116,31 @@ public abstract class TypedSchema
         });
     }
 
+    /// <summary>
+    /// Supported columns on the schema
+    /// </summary>
+    /// <returns>columns</returns>
     public IEnumerable<Column> Columns() => _columns;
 
+    /// <summary>
+    /// Supported column names on the schema
+    /// </summary>
+    /// <returns>column names</returns>
     public IEnumerable<string> ColumnNames() => Type.Fields.Select(x => x.Name);
 }
 
+/// <summary>
+/// A typed schema
+/// </summary>
+/// <typeparam name="T">type of the schema</typeparam>
 public abstract class TypedSchema<T> : TypedSchema
     where T : TypedSchema<T>, new()
 {
+    /// <inheritdoc />
     protected TypedSchema(string? alias)
         : base(alias) { }
 
+    /// <inheritdoc />
     protected TypedSchema(string? alias, TypedColumn[] columns)
         : base(alias, columns) { }
 }

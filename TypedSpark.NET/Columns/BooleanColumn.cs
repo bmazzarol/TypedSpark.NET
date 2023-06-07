@@ -13,9 +13,13 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     private BooleanColumn(Column column)
         : base(new BooleanType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty array column
+    /// </summary>
     public BooleanColumn()
         : this(F.Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         bool.TryParse(Column.ToString(), out var b) ? b : null;
 
@@ -92,6 +96,9 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// <returns>string column</returns>
     public StringColumn CastToString() => StringColumn.New(Column.Cast("string"));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(BooleanColumn column) => column.CastToString();
 
     /// <summary>

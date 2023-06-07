@@ -5,14 +5,21 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Integer column
+/// </summary>
 public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
 {
     private IntegerColumn(Column column)
         : base(new IntegerType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public IntegerColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         int.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)
             ? b
@@ -41,6 +48,9 @@ public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerTyp
     /// <returns>typed column</returns>
     public static implicit operator IntegerColumn(int lit) => New(Lit(lit));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(IntegerColumn column) => column.CastToString();
 
     /// <summary>

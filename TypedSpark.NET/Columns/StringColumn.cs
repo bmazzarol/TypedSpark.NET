@@ -17,9 +17,13 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     private StringColumn(Column column)
         : base(new StringType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public StringColumn()
         : this(F.Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() => Column.ToString();
 
     /// <summary>
@@ -52,16 +56,25 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <returns>string column</returns>
     public static implicit operator StringColumn(Regex lit) => lit.ToString();
 
+    /// <summary>
+    /// Concatenation
+    /// </summary>
     public static StringColumn operator +(StringColumn lhs, StringColumn rhs) => lhs.Plus(rhs);
 
+    /// <summary>
+    /// Concatenation
+    /// </summary>
     public static StringColumn operator +(StringColumn lhs, string rhs) => lhs.Plus(rhs);
 
+    /// <summary>
+    /// Concatenation
+    /// </summary>
     public static StringColumn operator +(string lhs, StringColumn rhs) =>
         ((StringColumn)lhs).Plus(rhs);
 
-    /// <summary>Sum of this expression and another expression.</summary>
-    /// <param name="rhs">The expression to be summed with</param>
-    /// <returns>string column</returns>
+    /// <summary>
+    /// Concatenation
+    /// </summary>
     public StringColumn Plus(StringColumn rhs) => New(F.Concat(Column, rhs));
 
     /// <summary>

@@ -8,6 +8,9 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Base objects in the typed column hierarchy
+/// </summary>
 public abstract class TypedColumn
 {
     /// <summary>
@@ -20,12 +23,30 @@ public abstract class TypedColumn
     /// </summary>
     public DataType ColumnType { get; }
 
+    /// <summary>
+    /// Constructor that enforces that a typed column has a spark data type and underlying untyped column
+    /// </summary>
+    /// <param name="columnType">spark data type</param>
+    /// <param name="column">untyped column</param>
     protected TypedColumn(DataType columnType, Column column)
     {
         ColumnType = columnType;
         Column = column;
     }
 
+    /// <summary>
+    /// <para>
+    /// Internal mechanism used to convert a typed column to a dotnet value
+    /// of the correct native type.
+    /// </para>
+    /// <para>This can be used by spark functions that only operate on literal values.</para>
+    /// </summary>
+    /// <remarks>
+    /// This is not a safe operation and requires context at the call site to work.
+    /// Its expected that implementing typed columns implement this only when its possible,
+    /// and throw an unsupported operation in all other cases.
+    /// </remarks>
+    /// <returns>underlying dotnet type the column represents, or null</returns>
     protected internal abstract object? CoerceToNative();
 
     /// <summary>
@@ -34,6 +55,7 @@ public abstract class TypedColumn
     /// <param name="extended">To print extended version or not</param>
     public void Explain(bool extended) => Column.Explain(extended);
 
+    /// <inheritdoc />
     public override string ToString() => Column.ToString();
 
     /// <summary>
@@ -64,9 +86,11 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// </summary>
     public new TSparkType ColumnType { get; }
 
+    /// <inheritdoc />
     protected TypedColumn(TSparkType columnType, Column column)
         : base(columnType, column) => ColumnType = columnType;
 
+    /// <inheritdoc />
     [SuppressMessage(
         "Design",
         "MA0025:Implement the functionality instead of throwing NotImplementedException"
@@ -200,6 +224,11 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
 /// <typeparam name="TThis">current extending type</typeparam>
 /// <typeparam name="TSparkType">supported spark type</typeparam>
 /// <typeparam name="TNativeType">native dotnet type</typeparam>
+[SuppressMessage(
+    "Blocker Code Smell",
+    "S3875:\"operator==\" should not be overloaded on reference types",
+    Justification = "Spark equaility is required, all operations on a typed column are just proxy operations to Spark"
+)]
 public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<TThis, TSparkType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
@@ -209,54 +238,79 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     /// </summary>
     public new TSparkType ColumnType { get; }
 
+    /// <inheritdoc />
     protected TypedColumn(TSparkType columnType, Column column)
         : base(columnType, column) => ColumnType = columnType;
 
-    //
-    // Equals Operations
-    //
-
+    /// <summary>
+    /// Equals
+    /// </summary>
     public static BooleanColumn operator ==(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.EqualTo(rhs);
 
+    /// <summary>
+    /// Equals
+    /// </summary>
     public static BooleanColumn operator ==(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => rhs.EqualTo(lhs);
 
+    /// <summary>
+    /// Equals
+    /// </summary>
     public static BooleanColumn operator ==(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.EqualTo(rhs);
 
-    public BooleanColumn EqualTo(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.EqualTo((Column)rhs));
+    /// <summary>
+    /// Equals
+    /// </summary>
+    public BooleanColumn EqualTo(TypedColumn<TThis, TSparkType, TNativeType> other) =>
+        BooleanColumn.New(Column.EqualTo((Column)other));
 
-    public BooleanColumn EqualTo(TNativeType rhs) => BooleanColumn.New(Column.EqualTo(Lit(rhs)));
+    /// <summary>
+    /// Equals
+    /// </summary>
+    public BooleanColumn EqualTo(TNativeType other) =>
+        BooleanColumn.New(Column.EqualTo(Lit(other)));
 
-    //
-    // Not Equals Operations
-    //
-
+    /// <summary>
+    /// Not Equals
+    /// </summary>
     public static BooleanColumn operator !=(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.NotEqual(rhs);
 
+    /// <summary>
+    /// Not Equals
+    /// </summary>
     public static BooleanColumn operator !=(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
     ) => rhs.NotEqual(lhs);
 
+    /// <summary>
+    /// Not Equals
+    /// </summary>
     public static BooleanColumn operator !=(
         TypedColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.NotEqual(rhs);
 
-    public BooleanColumn NotEqual(TypedColumn<TThis, TSparkType, TNativeType> rhs) =>
-        BooleanColumn.New(Column.NotEqual((Column)rhs));
+    /// <summary>
+    /// Not Equals
+    /// </summary>
+    public BooleanColumn NotEqual(TypedColumn<TThis, TSparkType, TNativeType> other) =>
+        BooleanColumn.New(Column.NotEqual((Column)other));
 
-    public BooleanColumn NotEqual(TNativeType rhs) => BooleanColumn.New(Column.NotEqual(Lit(rhs)));
+    /// <summary>
+    /// Not Equals
+    /// </summary>
+    public BooleanColumn NotEqual(TNativeType other) =>
+        BooleanColumn.New(Column.NotEqual(Lit(other)));
 }

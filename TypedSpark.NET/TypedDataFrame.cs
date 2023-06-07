@@ -34,6 +34,9 @@ public sealed class TypedDataFrame<TSchema>
         AliasSchemaBuilder = aliasSchemaFn;
     }
 
+    /// <summary>
+    /// Converts a TypedDataFrame to a untyped DataFrame
+    /// </summary>
     public static implicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
         typedDataFrame.DataFrame;
 
