@@ -7,7 +7,7 @@ using static SparkTest.NET.SparkSessionFactory;
 
 namespace TypedSpark.NET.Tests.Examples
 {
-    public static class Not
+    public static class NotEquals
     {
         [Fact]
         public static void Case1() =>
@@ -17,8 +17,10 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example1
 
-                    BooleanColumn col = true;
-                    DataFrame result = df.Select(!col, col.Not());
+                    IntegerColumn a = 1;
+                    IntegerColumn b = 2;
+                    StringColumn c = "2";
+                    DataFrame result = df.Select(a != b, a != c);
 
                     #endregion
 
@@ -34,8 +36,10 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example2
 
-                    BooleanColumn col = false;
-                    DataFrame result = df.Select(!col, col.Not());
+                    IntegerColumn a = 1;
+                    IntegerColumn b = 1;
+                    StringColumn c = "1";
+                    DataFrame result = df.Select(a != b, a != c);
 
                     #endregion
 
