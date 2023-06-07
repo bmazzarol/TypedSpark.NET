@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
@@ -61,7 +62,7 @@ public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeInterva
         new()
         {
             Column = F.Expr(
-                $"make_interval(0,0,0,{lit.Days},{lit.Hours},{lit.Minutes},{lit.Seconds})"
+                $"make_interval(0,0,0,{lit.Days.ToString(CultureInfo.InvariantCulture)},{lit.Hours.ToString(CultureInfo.InvariantCulture)},{lit.Minutes.ToString(CultureInfo.InvariantCulture)},{lit.Seconds.ToString(CultureInfo.InvariantCulture)})"
             )
         };
 
