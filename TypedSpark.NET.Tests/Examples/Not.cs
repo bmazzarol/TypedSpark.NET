@@ -22,7 +22,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #endregion
 
-                    return result.ShowMdString();
+                    return result.ShowMdString(showPlan: false);
                 })
                 .SaveResults();
 
@@ -39,7 +39,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #endregion
 
-                    return result.ShowMdString();
+                    return result.ShowMdString(showPlan: false);
                 })
                 .SaveResults();
     }
