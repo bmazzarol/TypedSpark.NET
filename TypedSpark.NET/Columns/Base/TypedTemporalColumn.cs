@@ -13,6 +13,11 @@ public class TypedTemporalColumn<TThis, TSparkType, TNativeType>
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {
+    /// <summary>
+    /// Constructor that enforces that a typed column has a spark data type and underlying untyped column
+    /// </summary>
+    /// <param name="columnType">spark data type</param>
+    /// <param name="column">untyped column</param>
     public TypedTemporalColumn(TSparkType columnType, Column column)
         : base(columnType, column) { }
 

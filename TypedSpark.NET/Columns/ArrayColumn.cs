@@ -18,6 +18,9 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     internal ArrayColumn(Column column)
         : base(new ArrayType(new T().ColumnType), column) { }
 
+    /// <summary>
+    /// Constructs an empty array column
+    /// </summary>
     public ArrayColumn()
         : this(F.Col(string.Empty)) { }
 
@@ -278,6 +281,9 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
         where TC : TypedColumn, new() => InternalAggregate(seed, merge, project);
 }
 
+/// <summary>
+/// Array columns static companion object
+/// </summary>
 public static class ArrayColumn
 {
     /// <summary>

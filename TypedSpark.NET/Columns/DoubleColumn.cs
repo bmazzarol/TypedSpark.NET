@@ -5,14 +5,21 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Double column
+/// </summary>
 public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
 {
     private DoubleColumn(Column column)
         : base(new DoubleType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public DoubleColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         double.TryParse(
             Column.ToString(),
@@ -46,6 +53,9 @@ public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, 
     /// <returns>typed column</returns>
     public static implicit operator DoubleColumn(double lit) => New(Lit(lit));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(DoubleColumn column) => column.CastToString();
 
     /// <summary>

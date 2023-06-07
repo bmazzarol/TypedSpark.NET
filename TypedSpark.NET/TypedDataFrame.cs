@@ -34,6 +34,9 @@ public sealed class TypedDataFrame<TSchema>
         AliasSchemaBuilder = aliasSchemaFn;
     }
 
+    /// <summary>
+    /// Converts a TypedDataFrame to a untyped DataFrame
+    /// </summary>
     public static implicit operator DataFrame(TypedDataFrame<TSchema> typedDataFrame) =>
         typedDataFrame.DataFrame;
 
@@ -188,7 +191,7 @@ public sealed class TypedDataFrame<TSchema>
         return new TypedDataFrame<TB>(
             DataFrame
                 .Join(other.DataFrame, (Column)join(Schema, other.Schema), type)
-                .Select(schema.ExtractColumns(true).ToArray()),
+                .Select(schema.ExtractColumns(alias: true).ToArray()),
             schema,
             _ => schema
         );
@@ -336,7 +339,7 @@ public sealed class TypedDataFrame<TSchema>
     /// <returns>DataFrame object</returns>
     public TypedDataFrame<TSchema> Sort<T>(Func<TSchema, T> selector) =>
         new(
-            DataFrame.Sort(selector(Schema).ExtractColumns(false).ToArray()),
+            DataFrame.Sort(selector(Schema).ExtractColumns(alias: false).ToArray()),
             Schema,
             AliasSchemaBuilder
         );

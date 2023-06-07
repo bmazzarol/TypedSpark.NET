@@ -5,14 +5,21 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Long column
+/// </summary>
 public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
 {
     private LongColumn(Column column)
         : base(new LongType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public LongColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         long.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)
             ? b
@@ -40,6 +47,9 @@ public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
     /// <returns>typed column</returns>
     public static implicit operator LongColumn(long lit) => New(Lit(lit));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(LongColumn column) => column.CastToString();
 
     /// <summary>

@@ -8,7 +8,14 @@ namespace TypedSpark.NET;
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class SparkNameAttribute : Attribute
 {
+    /// <summary>
+    /// Name of the spark column/field
+    /// </summary>
     public string Name { get; }
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="name">name</param>
     public SparkNameAttribute(string name) => Name = name;
 }

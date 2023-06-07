@@ -14,9 +14,13 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     private TimestampColumn(Column column)
         : base(new TimestampType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public TimestampColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         DateTime.TryParse(
             Column.ToString(),

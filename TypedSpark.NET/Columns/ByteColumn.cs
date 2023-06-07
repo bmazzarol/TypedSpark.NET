@@ -13,9 +13,13 @@ public sealed class ByteColumn : TypedNumericColumn<ByteColumn, ByteType, byte>
     private ByteColumn(Column column)
         : base(new ByteType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public ByteColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         byte.TryParse(Column.ToString(), out var b) ? b : null;
 
@@ -68,7 +72,13 @@ public sealed class ByteColumn : TypedNumericColumn<ByteColumn, ByteType, byte>
     /// <returns>New column after applying bitwise XOR operator</returns>
     public ByteColumn BitwiseXOR(ByteColumn other) => New(Column.BitwiseXOR(other.Column));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(ByteColumn column) => column.CastToString();
 
+    /// <summary>
+    /// Cast to int
+    /// </summary>
     public static implicit operator IntegerColumn(ByteColumn column) => column.CastToInteger();
 }

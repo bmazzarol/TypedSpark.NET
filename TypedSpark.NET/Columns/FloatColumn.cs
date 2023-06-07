@@ -5,14 +5,21 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Float column
+/// </summary>
 public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, float>
 {
     private FloatColumn(Column column)
         : base(new FloatType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public FloatColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         float.TryParse(Column.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var b)
             ? b
@@ -41,6 +48,9 @@ public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, flo
     /// <returns>typed column</returns>
     public static implicit operator FloatColumn(float lit) => New(Lit((double)lit));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(FloatColumn column) => column.CastToString();
 
     /// <summary>

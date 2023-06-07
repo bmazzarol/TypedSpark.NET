@@ -18,6 +18,9 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     internal MapColumn(Column column)
         : base(new MapType(new TKey().ColumnType, new TValue().ColumnType), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public MapColumn()
         : this(F.Col(string.Empty)) { }
 
@@ -148,6 +151,9 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     }
 }
 
+/// <summary>
+/// Static companion class for MapColumn
+/// </summary>
 public static class MapColumn
 {
     /// <summary>

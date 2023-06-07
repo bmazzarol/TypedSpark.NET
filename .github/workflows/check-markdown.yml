@@ -23,4 +23,4 @@ jobs:
       - name: Run Markdownlint
         run: |
           npm i
-          npx markdownlint-cli2 "TypedSpark.NET*/**/*.md" "Docs/**/*.md" "*.md" "!LICENSE.md"
+          npx markdownlint-cli2 "TypedSpark.NET*/**/*.md" "TypedSpark.NET.Docs/**/*.md" "*.md" "!LICENSE.md"

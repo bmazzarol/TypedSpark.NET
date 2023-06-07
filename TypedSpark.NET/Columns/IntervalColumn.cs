@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
@@ -7,9 +8,13 @@ using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Day time interval type
+/// </summary>
 [SuppressMessage("Design", "MA0048:File name must match type name")]
 public sealed class DayTimeIntervalType : AtomicType
 {
+    /// <inheritdoc />
     public override string SimpleString => nameof(DayTimeIntervalType);
 }
 
@@ -25,6 +30,9 @@ public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeInterva
     private IntervalColumn(Column column)
         : base(new DayTimeIntervalType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public IntervalColumn()
         : this(F.Col(string.Empty)) { }
 
@@ -54,7 +62,7 @@ public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeInterva
         new()
         {
             Column = F.Expr(
-                $"make_interval(0,0,0,{lit.Days},{lit.Hours},{lit.Minutes},{lit.Seconds})"
+                $"make_interval(0,0,0,{lit.Days.ToString(CultureInfo.InvariantCulture)},{lit.Hours.ToString(CultureInfo.InvariantCulture)},{lit.Minutes.ToString(CultureInfo.InvariantCulture)},{lit.Seconds.ToString(CultureInfo.InvariantCulture)})"
             )
         };
 

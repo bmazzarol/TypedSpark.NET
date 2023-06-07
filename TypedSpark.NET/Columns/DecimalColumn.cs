@@ -5,14 +5,21 @@ using static Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
+/// <summary>
+/// Decimal column
+/// </summary>
 public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
 {
     private DecimalColumn(Column column)
         : base(new DecimalType(), column) { }
 
+    /// <summary>
+    /// Constructs an empty column
+    /// </summary>
     public DecimalColumn()
         : this(Col(string.Empty)) { }
 
+    /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
         decimal.TryParse(
             Column.ToString(),
@@ -46,6 +53,9 @@ public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalTyp
     /// <returns>typed column</returns>
     public static implicit operator DecimalColumn(decimal lit) => New(Lit((double)lit));
 
+    /// <summary>
+    /// Cast to string
+    /// </summary>
     public static implicit operator StringColumn(DecimalColumn column) => column.CastToString();
 
     /// <summary>

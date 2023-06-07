@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypedSpark.NET", "TypedSpar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypedSpark.NET.Tests", "TypedSpark.NET.Tests\TypedSpark.NET.Tests.csproj", "{C661CA49-CD57-4C8A-9702-26A45D5FBB7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypedSpark.NET.Docs", "TypedSpark.NET.Docs\TypedSpark.NET.Docs.csproj", "{4F0C7CD0-4633-447A-BE55-77634E9E3282}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{C661CA49-CD57-4C8A-9702-26A45D5FBB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C661CA49-CD57-4C8A-9702-26A45D5FBB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C661CA49-CD57-4C8A-9702-26A45D5FBB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F0C7CD0-4633-447A-BE55-77634E9E3282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F0C7CD0-4633-447A-BE55-77634E9E3282}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F0C7CD0-4633-447A-BE55-77634E9E3282}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F0C7CD0-4633-447A-BE55-77634E9E3282}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
