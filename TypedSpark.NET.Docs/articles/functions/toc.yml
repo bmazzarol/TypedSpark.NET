@@ -3,3 +3,5 @@
     href: not.md
   - name: Not Equals (!=)
     href: not-equals.md
+  - name: Mod (%)
+    href: mod.md
