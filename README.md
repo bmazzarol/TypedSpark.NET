@@ -3,7 +3,7 @@
 
 <img src="typewriter-icon.png" alt="TypedSpark.NET" width="150px"/>
 
-# Typed Spark.NET
+# TypedSpark.NET
 
 [:running: **_Getting Started_**](https://bmazzarol.github.io/TypedSpark.NET/articles/getting-started.html)
 [:books: **_Documentation_**](https://bmazzarol.github.io/TypedSpark.NET)
