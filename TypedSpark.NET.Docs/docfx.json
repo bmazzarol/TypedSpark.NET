@@ -55,7 +55,7 @@
         ],
         "output": "_site",
         "globalMetadata": {
-            "_appName": "Typed Spark .NET",
+            "_appName": "TypedSpark.NET",
             "_appLogoPath": "images/typewriter-icon-small.png",
             "_appFaviconPath": "images/favicon.ico",
             "_appFooter": "Created By <a href='https://github.com/bmazzarol' target='blank'>Ben Mazzarol</a>"
