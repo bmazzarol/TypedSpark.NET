@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Integer column
 /// </summary>
-public sealed class IntegerColumn : TypedNumericColumn<IntegerColumn, IntegerType, int>
+public sealed class IntegerColumn : TypedIntegralColumn<IntegerColumn, IntegerType, int>
 {
     private IntegerColumn(Column column)
         : base(new IntegerType(), column) { }

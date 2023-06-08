@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Float column
 /// </summary>
-public sealed class FloatColumn : TypedNumericColumn<FloatColumn, FloatType, float>
+public sealed class FloatColumn : TypedFloatingPointColumn<FloatColumn, FloatType, float>
 {
     private FloatColumn(Column column)
         : base(new FloatType(), column) { }

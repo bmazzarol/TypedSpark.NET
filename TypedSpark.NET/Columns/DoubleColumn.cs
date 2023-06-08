@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Double column
 /// </summary>
-public sealed class DoubleColumn : TypedNumericColumn<DoubleColumn, DoubleType, double>
+public sealed class DoubleColumn : TypedFloatingPointColumn<DoubleColumn, DoubleType, double>
 {
     private DoubleColumn(Column column)
         : base(new DoubleType(), column) { }

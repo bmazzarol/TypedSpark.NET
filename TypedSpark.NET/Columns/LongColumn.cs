@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Long column
 /// </summary>
-public sealed class LongColumn : TypedNumericColumn<LongColumn, LongType, long>
+public sealed class LongColumn : TypedIntegralColumn<LongColumn, LongType, long>
 {
     private LongColumn(Column column)
         : base(new LongType(), column) { }

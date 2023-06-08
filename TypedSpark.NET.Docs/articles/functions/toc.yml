@@ -5,3 +5,5 @@
     href: not-equals.md
   - name: Mod (%)
     href: mod.md
+  - name: Bitwise And (&)
+    href: bitwise-and.md

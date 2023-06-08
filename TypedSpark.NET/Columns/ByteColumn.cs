@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// Byte Column
 /// </summary>
 /// <remarks>Spark side only, cannot be serialized to Java at this stage</remarks>
-public sealed class ByteColumn : TypedNumericColumn<ByteColumn, ByteType, byte>
+public sealed class ByteColumn : TypedIntegralColumn<ByteColumn, ByteType, byte>
 {
     private ByteColumn(Column column)
         : base(new ByteType(), column) { }
@@ -44,33 +44,6 @@ public sealed class ByteColumn : TypedNumericColumn<ByteColumn, ByteType, byte>
     /// <param name="lit">literal</param>
     /// <returns>typed column</returns>
     public static implicit operator ByteColumn(byte lit) => New(Lit((int)lit));
-
-    /// <summary>
-    /// Compute bitwise OR of this expression with another expression.
-    /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise OR.
-    /// </param>
-    /// <returns>New column after applying bitwise OR operator</returns>
-    public ByteColumn BitwiseOR(ByteColumn other) => New(Column.BitwiseOR(other.Column));
-
-    /// <summary>
-    /// Compute bitwise AND of this expression with another expression.
-    /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise AND.
-    /// </param>
-    /// <returns>New column after applying the bitwise AND operator</returns>
-    public ByteColumn BitwiseAND(ByteColumn other) => New(Column.BitwiseAND(other.Column));
-
-    /// <summary>
-    /// Compute bitwise XOR of this expression with another expression.
-    /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise XOR.
-    /// </param>
-    /// <returns>New column after applying bitwise XOR operator</returns>
-    public ByteColumn BitwiseXOR(ByteColumn other) => New(Column.BitwiseXOR(other.Column));
 
     /// <summary>
     /// Cast to string

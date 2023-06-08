@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Short column
 /// </summary>
-public sealed class ShortColumn : TypedNumericColumn<ShortColumn, ShortType, short>
+public sealed class ShortColumn : TypedIntegralColumn<ShortColumn, ShortType, short>
 {
     private ShortColumn(Column column)
         : base(new ShortType(), column) { }

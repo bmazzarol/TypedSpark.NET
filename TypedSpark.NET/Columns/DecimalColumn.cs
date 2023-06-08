@@ -8,7 +8,7 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Decimal column
 /// </summary>
-public sealed class DecimalColumn : TypedNumericColumn<DecimalColumn, DecimalType, decimal>
+public sealed class DecimalColumn : TypedFloatingPointColumn<DecimalColumn, DecimalType, decimal>
 {
     private DecimalColumn(Column column)
         : base(new DecimalType(), column) { }
