@@ -3,7 +3,7 @@
 
 <img src="images/typewriter-icon.png" alt="TypedSpark.NET" width="150px"/>
 
-# Typed Spark.NET
+# TypedSpark.NET
 
 ---
 
