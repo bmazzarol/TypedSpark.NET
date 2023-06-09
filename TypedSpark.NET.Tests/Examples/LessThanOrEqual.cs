@@ -9,7 +9,7 @@ using static SparkTest.NET.SparkSessionFactory;
 
 namespace TypedSpark.NET.Tests.Examples
 {
-    public static class LessThan
+    public static class LessThanOrEqual
     {
         [Fact]
         public static void Case1() =>
@@ -19,9 +19,9 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example1
 
-                    IntegerColumn a = 1;
+                    IntegerColumn a = 2;
                     IntegerColumn b = 2;
-                    DataFrame result = df.Select(a < b, a.Lt(b));
+                    DataFrame result = df.Select(a <= b, a.Leq(b));
 
                     #endregion
 
@@ -39,9 +39,9 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example2
 
-                    DoubleColumn a = 1.1;
+                    DoubleColumn a = 1.0;
                     StringColumn b = "1";
-                    DataFrame result = df.Select(a < b, a.CastToString().Lt(b));
+                    DataFrame result = df.Select(a <= b.CastToDouble(), a.Leq(b.CastToDouble()));
 
                     #endregion
 
@@ -61,7 +61,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                     TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52);
                     TimestampColumn b = new DateTime(2009, 07, 30, 04, 17, 52);
-                    DataFrame result = df.Select(a < b, a.Lt(b));
+                    DataFrame result = df.Select(a <= b, a.Leq(b));
 
                     #endregion
 
@@ -81,7 +81,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                     TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52);
                     TimestampColumn b = new DateTime(2009, 08, 01, 04, 17, 52);
-                    DataFrame result = df.Select(a < b, a.Lt(b));
+                    DataFrame result = df.Select(a <= b, a.Leq(b));
 
                     #endregion
 
@@ -101,7 +101,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 1;
                     IntegerColumn b = Functions.Null<IntegerColumn>();
-                    DataFrame result = df.Select(a < b, a.Lt(b));
+                    DataFrame result = df.Select(a <= b, a.Leq(b));
 
                     #endregion
 

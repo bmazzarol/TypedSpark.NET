@@ -23,3 +23,5 @@
     href: divide.md
   - name: Less Than (<)
     href: less-than.md
+  - name: Less Than or Equal (<=)
+    href: less-than-or-equal.md

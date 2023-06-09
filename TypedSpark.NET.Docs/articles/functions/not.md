@@ -16,3 +16,7 @@ Since 1.0.0
 [!code-csharp[Example2](../../../TypedSpark.NET.Tests/Examples/Not.cs#Example2)]
 
 [!INCLUDE [Example2](../../../TypedSpark.NET.Tests/Examples/__examples__/Not.Case2.md)]
+
+[!code-csharp[Example3](../../../TypedSpark.NET.Tests/Examples/Not.cs#Example3)]
+
+[!INCLUDE [Example3](../../../TypedSpark.NET.Tests/Examples/__examples__/Not.Case3.md)]

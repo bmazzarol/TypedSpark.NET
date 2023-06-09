@@ -45,5 +45,24 @@ namespace TypedSpark.NET.Tests.Examples
                     return result.ShowMdString(showPlan: false);
                 })
                 .SaveResults();
+
+        [Fact]
+        public static void Case3() =>
+            UseSession(s =>
+                {
+                    var df = s.CreateEmptyFrame();
+
+                    #region Example3
+
+                    BooleanColumn col = Functions.Null<BooleanColumn>();
+                    DataFrame result = df.Select(!col, col.Not());
+
+                    #endregion
+
+                    result.Should().NotBeNull();
+
+                    return result.ShowMdString(showPlan: false);
+                })
+                .SaveResults();
     }
 }
