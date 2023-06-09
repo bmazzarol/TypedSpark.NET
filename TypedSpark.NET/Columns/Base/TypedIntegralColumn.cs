@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark.Sql;
+﻿using Microsoft.Spark;
+using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
 
@@ -47,20 +48,20 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     ) => rhs.BitwiseOR(lhs);
 
     /// <summary>
-    /// Compute bitwise OR of this expression with another expression.
+    /// Compute bitwise OR of this expression with another expression
     /// </summary>
     /// <param name="other">
-    /// The other column that will be used to compute the bitwise OR.
+    /// The other column that will be used to compute the bitwise OR
     /// </param>
     /// <returns>column</returns>
     public TThis BitwiseOR(TypedIntegralColumn<TThis, TSparkType, TNativeType> other) =>
         New(Column.BitwiseOR(other.Column));
 
     /// <summary>
-    /// Compute bitwise OR of this expression with another expression.
+    /// Compute bitwise OR of this expression with another expression
     /// </summary>
     /// <param name="other">
-    /// The other column that will be used to compute the bitwise OR.
+    /// The other column that will be used to compute the bitwise OR
     /// </param>
     /// <returns>column</returns>
     public TThis BitwiseOR(TNativeType other) => New(Column.BitwiseOR(other));
@@ -90,30 +91,28 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     ) => rhs.BitwiseAND(lhs);
 
     /// <summary>
-    /// Compute bitwise AND of this expression with another expression.
+    /// Compute bitwise AND of this expression with another expression
     /// </summary>
     /// <param name="other">
-    /// The other column that will be used to compute the bitwise AND.
+    /// The other column that will be used to compute the bitwise AND
     /// </param>
     /// <returns>column</returns>
     public TThis BitwiseAND(TypedIntegralColumn<TThis, TSparkType, TNativeType> other) =>
         New(Column.BitwiseAND(other.Column));
 
     /// <summary>
-    /// Compute bitwise AND of this expression with another expression.
+    /// Compute bitwise AND of this expression with another expression
     /// </summary>
     /// <param name="other">
-    /// The other column that will be used to compute the bitwise AND.
+    /// The other column that will be used to compute the bitwise AND
     /// </param>
     /// <returns>column</returns>
     public TThis BitwiseAND(TNativeType other) => New(Column.BitwiseAND(F.Lit(other)));
 
     /// <summary>
-    /// Compute bitwise XOR of this expression with another expression.
+    /// Returns the bitwise XOR of all non-null input values, or null if none
     /// </summary>
-    /// <param name="other">
-    /// The other column that will be used to compute the bitwise XOR.
-    /// </param>
     /// <returns>column</returns>
-    public TThis BitwiseXOR(TThis other) => New(Column.BitwiseXOR(other.Column));
+    [Since("3.0.0")]
+    public TThis BitwiseXOR() => New(F.Expr($"bit_xor({Column})"));
 }
