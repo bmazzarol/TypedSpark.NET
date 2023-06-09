@@ -11,3 +11,5 @@
     href: bitwise-or.md
   - name: Bitwise XOr
     href: bitwise-xor.md
+  - name: Bitwise Not (~)
+    href: bitwise-not.md

@@ -115,4 +115,17 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     /// <returns>column</returns>
     [Since("3.0.0")]
     public TThis BitwiseXOR() => New(F.Expr($"bit_xor({Column})"));
+
+    /// <summary>
+    /// Bitwise NOT
+    /// </summary>
+    public static TThis operator ~(TypedIntegralColumn<TThis, TSparkType, TNativeType> type) =>
+        type.BitwiseNot();
+
+    /// <summary>
+    /// Computes bitwise NOT of a number
+    /// </summary>
+    /// <returns>column</returns>
+    [Since("3.2.0")]
+    public TThis BitwiseNot() => New(F.Bitwise_Not(Column));
 }
