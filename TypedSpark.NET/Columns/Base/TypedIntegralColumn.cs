@@ -23,13 +23,47 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     private static TThis New(Column column) => new() { Column = column };
 
     /// <summary>
+    /// bitwise OR
+    /// </summary>
+    public static TThis operator |(
+        TypedIntegralColumn<TThis, TSparkType, TNativeType> lhs,
+        TypedIntegralColumn<TThis, TSparkType, TNativeType> rhs
+    ) => lhs.BitwiseOR(rhs);
+
+    /// <summary>
+    /// bitwise OR
+    /// </summary>
+    public static TThis operator |(
+        TypedIntegralColumn<TThis, TSparkType, TNativeType> lhs,
+        TNativeType rhs
+    ) => lhs.BitwiseOR(rhs);
+
+    /// <summary>
+    /// bitwise OR
+    /// </summary>
+    public static TThis operator |(
+        TNativeType lhs,
+        TypedIntegralColumn<TThis, TSparkType, TNativeType> rhs
+    ) => rhs.BitwiseOR(lhs);
+
+    /// <summary>
     /// Compute bitwise OR of this expression with another expression.
     /// </summary>
     /// <param name="other">
     /// The other column that will be used to compute the bitwise OR.
     /// </param>
-    /// <returns>New column after applying bitwise OR operator</returns>
-    public TThis BitwiseOR(TThis other) => New(Column.BitwiseOR(other.Column));
+    /// <returns>column</returns>
+    public TThis BitwiseOR(TypedIntegralColumn<TThis, TSparkType, TNativeType> other) =>
+        New(Column.BitwiseOR(other.Column));
+
+    /// <summary>
+    /// Compute bitwise OR of this expression with another expression.
+    /// </summary>
+    /// <param name="other">
+    /// The other column that will be used to compute the bitwise OR.
+    /// </param>
+    /// <returns>column</returns>
+    public TThis BitwiseOR(TNativeType other) => New(Column.BitwiseOR(other));
 
     /// <summary>
     /// bitwise AND
@@ -61,7 +95,7 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     /// <param name="other">
     /// The other column that will be used to compute the bitwise AND.
     /// </param>
-    /// <returns>New column after applying the bitwise AND operator</returns>
+    /// <returns>column</returns>
     public TThis BitwiseAND(TypedIntegralColumn<TThis, TSparkType, TNativeType> other) =>
         New(Column.BitwiseAND(other.Column));
 
@@ -71,7 +105,7 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     /// <param name="other">
     /// The other column that will be used to compute the bitwise AND.
     /// </param>
-    /// <returns>New column after applying the bitwise AND operator</returns>
+    /// <returns>column</returns>
     public TThis BitwiseAND(TNativeType other) => New(Column.BitwiseAND(F.Lit(other)));
 
     /// <summary>
@@ -80,6 +114,6 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     /// <param name="other">
     /// The other column that will be used to compute the bitwise XOR.
     /// </param>
-    /// <returns>New column after applying bitwise XOR operator</returns>
+    /// <returns>column</returns>
     public TThis BitwiseXOR(TThis other) => New(Column.BitwiseXOR(other.Column));
 }
