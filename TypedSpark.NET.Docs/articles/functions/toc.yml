@@ -15,3 +15,5 @@
     href: bitwise-not.md
   - name: Multiply (*)
     href: multiply.md
+  - name: Plus (+)
+    href: plus.md
