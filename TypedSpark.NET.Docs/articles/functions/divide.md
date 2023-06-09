@@ -1,6 +1,7 @@
 ﻿# Divide (/)
 
-expr1 / expr2 - Returns expr1/expr2. It always performs floating point division.
+`expr1` / `expr2` - Returns `expr1` / `expr2`. It always performs floating point
+division.
 
 Since 1.0.0
 

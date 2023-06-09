@@ -1,6 +1,6 @@
 ﻿# Plus (+)
 
-Returns expr1 + expr2.
+Returns `expr1` + `expr2`.
 
 Since 1.0.0
 

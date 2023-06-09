@@ -1,6 +1,6 @@
 ﻿# Bitwise OR (|)
 
-expr1 | expr2 - Returns the result of bitwise OR of expr1 and expr2.
+`expr1` | `expr2` - Returns the result of bitwise OR of `expr1` and `expr2`.
 
 Since: 1.4.0
 

@@ -1,6 +1,6 @@
 ﻿# Not Equals (!=)
 
-expr1 != expr2 - Returns true if expr1 is not equal to expr2, or false
+`expr1` != `expr2` - Returns true if `expr1` is not equal to `expr2`, or false
 otherwise.
 
 Since 1.0.0

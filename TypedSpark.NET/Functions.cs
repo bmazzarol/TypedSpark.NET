@@ -11,6 +11,14 @@ namespace TypedSpark.NET;
 public static class Functions
 {
     /// <summary>
+    /// Null literal for any given typed column
+    /// </summary>
+    /// <typeparam name="T">column</typeparam>
+    /// <returns>typed column</returns>
+    public static T Null<T>()
+        where T : TypedColumn, new() => new() { Column = F.Expr("NULL") };
+
+    /// <summary>
     /// Returns the first column that is not null, or null if all inputs are null.
     /// </summary>
     /// <param name="columns">Columns to apply</param>

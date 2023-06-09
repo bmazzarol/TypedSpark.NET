@@ -1,6 +1,6 @@
 ﻿# Bitwise XOR
 
-bit_xor(expr) - Returns the bitwise XOR of all non-null input values, or null if
+bit_xor(`expr`) - Returns the bitwise XOR of all non-null input values, or null if
 none.
 
 Since: 3.0.0

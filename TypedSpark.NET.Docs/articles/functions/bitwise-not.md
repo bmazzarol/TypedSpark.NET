@@ -1,6 +1,6 @@
 ﻿# Bitwise NOT (~)
 
-~ expr - Returns the result of bitwise NOT of expr.
+~ `expr` - Returns the result of bitwise NOT of `expr`.
 
 Since: 1.4.0
 

@@ -1,6 +1,6 @@
 ﻿# Bitwise AND (&)
 
-expr1 & expr2 - Returns the result of bitwise AND of expr1 and expr2.
+`expr1` & `expr2` - Returns the result of bitwise AND of `expr1` and `expr2`.
 
 Since: 1.4.0
 

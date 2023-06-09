@@ -1,6 +1,6 @@
 ﻿# Not (!)
 
-! expr - Logical not.
+! `expr` - Logical not.
 
 Since 1.0.0
 

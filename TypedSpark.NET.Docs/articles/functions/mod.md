@@ -1,6 +1,6 @@
 ﻿# Mod (%)
 
-expr1 % expr2 - Returns the remainder after expr1/expr2.
+`expr1` % `expr2` - Returns the remainder after `expr1` / `expr2`.
 
 Since 1.0.0
 
