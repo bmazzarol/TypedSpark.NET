@@ -27,5 +27,25 @@ namespace TypedSpark.NET.Tests.Examples
                     return result.ShowMdString(showPlan: false);
                 })
                 .SaveResults();
+
+        [Fact]
+        public static void Case2() =>
+            UseSession(s =>
+                {
+                    var df = s.CreateEmptyFrame();
+
+                    #region Example2
+
+                    IntegerColumn a = 3;
+                    IntegerColumn b = 5;
+                    DataFrame result = df.Select(a ^ b, a.BitwiseXOR(b));
+
+                    #endregion
+
+                    result.Should().NotBeNull();
+
+                    return result.ShowMdString(showPlan: false);
+                })
+                .SaveResults();
     }
 }
