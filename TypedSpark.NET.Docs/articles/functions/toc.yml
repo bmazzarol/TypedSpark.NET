@@ -13,3 +13,5 @@
     href: bitwise-xor.md
   - name: Bitwise Not (~)
     href: bitwise-not.md
+  - name: Multiply (*)
+    href: multiply.md
