@@ -141,7 +141,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Divide
     /// </summary>
-    public static TThis operator /(
+    public static DoubleColumn operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
     ) => lhs.Divide(rhs);
@@ -149,15 +149,15 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Divide
     /// </summary>
-    public static TThis operator /(
+    public static DoubleColumn operator /(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => New(F.Lit(lhs).Divide((Column)rhs));
+    ) => DoubleColumn.New(F.Lit(lhs).Divide((Column)rhs));
 
     /// <summary>
     /// Divide
     /// </summary>
-    public static TThis operator /(
+    public static DoubleColumn operator /(
         TypedNumericColumn<TThis, TSparkType, TNativeType> lhs,
         TNativeType rhs
     ) => lhs.Divide(rhs);
@@ -165,13 +165,13 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Divide
     /// </summary>
-    public TThis Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        New(Column.Divide((Column)rhs));
+    public DoubleColumn Divide(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
+        DoubleColumn.New(Column.Divide((Column)rhs));
 
     /// <summary>
     /// Divide
     /// </summary>
-    public TThis Divide(TNativeType rhs) => New(Column.Divide(F.Lit(rhs)));
+    public DoubleColumn Divide(TNativeType rhs) => DoubleColumn.New(Column.Divide(F.Lit(rhs)));
 
     /// <summary>
     /// Mod
