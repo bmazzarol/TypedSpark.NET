@@ -1,4 +1,5 @@
 ﻿using Docfx.ResultSnippets;
+using FluentAssertions;
 using Microsoft.Spark.Sql;
 using SparkTest.NET.Extensions;
 using TypedSpark.NET.Columns;
@@ -24,6 +25,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #endregion
 
+                    result.Should().NotBeNull();
+
                     return result.ShowMdString(showPlan: false);
                 })
                 .SaveResults();
@@ -42,6 +45,8 @@ namespace TypedSpark.NET.Tests.Examples
                     DataFrame result = df.Select(a != b, a != c);
 
                     #endregion
+
+                    result.Should().NotBeNull();
 
                     return result.ShowMdString(showPlan: false);
                 })

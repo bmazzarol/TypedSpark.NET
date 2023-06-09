@@ -255,11 +255,11 @@ namespace TypedSpark.NET.Tests.Columns
                 return s.CreateDataFrameFromData(
                         new { a = "Bill" },
                         new { a = "Jill" },
-                        new { a = (string?)null },
+                        new { a = (string?)null! },
                         new { a = "Tom" },
                         new { a = "Fred" },
                         new { a = "James" },
-                        new { a = (string?)null }
+                        new { a = (string?)null! }
                     )
                     .Select(a, F.Coalesce(a, "Unknown"));
             });

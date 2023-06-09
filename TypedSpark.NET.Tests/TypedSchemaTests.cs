@@ -107,7 +107,9 @@ namespace TypedSpark.NET.Tests
 
         private class InvalidFieldSchema : TypedSchema<InvalidFieldSchema>
         {
-            public readonly StringColumn InvalidField;
+#pragma warning disable CS0414
+            public readonly StringColumn InvalidField = null!;
+#pragma warning restore CS0414
 
             public InvalidFieldSchema(string? alias)
                 : base(alias) { }
