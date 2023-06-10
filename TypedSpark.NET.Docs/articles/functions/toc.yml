@@ -1,8 +1,6 @@
 ﻿items:
   - name: Not (!)
     href: not.md
-  - name: Mod (%)
-    href: mod.md
   - name: Bitwise And (&)
     href: bitwise-and.md
   - name: Bitwise Or (|)
@@ -13,14 +11,18 @@
     href: bitwise-xor.md
   - name: Bitwise Not (~)
     href: bitwise-not.md
-  - name: Multiply (*)
-    href: multiply.md
+  - name: Negate (- expr)
+    href: negate.md
   - name: Plus (+)
     href: plus.md
   - name: Minus (-)
     href: minus.md
+  - name: Multiply (*)
+    href: multiply.md
   - name: Divide (/)
     href: divide.md
+  - name: Mod (%)
+    href: mod.md
   - name: Equals (==)
     href: equals.md
   - name: Equals Null Safe (<=>)

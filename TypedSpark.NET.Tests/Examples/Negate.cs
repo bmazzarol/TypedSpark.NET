@@ -8,7 +8,7 @@ using static SparkTest.NET.SparkSessionFactory;
 
 namespace TypedSpark.NET.Tests.Examples
 {
-    public static class Not
+    public static class Negate
     {
         [Fact]
         public static void Case1() =>
@@ -18,8 +18,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example1
 
-                    BooleanColumn col = true;
-                    DataFrame result = df.Select(!col, col.Not());
+                    IntegerColumn col = 1;
+                    DataFrame result = df.Select(-col, col.Negate());
 
                     #endregion
 
@@ -37,8 +37,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example2
 
-                    BooleanColumn col = false;
-                    DataFrame result = df.Select(!col, col.Not());
+                    IntegerColumn col = -1;
+                    DataFrame result = df.Select(-col, col.Negate());
 
                     #endregion
 
@@ -56,8 +56,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                     #region Example3
 
-                    BooleanColumn col = Functions.Null<BooleanColumn>();
-                    DataFrame result = df.Select(!col, col.Not());
+                    IntegerColumn col = Functions.Null<IntegerColumn>();
+                    DataFrame result = df.Select(-col, col.Negate());
 
                     #endregion
 

@@ -23,14 +23,18 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
 
     private static TThis New(Column column) => new() { Column = column };
 
-    /// <summary>Negate the given column.</summary>
-    /// <param name="self">Column to negate</param>
-    /// <returns>New column after applying negation</returns>
+    /// <summary>
+    /// Negate the given column
+    /// </summary>
+    /// <param name="self">column</param>
+    /// <returns>column</returns>
     public static TThis operator -(TypedNumericColumn<TThis, TSparkType, TNativeType> self) =>
         self.Negate();
 
-    /// <summary>Negate the column.</summary>
-    /// <returns>New column after applying negation</returns>
+    /// <summary>
+    /// Negate the column
+    /// </summary>
+    /// <returns>column</returns>
     public TThis Negate() => New(-Column);
 
     /// <summary>
