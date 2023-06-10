@@ -20,7 +20,12 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 1;
                     IntegerColumn b = 2;
-                    DataFrame result = df.Select(a + b, a.Plus(b));
+                    DataFrame result = df.Select(
+                        a + b,
+                        a.Plus(b),
+                        (1 + b).As("left literal"),
+                        (a + 2).As("right literal")
+                    );
 
                     #endregion
 

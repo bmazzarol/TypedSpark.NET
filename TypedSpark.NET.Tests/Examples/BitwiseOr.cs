@@ -22,7 +22,9 @@ namespace TypedSpark.NET.Tests.Examples
                     IntegerColumn b = 5;
                     DataFrame result = df.Select(
                         (a | b).As("a xor b"),
-                        a.BitwiseOR(b).As("a xor b")
+                        a.BitwiseOR(b).As("a xor b"),
+                        (3 | b).As("left literal"),
+                        (a | 5).As("right literal")
                     );
 
                     #endregion

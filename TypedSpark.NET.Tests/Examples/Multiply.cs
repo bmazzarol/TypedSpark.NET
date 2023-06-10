@@ -20,7 +20,12 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 2;
                     IntegerColumn b = 3;
-                    DataFrame result = df.Select(a * b, a.Multiply(b));
+                    DataFrame result = df.Select(
+                        a * b,
+                        a.Multiply(b),
+                        (2 * b).As("left literal"),
+                        (a * 3).As("right literal")
+                    );
 
                     #endregion
 

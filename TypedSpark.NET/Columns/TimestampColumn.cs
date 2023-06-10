@@ -82,7 +82,7 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     /// <param name="rhs">right hand side</param>
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(TimestampColumn lhs, TimestampColumn rhs) =>
-        new() { Column = lhs.Column - rhs.Column };
+        IntervalColumn.New(lhs.Column - rhs.Column);
 
     /// <summary>
     /// Subtract 2 timestamps, returns an interval

@@ -74,7 +74,7 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     /// <param name="rhs">right hand side</param>
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(DateColumn lhs, DateColumn rhs) =>
-        new() { Column = lhs.Column - rhs.Column };
+        IntervalColumn.New(lhs.Column - rhs.Column);
 
     /// <summary>
     /// Subtract 2 dates, returns an interval

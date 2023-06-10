@@ -20,7 +20,37 @@ namespace TypedSpark.NET.Tests.Examples
 
                     DoubleColumn a = 2;
                     DoubleColumn b = 1.8;
-                    DataFrame result = df.Select(a % b, a.Mod(b));
+                    DataFrame result = df.Select(
+                        a % b,
+                        a.Mod(b),
+                        (2 % b).As("left literal"),
+                        (a % 1.8).As("right literal")
+                    );
+
+                    #endregion
+
+                    result.Should().NotBeNull();
+
+                    return result.ShowMdString(showPlan: false);
+                })
+                .SaveResults();
+
+        [Fact]
+        public static void Case2() =>
+            UseSession(s =>
+                {
+                    var df = s.CreateEmptyFrame();
+
+                    #region Example2
+
+                    IntegerColumn a = 7;
+                    IntegerColumn b = 5;
+                    DataFrame result = df.Select(
+                        a % b,
+                        a.Mod(b),
+                        (7 % b).As("left literal"),
+                        (a % 5).As("right literal")
+                    );
 
                     #endregion
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -43,7 +43,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     public static BooleanColumn operator >(
         TNativeType lhs,
         TypedOrdColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Gt(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).Gt(rhs.Column));
 
     /// <summary>
     /// Greater Than
@@ -62,7 +62,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Greater Than
     /// </summary>
-    public BooleanColumn Gt(TNativeType rhs) => BooleanColumn.New(Column.Gt(Lit(rhs)));
+    public BooleanColumn Gt(TNativeType rhs) => BooleanColumn.New(Column.Gt(F.Lit(rhs)));
 
     /// <summary>
     /// Greater Than or Equal To
@@ -78,7 +78,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     public static BooleanColumn operator >=(
         TNativeType lhs,
         TypedOrdColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Geq(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).Geq(rhs.Column));
 
     /// <summary>
     /// Greater Than or Equal To
@@ -97,7 +97,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Greater Than or Equal To
     /// </summary>
-    public BooleanColumn Geq(TNativeType rhs) => BooleanColumn.New(Column.Geq(Lit(rhs)));
+    public BooleanColumn Geq(TNativeType rhs) => BooleanColumn.New(Column.Geq(F.Lit(rhs)));
 
     /// <summary>
     /// Less Than
@@ -113,7 +113,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     public static BooleanColumn operator <(
         TNativeType lhs,
         TypedOrdColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Lt(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).Lt(rhs.Column));
 
     /// <summary>
     /// Less Than
@@ -132,7 +132,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Less Than
     /// </summary>
-    public BooleanColumn Lt(TNativeType rhs) => BooleanColumn.New(Column.Lt(Lit(rhs)));
+    public BooleanColumn Lt(TNativeType rhs) => BooleanColumn.New(Column.Lt(F.Lit(rhs)));
 
     /// <summary>
     /// Less Than or Equal To
@@ -148,7 +148,7 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     public static BooleanColumn operator <=(
         TNativeType lhs,
         TypedOrdColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Leq(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).Leq(rhs.Column));
 
     /// <summary>
     /// Less Than or Equal To
@@ -167,5 +167,5 @@ public abstract class TypedOrdColumn<TThis, TSparkType, TNativeType>
     /// <summary>
     /// Less Than or Equal To
     /// </summary>
-    public BooleanColumn Leq(TNativeType rhs) => BooleanColumn.New(Column.Leq(Lit(rhs)));
+    public BooleanColumn Leq(TNativeType rhs) => BooleanColumn.New(Column.Leq(F.Lit(rhs)));
 }

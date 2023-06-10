@@ -20,7 +20,12 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 2;
                     IntegerColumn b = 1;
-                    DataFrame result = df.Select(a - b, a.Minus(b));
+                    DataFrame result = df.Select(
+                        a - b,
+                        a.Minus(b),
+                        (2 - b).As("left literal"),
+                        (a - 1).As("right literal")
+                    );
 
                     #endregion
 

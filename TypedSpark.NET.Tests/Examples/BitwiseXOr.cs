@@ -38,7 +38,12 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 3;
                     IntegerColumn b = 5;
-                    DataFrame result = df.Select(a ^ b, a.BitwiseXOR(b));
+                    DataFrame result = df.Select(
+                        a ^ b,
+                        a.BitwiseXOR(b),
+                        (3 ^ b).As("left literal"),
+                        (a ^ 5).As("right literal")
+                    );
 
                     #endregion
 

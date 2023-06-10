@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TypedSpark.NET;
 
@@ -6,6 +7,7 @@ namespace TypedSpark.NET;
 /// Name of the struct property or column name in spark, can override the property name.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property)]
+[ExcludeFromCodeCoverage]
 public sealed class SparkNameAttribute : Attribute
 {
     /// <summary>

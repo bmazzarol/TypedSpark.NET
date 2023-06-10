@@ -21,7 +21,12 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 2;
                     IntegerColumn b = 2;
-                    DataFrame result = df.Select(a <= b, a.Leq(b));
+                    DataFrame result = df.Select(
+                        a <= b,
+                        a.Leq(b),
+                        (2 <= b).As("left literal"),
+                        (a <= 2).As("right literal")
+                    );
 
                     #endregion
 

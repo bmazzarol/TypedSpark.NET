@@ -20,7 +20,14 @@ namespace TypedSpark.NET.Tests.Examples
 
                     IntegerColumn a = 3;
                     IntegerColumn b = 2;
-                    DataFrame result = df.Select(a, b, a / b, a.Divide(b));
+                    DataFrame result = df.Select(
+                        a,
+                        b,
+                        a / b,
+                        a.Divide(b),
+                        (3 / b).As("left literal"),
+                        (a / 2).As("right literal")
+                    );
 
                     #endregion
 
@@ -40,7 +47,14 @@ namespace TypedSpark.NET.Tests.Examples
 
                     LongColumn a = 2;
                     LongColumn b = 2;
-                    DataFrame result = df.Select(a, b, a / b, a.Divide(b));
+                    DataFrame result = df.Select(
+                        a,
+                        b,
+                        a / b,
+                        a.Divide(b),
+                        (2 / b).As("left literal"),
+                        (a / 2).As("right literal")
+                    );
 
                     #endregion
 

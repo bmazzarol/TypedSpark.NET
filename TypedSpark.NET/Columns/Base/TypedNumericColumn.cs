@@ -47,7 +47,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator +(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Plus(lhs);
+    ) => New(F.Lit(lhs).Plus(rhs.Column));
 
     /// <summary>
     /// Sum
@@ -82,7 +82,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator -(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Minus(lhs);
+    ) => New(F.Lit(lhs).Minus(rhs.Column));
 
     /// <summary>
     /// Subtract
@@ -117,7 +117,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator *(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.Multiply(lhs);
+    ) => New(F.Lit(lhs).Multiply(rhs.Column));
 
     /// <summary>
     /// Multiply
@@ -152,7 +152,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static DoubleColumn operator /(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => DoubleColumn.New(F.Lit(lhs).Divide((Column)rhs));
+    ) => DoubleColumn.New(F.Lit(lhs).Divide(rhs.Column));
 
     /// <summary>
     /// Divide
@@ -187,7 +187,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public static TThis operator %(
         TNativeType lhs,
         TypedNumericColumn<TThis, TSparkType, TNativeType> rhs
-    ) => New(F.Lit(lhs).Mod((Column)rhs));
+    ) => New(F.Lit(lhs).Mod(rhs.Column));
 
     /// <summary>
     /// Mod
@@ -201,7 +201,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// Mod
     /// </summary>
     public TThis Mod(TypedNumericColumn<TThis, TSparkType, TNativeType> rhs) =>
-        New(Column.Mod((Column)rhs));
+        New(Column.Mod(rhs.Column));
 
     /// <summary>
     /// Mod

@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|(2 <= 2)|(2 <= 2)|
-|--------|--------|
-|true    |true    |
+|(2 <= 2)|(2 <= 2)|left literal|right literal|
+|--------|--------|------------|-------------|
+|true    |true    |true        |true         |
 
 _(top = 20)_
 
@@ -12,5 +12,7 @@ _(top = 20)_
 root
  |-- (2 <= 2): boolean (nullable = false)
  |-- (2 <= 2): boolean (nullable = false)
+ |-- left literal: boolean (nullable = false)
+ |-- right literal: boolean (nullable = false)
 
 ```

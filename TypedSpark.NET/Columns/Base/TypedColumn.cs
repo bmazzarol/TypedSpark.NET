@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Expressions;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -86,6 +86,8 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// </summary>
     public new TSparkType ColumnType { get; }
 
+    private static TThis New(Column column) => new() { Column = column };
+
     /// <inheritdoc />
     protected TypedColumn(TSparkType columnType, Column column)
         : base(columnType, column) => ColumnType = columnType;
@@ -113,7 +115,7 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// <param name="value">The value to set if the condition is true</param>
     /// <returns>New column after applying the when method</returns>
     public TThis When(BooleanColumn condition, TThis value) =>
-        new() { Column = Column.When((Column)condition, (Column)value) };
+        New(Column.When((Column)condition, (Column)value));
 
     /// <summary>
     /// Evaluates a list of conditions and returns one of multiple possible result expressions.
@@ -122,7 +124,7 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// </summary>
     /// <param name="value">The value to set</param>
     /// <returns>New column after applying otherwise method</returns>
-    public TThis Otherwise(TThis value) => new() { Column = Column.Otherwise((Column)value) };
+    public TThis Otherwise(TThis value) => New(Column.Otherwise((Column)value));
 
     /// <summary>
     /// True if the current column is between the lower bound and upper bound, inclusive.
@@ -150,7 +152,7 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// <summary>Gives the column an alias. Same as `As()`.</summary>
     /// <param name="alias">The alias that is given</param>
     /// <returns>New column after applying an alias</returns>
-    public TThis Alias(string alias) => new() { Column = Column.Alias(alias) };
+    public TThis Alias(string alias) => New(Column.Alias(alias));
 
     /// <summary>Gives the column an alias.</summary>
     /// <param name="alias">The alias that is given</param>
@@ -167,55 +169,55 @@ public abstract class TypedColumn<TThis, TSparkType> : TypedColumn
     /// and null values return before non-null values.
     /// </summary>
     /// <returns>New column after applying the descending order operator</returns>
-    public TThis Desc() => new() { Column = Column.Desc() };
+    public TThis Desc() => New(Column.Desc());
 
     /// <summary>
     /// Returns a sort expression based on the descending order of the column,
     /// and null values appear before non-null values.
     /// </summary>
     /// <returns>Column object</returns>
-    public TThis DescNullsFirst() => new() { Column = Column.DescNullsFirst() };
+    public TThis DescNullsFirst() => New(Column.DescNullsFirst());
 
     /// <summary>
     /// Returns a sort expression based on the descending order of the column,
     /// and null values appear after non-null values.
     /// </summary>
     /// <returns>Column object</returns>
-    public TThis DescNullsLast() => new() { Column = Column.DescNullsLast() };
+    public TThis DescNullsLast() => New(Column.DescNullsLast());
 
     /// <summary>
     /// Returns a sort expression based on ascending order of the column.
     /// </summary>
     /// <returns>New column after applying the ascending order operator</returns>
-    public TThis Asc() => new() { Column = Column.Asc() };
+    public TThis Asc() => New(Column.Asc());
 
     /// <summary>
     /// Returns a sort expression based on ascending order of the column,
     /// and null values return before non-null values.
     /// </summary>
     /// <returns></returns>
-    public TThis AscNullsFirst() => new() { Column = Column.AscNullsFirst() };
+    public TThis AscNullsFirst() => New(Column.AscNullsFirst());
 
     /// <summary>
     /// Returns a sort expression based on ascending order of the column,
     /// and null values appear after non-null values.
     /// </summary>
     /// <returns></returns>
-    public TThis AscNullsLast() => new() { Column = Column.AscNullsLast() };
+    public TThis AscNullsLast() => New(Column.AscNullsLast());
 
     /// <summary>Defines a windowing column.</summary>
     /// <param name="window">
     /// A window specification that defines the partitioning, ordering, and frame boundaries.
     /// </param>
     /// <returns>Column object</returns>
-    public TThis Over(WindowSpec window) => new() { Column = Column.Over(window) };
+    public TThis Over(WindowSpec window) => New(Column.Over(window));
 
     /// <summary>
     /// Defines an empty analytic clause. In this case the analytic function is applied
     /// and presented for all rows in the result set.
     /// </summary>
     /// <returns>Column object</returns>
-    public TThis Over() => new() { Column = Column.Over() };
+    public TThis Over() => New(Column.Over());
 }
 
 /// <summary>
@@ -256,7 +258,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     public static BooleanColumn operator ==(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.EqualTo(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).EqualTo(rhs.Column));
 
     /// <summary>
     /// Equals
@@ -276,7 +278,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     /// Equals
     /// </summary>
     public BooleanColumn EqualTo(TNativeType other) =>
-        BooleanColumn.New(Column.EqualTo(Lit(other)));
+        BooleanColumn.New(Column.EqualTo(F.Lit(other)));
 
     /// <summary>
     /// Not Equals
@@ -292,7 +294,7 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     public static BooleanColumn operator !=(
         TNativeType lhs,
         TypedColumn<TThis, TSparkType, TNativeType> rhs
-    ) => rhs.NotEqual(lhs);
+    ) => BooleanColumn.New(F.Lit(lhs).NotEqual(rhs.Column));
 
     /// <summary>
     /// Not Equals
@@ -312,5 +314,5 @@ public abstract class TypedColumn<TThis, TSparkType, TNativeType> : TypedColumn<
     /// Not Equals
     /// </summary>
     public BooleanColumn NotEqual(TNativeType other) =>
-        BooleanColumn.New(Column.NotEqual(Lit(other)));
+        BooleanColumn.New(Column.NotEqual(F.Lit(other)));
 }

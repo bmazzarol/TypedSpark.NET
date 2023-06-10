@@ -21,7 +21,13 @@ namespace TypedSpark.NET.Tests.Examples
                     IntegerColumn a = 1;
                     IntegerColumn b = 2;
                     StringColumn c = "2";
-                    DataFrame result = df.Select(a != b, a != c);
+                    DataFrame result = df.Select(
+                        a != b,
+                        a != c,
+                        a.NotEqual(b),
+                        (1 != b).As("left literal"),
+                        (a != 2).As("right literal")
+                    );
 
                     #endregion
 

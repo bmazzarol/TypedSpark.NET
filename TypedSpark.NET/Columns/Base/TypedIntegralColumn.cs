@@ -45,7 +45,7 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     public static TThis operator |(
         TNativeType lhs,
         TypedIntegralColumn<TThis, TSparkType, TNativeType> rhs
-    ) => New(F.Lit(lhs).BitwiseOR(rhs));
+    ) => New(F.Lit(lhs).BitwiseOR(rhs.Column));
 
     /// <summary>
     /// Compute bitwise OR of this expression with another expression
@@ -84,7 +84,7 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     public static TThis operator &(
         TNativeType lhs,
         TypedIntegralColumn<TThis, TSparkType, TNativeType> rhs
-    ) => New(F.Lit(lhs).BitwiseAND(rhs));
+    ) => New(F.Lit(lhs).BitwiseAND(rhs.Column));
 
     /// <summary>
     /// Compute bitwise AND of this expression with another expression
@@ -123,7 +123,7 @@ public abstract class TypedIntegralColumn<TThis, TSparkType, TNativeType>
     public static TThis operator ^(
         TNativeType lhs,
         TypedIntegralColumn<TThis, TSparkType, TNativeType> rhs
-    ) => New(F.Lit(lhs).BitwiseXOR(rhs));
+    ) => New(F.Lit(lhs).BitwiseXOR(rhs.Column));
 
     /// <summary>
     /// Compute bitwise XOR of this expression with another expression.
