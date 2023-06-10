@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
@@ -88,6 +89,13 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     /// <param name="other">Column to apply AND operator</param>
     /// <returns>boolean column</returns>
     public BooleanColumn And(BooleanColumn other) => New(Column.And((Column)other));
+
+    /// <summary>
+    /// Returns true if at least one value of expr is true
+    /// </summary>
+    /// <returns>boolean column</returns>
+    [Since("3.0.0")]
+    public BooleanColumn Any() => New(F.Expr($"any({Column})"));
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string
