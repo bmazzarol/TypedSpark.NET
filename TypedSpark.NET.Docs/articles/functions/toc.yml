@@ -51,3 +51,5 @@
     href: and.md
   - name: Any
     href: any.md
+  - name: Approx Count Distinct
+    href: approx-count-distinct.md

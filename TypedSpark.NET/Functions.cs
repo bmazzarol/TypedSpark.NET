@@ -36,4 +36,18 @@ public static class Functions
     /// <returns>string column</returns>
     public static StringColumn ConcatWs(string sep, params TypedColumn[] columns) =>
         StringColumn.New(F.ConcatWs(sep, columns.Select(x => (Column)x).ToArray()));
+
+    /// <summary>
+    /// Returns the approximate number of distinct items in a group
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <param name="rsd">maximum estimation error allowed</param>
+    /// <returns>long column</returns>
+    public static LongColumn ApproxCountDistinct<T>(this T column, double? rsd = default)
+        where T : TypedColumn =>
+        LongColumn.New(
+            rsd.HasValue
+                ? F.ApproxCountDistinct(column.Column, rsd.Value)
+                : F.ApproxCountDistinct(column.Column)
+        );
 }
