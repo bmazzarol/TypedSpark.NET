@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -18,7 +18,7 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     /// Constructs an empty column
     /// </summary>
     public DateColumn()
-        : this(Col(string.Empty)) { }
+        : this(F.Col(string.Empty)) { }
 
     /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
@@ -37,7 +37,8 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     /// <param name="name">name</param>
     /// <param name="column">column</param>
     /// <returns></returns>
-    public static DateColumn New(string name, Column? column = default) => new(column ?? Col(name));
+    public static DateColumn New(string name, Column? column = default) =>
+        new(column ?? F.Col(name));
 
     /// <summary>
     /// Creates a new column
@@ -51,7 +52,7 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     /// </summary>
     /// <param name="lit">literal</param>
     /// <returns>typed column</returns>
-    public static implicit operator DateColumn(Date lit) => New(Lit(lit));
+    public static implicit operator DateColumn(Date lit) => New(F.Lit(lit));
 
     /// <summary>
     /// Convert the dotnet literal value to a column
@@ -107,4 +108,11 @@ public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
     /// <param name="rhs">right hand side</param>
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(DateTime lhs, DateColumn rhs) => new Date(lhs) - rhs;
+
+    /// <summary>
+    /// Returns the date that is `months` after the current date
+    /// </summary>
+    /// <param name="months">months to add</param>
+    /// <returns>date column</returns>
+    public DateColumn AddMonths(IntegerColumn months) => New(F.AddMonths(Column, months));
 }

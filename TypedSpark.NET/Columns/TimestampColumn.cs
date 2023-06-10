@@ -2,7 +2,7 @@
 using System.Globalization;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
-using static Microsoft.Spark.Sql.Functions;
+using F = Microsoft.Spark.Sql.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -18,7 +18,7 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     /// Constructs an empty column
     /// </summary>
     public TimestampColumn()
-        : this(Col(string.Empty)) { }
+        : this(F.Col(string.Empty)) { }
 
     /// <inheritdoc />
     protected internal override object? CoerceToNative() =>
@@ -38,7 +38,7 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     /// <param name="column">column</param>
     /// <returns></returns>
     public static TimestampColumn New(string name, Column? column = default) =>
-        new(column ?? Col(name));
+        new(column ?? F.Col(name));
 
     /// <summary>
     /// Creates a new column
@@ -52,7 +52,7 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     /// </summary>
     /// <param name="lit">literal</param>
     /// <returns>typed column</returns>
-    public static implicit operator TimestampColumn(Timestamp lit) => New(Lit(lit));
+    public static implicit operator TimestampColumn(Timestamp lit) => New(F.Lit(lit));
 
     /// <summary>
     /// Convert the dotnet literal value to a column
@@ -137,4 +137,12 @@ public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, Times
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(DateTimeOffset lhs, TimestampColumn rhs) =>
         lhs.UtcDateTime - rhs;
+
+    /// <summary>
+    /// Returns the date that is `months` after the current timestamp
+    /// </summary>
+    /// <param name="months">months to add</param>
+    /// <returns>date column</returns>
+    public DateColumn AddMonths(IntegerColumn months) =>
+        DateColumn.New(F.AddMonths(Column, months));
 }
