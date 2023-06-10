@@ -1,8 +1,8 @@
 ﻿# Plus (+)
 
-Returns `expr1` + `expr2`.
+> _Since 1.0.0_
 
-Since 1.0.0
+Returns `expr1` + `expr2`.
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_6)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.op_Addition*)

@@ -268,7 +268,7 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public BooleanColumn IsNaN() => BooleanColumn.New(F.IsNaN(Column));
 
     /// <summary>
-    /// Returns the absolute value of the numeric or interval value
+    /// Returns the absolute value of the numeric value
     /// </summary>
     /// <returns>numeric column</returns>
     [Since("1.2.0")]

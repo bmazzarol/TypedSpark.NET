@@ -1,8 +1,8 @@
 ﻿# Not (!)
 
-! `expr` - Logical not.
+> _Since 1.0.0_
 
-Since 1.0.0
+! `expr` - Logical not.
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_1)
 * [API Docs](xref:TypedSpark.NET.Columns.BooleanColumn.op_LogicalNot(TypedSpark.NET.Columns.BooleanColumn))

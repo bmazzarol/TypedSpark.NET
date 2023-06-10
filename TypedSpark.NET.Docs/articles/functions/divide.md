@@ -1,9 +1,9 @@
 ﻿# Divide (/)
 
+> _Since 1.0.0_
+
 `expr1` / `expr2` - Returns `expr1` / `expr2`. It always performs floating point
 division.
-
-Since 1.0.0
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_7)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.op_Division*)

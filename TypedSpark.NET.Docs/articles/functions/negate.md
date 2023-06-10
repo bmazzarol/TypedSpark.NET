@@ -1,8 +1,8 @@
 ﻿# Negate (- `expr`)
 
--`expr` - Negate the numeric expression.
+> _Since 1.0.0_
 
-Since 1.0.0
+-`expr` - Negate the numeric expression.
 
 * [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.op_UnaryNegation*)
 

@@ -1,18 +1,17 @@
 ﻿# Greater Than or Equal (>=)
 
-`expr1` >= `expr2` - Returns true if `expr1` is greater than or equal to `expr2`.
+> _Since 1.0.0_
 
-Since 1.0.0
+`expr1` >= `expr2` - Returns true if `expr1` is greater than or equal to `expr2`.
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_15)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedOrdColumn`3.op_GreaterThanOrEqual*)
 
-## Arguments
-
-`expr1`, `expr2` - the two expressions must be same type or can be casted to a
-common type, and must be a type that can be ordered. For example, map type is
-not orderable, so it is not supported. For complex types such array/struct, the
-data types of fields must be orderable.
+> [!NOTE]
+> `expr1`, `expr2` - the two expressions must be same type or can be casted to a
+> common type, and must be a type that can be used in equality comparison. Map
+> type is not supported. For complex types such array/struct, the data types of
+> fields must be orderable.
 
 ## Examples
 

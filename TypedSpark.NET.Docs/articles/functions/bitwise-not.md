@@ -1,8 +1,8 @@
 ﻿# Bitwise NOT (~)
 
-~ `expr` - Returns the result of bitwise NOT of `expr`.
+> _Since 1.4.0_
 
-Since: 1.4.0
+~ `expr` - Returns the result of bitwise NOT of `expr`.
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_19)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedIntegralColumn`3.op_OnesComplement*)

@@ -1,8 +1,8 @@
 ﻿# Mod (%)
 
-`expr1` % `expr2` - Returns the remainder after `expr1` / `expr2`.
+> _Since 1.0.0_
 
-Since 1.0.0
+`expr1` % `expr2` - Returns the remainder after `expr1` / `expr2`.
 
 * [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_3)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.op_Modulus*)
