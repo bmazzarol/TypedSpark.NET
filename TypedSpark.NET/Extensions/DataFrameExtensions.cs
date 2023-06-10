@@ -32,7 +32,12 @@ public static class DataFrameExtensions
                             ExplainMode.CodeGen => "codegen",
                             ExplainMode.Cost => "cost",
                             ExplainMode.Formatted => "formatted",
-                            _ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
+                            _
+                                => throw new ArgumentOutOfRangeException(
+                                    nameof(mode),
+                                    mode,
+                                    message: null
+                                )
                         }
                     )
             );

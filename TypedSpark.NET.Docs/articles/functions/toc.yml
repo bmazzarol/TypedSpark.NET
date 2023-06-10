@@ -1,8 +1,6 @@
 ﻿items:
   - name: Not (!)
     href: not.md
-  - name: Not Equals (!=)
-    href: not-equals.md
   - name: Mod (%)
     href: mod.md
   - name: Bitwise And (&)
@@ -27,3 +25,9 @@
     href: less-than.md
   - name: Less Than or Equal (<=)
     href: less-than-or-equal.md
+  - name: Equals (==)
+    href: equals.md
+  - name: Equals Null Safe (<=>)
+    href: equals-null-safe.md
+  - name: Not Equals (!=)
+    href: not-equals.md

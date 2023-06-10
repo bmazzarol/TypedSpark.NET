@@ -10,7 +10,7 @@ Since 1.0.0
 
 ## Arguments
 
-expr1, expr2 - the two expressions must be same type or can be casted to a
+`expr1`, `expr2` - the two expressions must be same type or can be casted to a
 common type, and must be a type that can be used in equality comparison. Map
 type is not supported. For complex types such array/struct, the data types of
 fields must be orderable.
