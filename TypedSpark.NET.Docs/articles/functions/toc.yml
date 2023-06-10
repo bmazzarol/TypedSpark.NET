@@ -45,3 +45,5 @@
     href: acosh.md
   - name: Add Months
     href: add-months.md
+  - name: Aggregate
+    href: aggregate.md
