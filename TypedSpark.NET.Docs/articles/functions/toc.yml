@@ -61,3 +61,5 @@
     href: array-contains.md
   - name: Array Distinct
     href: array-distinct.md
+  - name: Array Except
+    href: array-except.md
