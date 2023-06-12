@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
@@ -309,6 +310,14 @@ public static class ArrayColumn
     /// <param name="columns">existing columns of the correct type</param>
     /// <returns>array column</returns>
     public static ArrayColumn<T> New<T>(params T[] columns)
+        where T : TypedColumn, new() => New(columns.AsEnumerable());
+
+    /// <summary>
+    /// Creates a new array column
+    /// </summary>
+    /// <param name="columns">existing columns of the correct type</param>
+    /// <returns>array column</returns>
+    public static ArrayColumn<T> New<T>(IEnumerable<T> columns)
         where T : TypedColumn, new() => New<T>(F.Array(columns.Select(x => (Column)x).ToArray()));
 
     /// <summary>

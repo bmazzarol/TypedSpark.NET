@@ -1,0 +1,11 @@
+﻿root
+ |-- array(1, 2, 3): array (nullable = false)
+ |    |-- element: integer (containsNull = false)
+
+
+(top = 20)
++--------------+
+|array(1, 2, 3)|
++--------------+
+|[1, 2, 3]     |
++--------------+

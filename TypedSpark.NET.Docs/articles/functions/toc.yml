@@ -55,3 +55,5 @@
     href: approx-count-distinct.md
   - name: Approx Percentile
     href: approx-percentile.md
+  - name: Array
+    href: array.md
