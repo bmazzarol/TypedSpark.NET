@@ -1,0 +1,16 @@
+# [Results](#tab/results)
+
+|array_contains(array(add_months(DATE '2023-03-10', 1), add_months(DATE '2023-03-10', 2), add_months(DATE '2023-03-10', 3), add_months(DATE '2023-03-10', 4)), DATE '2023-04-10')|array_contains(array(add_months(DATE '2023-03-10', 1), add_months(DATE '2023-03-10', 2), add_months(DATE '2023-03-10', 3), add_months(DATE '2023-03-10', 4)), DATE '2023-12-10')|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|true                                                                                                                                                                            |false                                                                                                                                                                           |
+
+_(top = 20)_
+
+# [Schema](#tab/schema)
+
+```shell
+root
+ |-- array_contains(array(add_months(DATE '2023-03-10', 1), add_months(DATE '2023-03-10', 2), add_months(DATE '2023-03-10', 3), add_months(DATE '2023-03-10', 4)), DATE '2023-04-10'): boolean (nullable = false)
+ |-- array_contains(array(add_months(DATE '2023-03-10', 1), add_months(DATE '2023-03-10', 2), add_months(DATE '2023-03-10', 3), add_months(DATE '2023-03-10', 4)), DATE '2023-12-10'): boolean (nullable = false)
+
+```

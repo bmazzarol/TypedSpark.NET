@@ -57,3 +57,5 @@
     href: approx-percentile.md
   - name: Array
     href: array.md
+  - name: Array Contains
+    href: array-contains.md

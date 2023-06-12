@@ -37,15 +37,6 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public T this[int index] => NewValue(Column.GetItem(index));
 
     /// <summary>
-    /// Returns null if the array is null, true if the array contains `value`,
-    /// and false otherwise
-    /// </summary>
-    /// <param name="value">Value to check for existence</param>
-    /// <returns>boolean column</returns>
-    public BooleanColumn Contains(T value) =>
-        BooleanColumn.New(F.ArrayContains(Column, (Column)value));
-
-    /// <summary>
     /// Returns true if the provided array column has at least one non-null element in common.
     /// If not and both arrays are non-empty and any of them contains a null,
     /// it returns null. It returns false otherwise.
@@ -319,6 +310,17 @@ public static class ArrayColumn
     /// <returns>array column</returns>
     public static ArrayColumn<T> New<T>(IEnumerable<T> columns)
         where T : TypedColumn, new() => New<T>(F.Array(columns.Select(x => (Column)x).ToArray()));
+
+    /// <summary>
+    /// Returns null if the array is null, true if the array contains `value`,
+    /// and false otherwise
+    /// </summary>
+    /// <param name="array">array to test against</param>
+    /// <param name="value">Value to check for existence</param>
+    /// <returns>boolean column</returns>
+    public static BooleanColumn Contains<T>(this ArrayColumn<T> array, T value)
+        where T : TypedColumn, TypedOrdColumn, new() =>
+        BooleanColumn.New(F.ArrayContains(array.Column, (Column)value));
 
     /// <summary>
     /// Concatenates the elements of `column` using the `delimiter`

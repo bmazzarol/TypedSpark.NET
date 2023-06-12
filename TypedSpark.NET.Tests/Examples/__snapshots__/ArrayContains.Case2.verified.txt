@@ -1,0 +1,11 @@
+﻿root
+ |-- array_contains(array(a, b, c), a): boolean (nullable = false)
+ |-- array_contains(array(a, b, c), d): boolean (nullable = false)
+
+
+(top = 20)
++---------------------------------+---------------------------------+
+|array_contains(array(a, b, c), a)|array_contains(array(a, b, c), d)|
++---------------------------------+---------------------------------+
+|true                             |false                            |
++---------------------------------+---------------------------------+
