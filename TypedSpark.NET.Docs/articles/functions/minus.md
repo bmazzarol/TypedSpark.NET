@@ -4,7 +4,7 @@
 
 Returns `expr1` - `expr2`.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#-)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#-)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.op_Subtraction*)
 
 ## Examples

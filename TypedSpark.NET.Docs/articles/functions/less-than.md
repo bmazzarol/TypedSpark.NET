@@ -4,7 +4,7 @@
 
 `expr1` < `expr2` - Returns true if `expr1` is less than `expr2`.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_5)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#_8)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedOrdColumn`3.op_LessThan*)
 
 ## Examples

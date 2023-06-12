@@ -7,7 +7,7 @@ initial state and all elements in the array, and reduces this to a single state.
 The final state is converted into the final result by applying a `finish`
 function.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#aggregate)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#aggregate)
 * [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.Aggregate*)
 
 ## Examples

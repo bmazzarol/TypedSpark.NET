@@ -1,4 +1,5 @@
-﻿using Microsoft.Spark;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
@@ -6,10 +7,22 @@ using F = Microsoft.Spark.Sql.Functions;
 namespace TypedSpark.NET.Columns;
 
 /// <summary>
+/// Marker interface that indicates the column is a numeric column
+/// </summary>
+[SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase")]
+[SuppressMessage("Naming", "CA1715:Identifiers should have correct prefix")]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
+public interface TypedNumericColumn { }
+
+/// <summary>
 /// Numeric operators
 /// </summary>
 public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
-    : TypedOrdColumn<TThis, TSparkType, TNativeType>
+    : TypedOrdColumn<TThis, TSparkType, TNativeType>,
+        TypedNumericColumn,
+        TypedNumericOrIntervalColumn,
+        TypedNumericOrTemporalColumn,
+        TypedNumericOrDateTimeColumn
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {

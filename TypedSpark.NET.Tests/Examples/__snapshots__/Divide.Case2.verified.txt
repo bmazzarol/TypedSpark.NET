@@ -1,0 +1,15 @@
+﻿root
+ |-- 2: long (nullable = false)
+ |-- 2: long (nullable = false)
+ |-- (2 / 2): double (nullable = true)
+ |-- (2 / 2): double (nullable = true)
+ |-- left literal: double (nullable = true)
+ |-- right literal: double (nullable = true)
+
+
+(top = 20)
++---+---+-------+-------+------------+-------------+
+|2  |2  |(2 / 2)|(2 / 2)|left literal|right literal|
++---+---+-------+-------+------------+-------------+
+|2  |2  |1.0    |1.0    |1.0         |1.0          |
++---+---+-------+-------+------------+-------------+

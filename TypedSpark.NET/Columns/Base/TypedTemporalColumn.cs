@@ -9,7 +9,8 @@ namespace TypedSpark.NET.Columns;
 /// Base type for all Date, Timestamp and Interval columns
 /// </summary>
 public class TypedTemporalColumn<TThis, TSparkType, TNativeType>
-    : TypedOrdColumn<TThis, TSparkType, TNativeType>
+    : TypedOrdColumn<TThis, TSparkType, TNativeType>,
+        TypedNumericOrTemporalColumn
     where TThis : TypedColumn<TThis, TSparkType, TNativeType>, new()
     where TSparkType : DataType
 {

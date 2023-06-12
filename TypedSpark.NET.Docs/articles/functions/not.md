@@ -4,7 +4,7 @@
 
 ! `expr` - Logical not.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_1)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#_1)
 * [API Docs](xref:TypedSpark.NET.Columns.BooleanColumn.op_LogicalNot(TypedSpark.NET.Columns.BooleanColumn))
 
 ## Examples

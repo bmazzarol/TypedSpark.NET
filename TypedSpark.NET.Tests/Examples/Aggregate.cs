@@ -1,59 +1,57 @@
-﻿using Docfx.ResultSnippets;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
+using BunsenBurner;
 using Microsoft.Spark.Sql;
 using SparkTest.NET.Extensions;
 using TypedSpark.NET.Columns;
+using VerifyXunit;
 using Xunit;
-using static SparkTest.NET.SparkSessionFactory;
+using static TypedSpark.NET.Tests.Examples.ExampleExtensions;
 
 namespace TypedSpark.NET.Tests.Examples
 {
+    [UsesVerify]
     public static class Aggregate
     {
         [Fact]
-        public static void Case1() =>
-            UseSession(s =>
-                {
-                    #region Example1
+        public static async Task Case1() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                #region Example1
 
-                    DataFrame df = s.CreateDataFrameFromData(new { array = new[] { 1, 2, 3 } });
-                    ArrayColumn<IntegerColumn> array = ArrayColumn.New<IntegerColumn>("array");
-                    IntegerColumn state = 0;
-                    DataFrame result = df.Select(
-                        array,
-                        state.As("state"),
-                        array.Aggregate(state, (acc, x) => acc + x).As("aggregate")
-                    );
+                DataFrame df = s.CreateDataFrameFromData(new { array = new[] { 1, 2, 3 } });
+                ArrayColumn<IntegerColumn> array = ArrayColumn.New<IntegerColumn>("array");
+                IntegerColumn state = 0;
+                DataFrame result = df.Select(
+                    array,
+                    state.As("state"),
+                    array.Aggregate(state, (acc, x) => acc + x).As("aggregate")
+                );
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
 
         [Fact]
-        public static void Case2() =>
-            UseSession(s =>
-                {
-                    #region Example2
+        public static async Task Case2() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                #region Example2
 
-                    DataFrame df = s.CreateDataFrameFromData(new { array = new[] { 1, 2, 3 } });
-                    ArrayColumn<IntegerColumn> array = ArrayColumn.New<IntegerColumn>("array");
-                    IntegerColumn state = 0;
-                    DataFrame result = df.Select(
-                        array,
-                        state.As("state"),
-                        array.Aggregate(state, (acc, x) => acc + x, acc => acc * 10).As("aggregate")
-                    );
+                DataFrame df = s.CreateDataFrameFromData(new { array = new[] { 1, 2, 3 } });
+                ArrayColumn<IntegerColumn> array = ArrayColumn.New<IntegerColumn>("array");
+                IntegerColumn state = 0;
+                DataFrame result = df.Select(
+                    array,
+                    state.As("state"),
+                    array
+                        .Aggregate(state, (acc, x) => acc + x, acc => (acc * 10).CastToString())
+                        .As("aggregate")
+                );
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
     }
 }

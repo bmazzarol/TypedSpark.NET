@@ -1,0 +1,11 @@
+﻿root
+ |-- (NOT true): boolean (nullable = false)
+ |-- (NOT true): boolean (nullable = false)
+
+
+(top = 20)
++----------+----------+
+|(NOT true)|(NOT true)|
++----------+----------+
+|false     |false     |
++----------+----------+

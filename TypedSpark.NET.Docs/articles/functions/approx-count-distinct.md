@@ -6,7 +6,7 @@ approx_count_distinct(`expr`[, `relativeSD`]) - Returns the estimated
 cardinality by HyperLogLog++. `relativeSD` defines the maximum relative standard
 deviation allowed.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#approx_count_distinct)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#approx_count_distinct)
 * [API Docs](xref:TypedSpark.NET.Functions.ApproxCountDistinct*)
 
 ## Examples

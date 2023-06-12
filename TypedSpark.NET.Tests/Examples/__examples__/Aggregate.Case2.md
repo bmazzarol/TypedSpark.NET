@@ -13,6 +13,6 @@ root
  |-- array: array (nullable = true)
  |    |-- element: integer (containsNull = true)
  |-- state: integer (nullable = false)
- |-- aggregate: integer (nullable = true)
+ |-- aggregate: string (nullable = true)
 
 ```

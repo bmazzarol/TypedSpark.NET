@@ -1,0 +1,13 @@
+﻿root
+ |-- (7 % 5): integer (nullable = true)
+ |-- (7 % 5): integer (nullable = true)
+ |-- left literal: integer (nullable = true)
+ |-- right literal: integer (nullable = true)
+
+
+(top = 20)
++-------+-------+------------+-------------+
+|(7 % 5)|(7 % 5)|left literal|right literal|
++-------+-------+------------+-------------+
+|2      |2      |2           |2            |
++-------+-------+------------+-------------+

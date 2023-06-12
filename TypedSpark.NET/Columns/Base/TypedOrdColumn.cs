@@ -10,6 +10,7 @@ namespace TypedSpark.NET.Columns;
 /// </summary>
 [SuppressMessage("Naming", "CA1715:Identifiers should have correct prefix")]
 [SuppressMessage("Minor Code Smell", "S101:Types should be named in PascalCase")]
+[SuppressMessage("ReSharper", "InconsistentNaming")]
 public interface TypedOrdColumn { }
 
 /// <summary>

@@ -9,7 +9,9 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Date column
 /// </summary>
-public sealed class DateColumn : TypedTemporalColumn<DateColumn, DateType, Date>
+public sealed class DateColumn
+    : TypedTemporalColumn<DateColumn, DateType, Date>,
+        TypedNumericOrDateTimeColumn
 {
     private DateColumn(Column column)
         : base(new DateType(), column) { }

@@ -1,70 +1,63 @@
-﻿using Docfx.ResultSnippets;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
+using BunsenBurner;
 using Microsoft.Spark.Sql;
 using SparkTest.NET.Extensions;
 using TypedSpark.NET.Columns;
+using VerifyXunit;
 using Xunit;
-using static SparkTest.NET.SparkSessionFactory;
+using static TypedSpark.NET.Tests.Examples.ExampleExtensions;
 
 namespace TypedSpark.NET.Tests.Examples
 {
+    [UsesVerify]
     public static class Negate
     {
         [Fact]
-        public static void Case1() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case1() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example1
+                #region Example1
 
-                    IntegerColumn col = 1;
-                    DataFrame result = df.Select(-col, col.Negate());
+                IntegerColumn col = 1;
+                DataFrame result = df.Select(-col, col.Negate());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
 
         [Fact]
-        public static void Case2() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case2() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example2
+                #region Example2
 
-                    IntegerColumn col = -1;
-                    DataFrame result = df.Select(-col, col.Negate());
+                IntegerColumn col = -1;
+                DataFrame result = df.Select(-col, col.Negate());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
 
         [Fact]
-        public static void Case3() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case3() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example3
+                #region Example3
 
-                    IntegerColumn col = Functions.Null<IntegerColumn>();
-                    DataFrame result = df.Select(-col, col.Negate());
+                IntegerColumn col = Functions.Null<IntegerColumn>();
+                DataFrame result = df.Select(-col, col.Negate());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
     }
 }

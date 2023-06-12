@@ -5,7 +5,7 @@
 add_months(`start_date`, `num_months`) - Returns the date that is `num_months`
 after `start_date`.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#add_months)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#add_months)
 * [API Docs - Date](xref:TypedSpark.NET.Columns.DateColumn.AddMonths*)
 * [API Docs - Timestamp](xref:TypedSpark.NET.Columns.TimestampColumn.AddMonths*)
 

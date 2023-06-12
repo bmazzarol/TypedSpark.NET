@@ -1,0 +1,10 @@
+﻿root
+ |-- bit_xor(x): integer (nullable = true)
+
+
+(top = 20)
++----------+
+|bit_xor(x)|
++----------+
+|6         |
++----------+

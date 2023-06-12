@@ -1,0 +1,11 @@
+﻿root
+ |-- (- NULL): double (nullable = true)
+ |-- (- NULL): double (nullable = true)
+
+
+(top = 20)
++--------+--------+
+|(- NULL)|(- NULL)|
++--------+--------+
+|null    |null    |
++--------+--------+

@@ -25,7 +25,9 @@ public sealed class DayTimeIntervalType : AtomicType
 /// The support for interval columns in dotnet spark is poor, these types cannot be used in
 /// other complex types or printed in a schema from the dotnet side.
 /// </remarks>
-public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeIntervalType, TimeSpan>
+public class IntervalColumn
+    : TypedTemporalColumn<IntervalColumn, DayTimeIntervalType, TimeSpan>,
+        TypedNumericOrIntervalColumn
 {
     private IntervalColumn(Column column)
         : base(new DayTimeIntervalType(), column) { }
@@ -63,6 +65,31 @@ public class IntervalColumn : TypedTemporalColumn<IntervalColumn, DayTimeInterva
         {
             Column = F.Expr(
                 $"make_interval(0,0,0,{lit.Days.ToString(CultureInfo.InvariantCulture)},{lit.Hours.ToString(CultureInfo.InvariantCulture)},{lit.Minutes.ToString(CultureInfo.InvariantCulture)},{lit.Seconds.ToString(CultureInfo.InvariantCulture)})"
+            )
+        };
+
+    /// <summary>
+    /// Creates a new interval
+    /// </summary>
+    /// <param name="value">interval value</param>
+    /// <param name="type">interval type</param>
+    /// <returns>column</returns>
+    [Since("3.0.0")]
+    public static IntervalColumn New(IntegerColumn value, SparkIntervalType type) =>
+        new()
+        {
+            Column = F.Expr(
+                type switch
+                {
+                    SparkIntervalType.Year => $"make_interval({value},0,0,0,0,0,0)",
+                    SparkIntervalType.Month => $"make_interval(0,{value},0,0,0,0,0)",
+                    SparkIntervalType.Weeks => $"make_interval(0,0,{value},0,0,0,0)",
+                    SparkIntervalType.Day => $"make_interval(0,0,0,{value},0,0,0)",
+                    SparkIntervalType.Hour => $"make_interval(0,0,0,0,{value},0,0)",
+                    SparkIntervalType.Minute => $"make_interval(0,0,0,0,0,{value},0)",
+                    SparkIntervalType.Second => $"make_interval(0,0,0,0,0,0,{value})",
+                    _ => throw new ArgumentOutOfRangeException(nameof(type), type, message: null)
+                }
             )
         };
 

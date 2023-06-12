@@ -1,0 +1,10 @@
+﻿root
+ |-- ACOS(2): double (nullable = true)
+
+
+(top = 20)
++-------+
+|ACOS(2)|
++-------+
+|NaN    |
++-------+

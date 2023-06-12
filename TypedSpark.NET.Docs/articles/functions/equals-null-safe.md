@@ -5,7 +5,7 @@
 `expr1` <=> `expr2` - Returns same result as the EQUAL(=) operator for non-null
 operands, but returns true if both are null, false if one of the them is null.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_10)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#_10)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedColumn`2.EqNullSafe*)
 
 > [!NOTE]

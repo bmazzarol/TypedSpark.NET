@@ -1,0 +1,10 @@
+﻿root
+ |-- (NULL = NULL): boolean (nullable = true)
+
+
+(top = 20)
++-------------+
+|(NULL = NULL)|
++-------------+
+|null         |
++-------------+

@@ -1,70 +1,63 @@
-﻿using Docfx.ResultSnippets;
-using FluentAssertions;
+﻿using System.Threading.Tasks;
+using BunsenBurner;
 using Microsoft.Spark.Sql;
 using SparkTest.NET.Extensions;
 using TypedSpark.NET.Columns;
+using VerifyXunit;
 using Xunit;
-using static SparkTest.NET.SparkSessionFactory;
+using static TypedSpark.NET.Tests.Examples.ExampleExtensions;
 
 namespace TypedSpark.NET.Tests.Examples
 {
+    [UsesVerify]
     public static class Not
     {
         [Fact]
-        public static void Case1() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case1() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example1
+                #region Example1
 
-                    BooleanColumn col = true;
-                    DataFrame result = df.Select(!col, col.Not());
+                BooleanColumn col = true;
+                DataFrame result = df.Select(!col, col.Not());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
 
         [Fact]
-        public static void Case2() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case2() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example2
+                #region Example2
 
-                    BooleanColumn col = false;
-                    DataFrame result = df.Select(!col, col.Not());
+                BooleanColumn col = false;
+                DataFrame result = df.Select(!col, col.Not());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
 
         [Fact]
-        public static void Case3() =>
-            UseSession(s =>
-                {
-                    var df = s.CreateEmptyFrame();
+        public static async Task Case3() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
 
-                    #region Example3
+                #region Example3
 
-                    BooleanColumn col = Functions.Null<BooleanColumn>();
-                    DataFrame result = df.Select(!col, col.Not());
+                BooleanColumn col = Functions.Null<BooleanColumn>();
+                DataFrame result = df.Select(!col, col.Not());
 
-                    #endregion
+                #endregion
 
-                    result.Should().NotBeNull();
-
-                    return result.ShowMdString(showPlan: false);
-                })
-                .SaveResults();
+                return result;
+            });
     }
 }

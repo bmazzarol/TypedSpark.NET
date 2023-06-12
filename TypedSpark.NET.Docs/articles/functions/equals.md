@@ -4,7 +4,7 @@
 
 `expr1` == `expr2` - Returns true if `expr1` equals `expr2`, or false otherwise.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#_13)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#_13)
 * [API Docs](xref:TypedSpark.NET.Columns.TypedColumn`3.op_Equality*)
 
 > [!NOTE]

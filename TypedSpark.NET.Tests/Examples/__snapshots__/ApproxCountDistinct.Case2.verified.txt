@@ -1,0 +1,10 @@
+﻿root
+ |-- approx_count_distinct(x): long (nullable = false)
+
+
+(top = 20)
++------------------------+
+|approx_count_distinct(x)|
++------------------------+
+|3                       |
++------------------------+

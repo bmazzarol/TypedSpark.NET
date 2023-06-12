@@ -53,3 +53,5 @@
     href: any.md
   - name: Approx Count Distinct
     href: approx-count-distinct.md
+  - name: Approx Percentile
+    href: approx-percentile.md

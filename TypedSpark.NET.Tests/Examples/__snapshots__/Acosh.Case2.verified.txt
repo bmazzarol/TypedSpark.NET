@@ -1,0 +1,10 @@
+﻿root
+ |-- ACOSH(0): double (nullable = true)
+
+
+(top = 20)
++--------+
+|ACOSH(0)|
++--------+
+|NaN     |
++--------+

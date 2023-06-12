@@ -9,7 +9,9 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Timestamp column
 /// </summary>
-public sealed class TimestampColumn : TypedTemporalColumn<TimestampColumn, TimestampType, Timestamp>
+public sealed class TimestampColumn
+    : TypedTemporalColumn<TimestampColumn, TimestampType, Timestamp>,
+        TypedNumericOrDateTimeColumn
 {
     private TimestampColumn(Column column)
         : base(new TimestampType(), column) { }

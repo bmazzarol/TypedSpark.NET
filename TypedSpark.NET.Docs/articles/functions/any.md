@@ -4,7 +4,7 @@
 
 any(`expr`) - Returns true if at least one value of `expr` is true.
 
-* [Spark Docs](https://spark.apache.org/docs/latest/api/sql/index.html#any)
+* [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#any)
 * [API Docs](xref:TypedSpark.NET.Columns.BooleanColumn.Any*)
 
 ## Examples

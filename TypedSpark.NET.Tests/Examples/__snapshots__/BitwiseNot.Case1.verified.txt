@@ -1,0 +1,11 @@
+﻿root
+ |-- ~0: integer (nullable = false)
+ |-- ~0: integer (nullable = false)
+
+
+(top = 20)
++---+---+
+|~0 |~0 |
++---+---+
+|-1 |-1 |
++---+---+
