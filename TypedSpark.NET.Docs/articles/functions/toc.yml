@@ -63,3 +63,5 @@
     href: array-distinct.md
   - name: Array Except
     href: array-except.md
+  - name: Array Intersect
+    href: array-intersect.md

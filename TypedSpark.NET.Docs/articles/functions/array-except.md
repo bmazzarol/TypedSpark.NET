@@ -6,7 +6,7 @@ array_except(`array1`, `array2`) - Returns an array of the elements in `array1`
 but not in `array2`, without duplicates.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#array_except)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.Except)
+* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.Except*)
 
 ## Examples
 
