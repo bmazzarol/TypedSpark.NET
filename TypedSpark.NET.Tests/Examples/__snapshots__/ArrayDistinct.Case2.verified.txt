@@ -1,0 +1,11 @@
+﻿root
+ |-- array_distinct(array(a, b, a, c, NULL, NULL, c, b)): array (nullable = false)
+ |    |-- element: string (containsNull = true)
+
+
+(top = 20)
++---------------------------------------------------+
+|array_distinct(array(a, b, a, c, NULL, NULL, c, b))|
++---------------------------------------------------+
+|[a, b, c, null]                                    |
++---------------------------------------------------+

@@ -60,8 +60,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example3
 
-                TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52);
-                TimestampColumn b = new DateTime(2009, 07, 30, 04, 17, 52);
+                TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52, DateTimeKind.Utc);
+                TimestampColumn b = new DateTime(2009, 07, 30, 04, 17, 52, DateTimeKind.Utc);
                 DataFrame result = df.Select(a <= b, a.Leq(b));
 
                 #endregion
@@ -77,8 +77,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example4
 
-                TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52);
-                TimestampColumn b = new DateTime(2009, 08, 01, 04, 17, 52);
+                TimestampColumn a = new DateTime(2009, 07, 30, 04, 17, 52, DateTimeKind.Utc);
+                TimestampColumn b = new DateTime(2009, 08, 01, 04, 17, 52, DateTimeKind.Utc);
                 DataFrame result = df.Select(a <= b, a.Leq(b));
 
                 #endregion

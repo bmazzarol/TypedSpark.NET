@@ -1,6 +1,6 @@
 # [Results](#tab/results)
 
-|(TIMESTAMP '2009-07-29 20:17:52' < TIMESTAMP '2009-07-29 20:17:52')|(TIMESTAMP '2009-07-29 20:17:52' < TIMESTAMP '2009-07-29 20:17:52')|
+|(TIMESTAMP '2009-07-30 04:17:52' < TIMESTAMP '2009-07-30 04:17:52')|(TIMESTAMP '2009-07-30 04:17:52' < TIMESTAMP '2009-07-30 04:17:52')|
 |-------------------------------------------------------------------|-------------------------------------------------------------------|
 |false                                                              |false                                                              |
 
@@ -10,7 +10,7 @@ _(top = 20)_
 
 ```shell
 root
- |-- (TIMESTAMP '2009-07-29 20:17:52' < TIMESTAMP '2009-07-29 20:17:52'): boolean (nullable = false)
- |-- (TIMESTAMP '2009-07-29 20:17:52' < TIMESTAMP '2009-07-29 20:17:52'): boolean (nullable = false)
+ |-- (TIMESTAMP '2009-07-30 04:17:52' < TIMESTAMP '2009-07-30 04:17:52'): boolean (nullable = false)
+ |-- (TIMESTAMP '2009-07-30 04:17:52' < TIMESTAMP '2009-07-30 04:17:52'): boolean (nullable = false)
 
 ```

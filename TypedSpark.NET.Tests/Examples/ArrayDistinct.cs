@@ -12,7 +12,7 @@ using static TypedSpark.NET.Tests.Examples.ExampleExtensions;
 namespace TypedSpark.NET.Tests.Examples
 {
     [UsesVerify]
-    public static class ArrayContains
+    public static class ArrayDistinct
     {
         [Fact]
         public static async Task Case1() =>
@@ -22,8 +22,14 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example1
 
-                var array = ArrayColumn.New<IntegerColumn>(1, 2, 3);
-                DataFrame result = df.Select(array.Contains(2), array.Contains(5));
+                var array = ArrayColumn.New<IntegerColumn>(
+                    1,
+                    2,
+                    3,
+                    Functions.Null<IntegerColumn>(),
+                    3
+                );
+                DataFrame result = df.Select(array.Distinct());
 
                 #endregion
 
@@ -38,8 +44,17 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example2
 
-                var array = ArrayColumn.New<StringColumn>("a", "b", "c");
-                DataFrame result = df.Select(array.Contains("a"), array.Contains("d"));
+                var array = ArrayColumn.New<StringColumn>(
+                    "a",
+                    "b",
+                    "a",
+                    "c",
+                    Functions.Null<StringColumn>(),
+                    Functions.Null<StringColumn>(),
+                    "c",
+                    "b"
+                );
+                DataFrame result = df.Select(array.Distinct());
 
                 #endregion
 
@@ -55,13 +70,8 @@ namespace TypedSpark.NET.Tests.Examples
                 #region Example3
 
                 DateColumn date = new DateTime(2023, 3, 10);
-                ArrayColumn<DateColumn> array = ArrayColumn.New(
-                    Enumerable.Range(1, 4).Select(x => date.AddMonths(x))
-                );
-                DataFrame result = df.Select(
-                    array.Contains(new DateTime(2023, 4, 10)),
-                    array.Contains(new DateTime(2023, 12, 10))
-                );
+                ArrayColumn<DateColumn> array = ArrayColumn.New(Enumerable.Repeat(date, 3));
+                DataFrame result = df.Select(array.Distinct());
 
                 #endregion
 
