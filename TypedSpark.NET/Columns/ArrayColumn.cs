@@ -288,6 +288,24 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public TC Aggregate<TB, TC>(TB seed, Func<TB, T, TB> merge, Func<TB, TC> project)
         where TB : TypedColumn, new()
         where TC : TypedColumn, new() => InternalAggregate(seed, merge, project);
+
+    /// <summary>
+    /// Returns the concatenation of `this` array of the elements in the `other` array
+    /// </summary>
+    /// <param name="other">Right side column to apply</param>
+    /// <returns>array column</returns>
+    [Since("2.4.0")]
+    public ArrayColumn<T> Concat(ArrayColumn<T> other) => New(F.Concat(Column, other.Column));
+
+    /// <summary>
+    /// Returns the concatenation of `lhs` array of the elements in the `rhs` array
+    /// </summary>
+    /// <param name="lhs">Left side column to apply</param>
+    /// <param name="rhs">Right side column to apply</param>
+    /// <returns>array column</returns>
+    [Since("2.4.0")]
+    public static ArrayColumn<T> operator +(ArrayColumn<T> lhs, ArrayColumn<T> rhs) =>
+        lhs.Concat(rhs);
 }
 
 /// <summary>
