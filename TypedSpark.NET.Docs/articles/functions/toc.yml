@@ -69,3 +69,5 @@
     href: array-join.md
   - name: Array Max
     href: array-max.md
+  - name: Array Min
+    href: array-min.md
