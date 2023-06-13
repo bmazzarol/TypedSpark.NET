@@ -1,0 +1,10 @@
+﻿root
+ |-- array_join(array(hello, NULL, world),  , ,): string (nullable = false)
+
+
+(top = 20)
++-------------------------------------------+
+|array_join(array(hello, NULL, world),  , ,)|
++-------------------------------------------+
+|hello , world                              |
++-------------------------------------------+

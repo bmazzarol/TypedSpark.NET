@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|array(1, 2, 3)|
-|--------------|
-|[1, 2, 3]     |
+|array(1, 2, 3)|array(1, 2, 3)|array(1, 2, 3)|
+|--------------|--------------|--------------|
+|[1, 2, 3]     |[1, 2, 3]     |[1, 2, 3]     |
 
 _(top = 20)_
 
@@ -10,6 +10,10 @@ _(top = 20)_
 
 ```shell
 root
+ |-- array(1, 2, 3): array (nullable = false)
+ |    |-- element: integer (containsNull = false)
+ |-- array(1, 2, 3): array (nullable = false)
+ |    |-- element: integer (containsNull = false)
  |-- array(1, 2, 3): array (nullable = false)
  |    |-- element: integer (containsNull = false)
 

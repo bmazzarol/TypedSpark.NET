@@ -21,7 +21,14 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example1
 
-                DataFrame result = df.Select(ArrayColumn.New<IntegerColumn>(1, 2, 3));
+                DataFrame result = df.Select(
+                    // constructor
+                    ArrayColumn.New<IntegerColumn>(1, 2, 3),
+                    // implicit conversion from array of typed column
+                    (ArrayColumn<IntegerColumn>)new IntegerColumn[] { 1, 2, 3 },
+                    // extension method from IEnumerable of typed column
+                    Enumerable.Range(1, 3).Select(x => (IntegerColumn)x).AsArrayColumn()
+                );
 
                 #endregion
 

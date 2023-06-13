@@ -19,7 +19,7 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example1
 
-                var df = s.CreateDataFrameFromData(
+                DataFrame df = s.CreateDataFrameFromData(
                     new[] { true, false, false }.Select(x => new { x })
                 );
                 BooleanColumn x = BooleanColumn.New("x");
@@ -36,7 +36,7 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example2
 
-                var df = s.CreateDataFrameFromData(
+                DataFrame df = s.CreateDataFrameFromData(
                     new bool?[] { null, true, false }.Select(x => new { x })
                 );
                 BooleanColumn x = BooleanColumn.New("x");
@@ -53,7 +53,7 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example3
 
-                var df = s.CreateDataFrameFromData(
+                DataFrame df = s.CreateDataFrameFromData(
                     new bool?[] { false, false, null }.Select(x => new { x })
                 );
                 BooleanColumn x = BooleanColumn.New("x");

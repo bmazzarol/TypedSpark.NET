@@ -65,3 +65,5 @@
     href: array-except.md
   - name: Array Intersect
     href: array-intersect.md
+  - name: Array Join
+    href: array-join.md

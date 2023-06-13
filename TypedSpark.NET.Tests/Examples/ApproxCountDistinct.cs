@@ -19,7 +19,9 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example1
 
-                var df = s.CreateDataFrameFromData(new[] { 1, 1, 2, 2, 3 }.Select(x => new { x }));
+                DataFrame df = s.CreateDataFrameFromData(
+                    new[] { 1, 1, 2, 2, 3 }.Select(x => new { x })
+                );
                 IntegerColumn x = IntegerColumn.New("x");
                 DataFrame result = df.Select(x.ApproxCountDistinct());
 
@@ -34,7 +36,7 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example2
 
-                var df = s.CreateDataFrameFromData(
+                DataFrame df = s.CreateDataFrameFromData(
                     new[] { "a", "a", "b", "b", "c" }.Select(x => new { x })
                 );
                 StringColumn x = StringColumn.New("x");

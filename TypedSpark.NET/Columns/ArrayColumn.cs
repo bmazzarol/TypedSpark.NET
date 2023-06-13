@@ -25,6 +25,13 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public ArrayColumn()
         : this(F.Col(string.Empty)) { }
 
+    /// <summary>
+    /// Conversion from array to array column
+    /// </summary>
+    /// <param name="items">items</param>
+    /// <returns>array column</returns>
+    public static implicit operator ArrayColumn<T>(T[] items) => ArrayColumn.New(items);
+
     private static ArrayColumn<T> New(Column column) => ArrayColumn.New<T>(column);
 
     private static T NewValue(Column column) => new() { Column = column };
@@ -142,9 +149,20 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// without duplicates. The order of elements in the result is nondeterministic.
     /// </summary>
     /// <param name="other">Right side column to apply</param>
-    /// <returns>Column object</returns>
+    /// <returns>array column</returns>
     [Since("2.4.0")]
     public ArrayColumn<T> Except(ArrayColumn<T> other) => New(F.ArrayExcept(Column, other));
+
+    /// <summary>
+    /// Returns an array of the elements in the `lhs` but not in the `rhs`,
+    /// without duplicates. The order of elements in the result is nondeterministic.
+    /// </summary>
+    /// <param name="lhs">Left side column to apply</param>
+    /// <param name="rhs">Right side column to apply</param>
+    /// <returns>array column</returns>
+    [Since("2.4.0")]
+    public static ArrayColumn<T> operator -(ArrayColumn<T> lhs, ArrayColumn<T> rhs) =>
+        lhs.Except(rhs);
 
     /// <summary>
     /// Creates a new row for each element in the given array
@@ -310,6 +328,15 @@ public static class ArrayColumn
     /// <returns>array column</returns>
     public static ArrayColumn<T> New<T>(IEnumerable<T> columns)
         where T : TypedColumn, new() => New<T>(F.Array(columns.Select(x => (Column)x).ToArray()));
+
+    /// <summary>
+    /// Creates a new array column
+    /// </summary>
+    /// <param name="columns">column values</param>
+    /// <typeparam name="T">typed column</typeparam>
+    /// <returns>array column</returns>
+    public static ArrayColumn<T> AsArrayColumn<T>(this IEnumerable<T> columns)
+        where T : TypedColumn, new() => New(columns);
 
     /// <summary>
     /// Returns null if the array is null, true if the array contains `value`,

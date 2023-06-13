@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using BunsenBurner;
 using Microsoft.Spark.Sql;
 using SparkTest.NET.Extensions;
@@ -18,7 +19,7 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example1
 
-                var df = s.CreateDataFrameFromData(new { x = 3 }, new { x = 5 });
+                DataFrame df = s.CreateDataFrameFromData(new[] { 3, 5 }.Select(x => new { x }));
                 IntegerColumn x = IntegerColumn.New("x");
                 DataFrame result = df.Select(x.BitwiseXOR());
 

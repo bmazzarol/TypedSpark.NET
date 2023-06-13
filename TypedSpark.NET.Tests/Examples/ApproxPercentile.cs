@@ -19,7 +19,9 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example1
 
-                var df = s.CreateDataFrameFromData(new[] { 0, 1, 2, 10 }.Select(x => new { x }));
+                DataFrame df = s.CreateDataFrameFromData(
+                    new[] { 0, 1, 2, 10 }.Select(x => new { x })
+                );
                 IntegerColumn x = IntegerColumn.New("x");
                 ArrayColumn<DoubleColumn> percentages = ArrayColumn.New<DoubleColumn>(
                     0.5,
@@ -39,7 +41,9 @@ namespace TypedSpark.NET.Tests.Examples
             {
                 #region Example2
 
-                var df = s.CreateDataFrameFromData(new[] { 0, 6, 7, 9, 10 }.Select(x => new { x }));
+                DataFrame df = s.CreateDataFrameFromData(
+                    new[] { 0, 6, 7, 9, 10 }.Select(x => new { x })
+                );
                 IntegerColumn x = IntegerColumn.New("x");
                 DoubleColumn percentage = 0.5;
                 DataFrame result = df.Select(x.ApproxPercentile(percentage, 100));
