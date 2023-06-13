@@ -67,3 +67,5 @@
     href: array-intersect.md
   - name: Array Join
     href: array-join.md
+  - name: Array Max
+    href: array-max.md
