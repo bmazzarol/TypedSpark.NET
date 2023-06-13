@@ -1,0 +1,11 @@
+﻿root
+ |-- array_repeat(123, 2): array (nullable = false)
+ |    |-- element: string (containsNull = false)
+
+
+(top = 20)
++--------------------+
+|array_repeat(123, 2)|
++--------------------+
+|[123, 123]          |
++--------------------+

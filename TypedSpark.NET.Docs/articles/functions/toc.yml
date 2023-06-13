@@ -75,3 +75,5 @@
     href: array-position.md
   - name: Array Remove
     href: array-remove.md
+  - name: Array Repeat
+    href: array-repeat.md
