@@ -1,0 +1,16 @@
+# [Results](#tab/results)
+
+|array_sort(array, lambdafunction(CASE WHEN ((namedlambdavariable() IS NULL) AND (namedlambdavariable() IS NULL)) THEN 0 WHEN (namedlambdavariable() IS NULL) THEN -1 WHEN (namedlambdavariable() IS NULL) THEN 1 WHEN (namedlambdavariable() < namedlambdavariable()) THEN 1 WHEN (namedlambdavariable() > namedlambdavariable()) THEN -1 ELSE 0 END, namedlambdavariable(), namedlambdavariable()))|
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|[dc, bc, ab]                                                                                                                                                                                                                                                                                                                                                                                        |
+
+_(top = 20)_
+
+# [Schema](#tab/schema)
+
+```shell
+root
+ |-- array_sort(array, lambdafunction(CASE WHEN ((namedlambdavariable() IS NULL) AND (namedlambdavariable() IS NULL)) THEN 0 WHEN (namedlambdavariable() IS NULL) THEN -1 WHEN (namedlambdavariable() IS NULL) THEN 1 WHEN (namedlambdavariable() < namedlambdavariable()) THEN 1 WHEN (namedlambdavariable() > namedlambdavariable()) THEN -1 ELSE 0 END, namedlambdavariable(), namedlambdavariable())): array (nullable = true)
+ |    |-- element: string (containsNull = true)
+
+```

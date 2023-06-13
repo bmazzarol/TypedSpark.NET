@@ -20,6 +20,18 @@ public static class Functions
         where T : TypedColumn, new() => new() { Column = F.Expr("NULL") };
 
     /// <summary>
+    /// Evaluates a `condition` and returns one of multiple possible result expressions.
+    /// If Otherwise(`value`) is not defined at the end, null is returned for
+    /// unmatched conditions. This method can be chained with other 'when' invocations in case
+    /// multiple matches are required.
+    /// </summary>
+    /// <param name="condition">The condition to check</param>
+    /// <param name="value">The value to set if the condition is true</param>
+    /// <returns>New column after applying the when method</returns>
+    public static T When<T>(BooleanColumn condition, T value)
+        where T : TypedColumn, new() => new() { Column = F.When((Column)condition, (Column)value) };
+
+    /// <summary>
     /// Returns the first column that is not null, or null if all inputs are null.
     /// </summary>
     /// <param name="columns">Columns to apply</param>

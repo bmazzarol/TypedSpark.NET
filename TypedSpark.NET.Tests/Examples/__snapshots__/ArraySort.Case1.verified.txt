@@ -1,0 +1,11 @@
+﻿root
+ |-- array_sort(array(5, 6, 1), lambdafunction(CASE WHEN (namedlambdavariable() < namedlambdavariable()) THEN -1 WHEN (namedlambdavariable() > namedlambdavariable()) THEN 1 ELSE 0 END, namedlambdavariable(), namedlambdavariable())): array (nullable = false)
+ |    |-- element: integer (containsNull = false)
+
+
+(top = 20)
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|array_sort(array(5, 6, 1), lambdafunction(CASE WHEN (namedlambdavariable() < namedlambdavariable()) THEN -1 WHEN (namedlambdavariable() > namedlambdavariable()) THEN 1 ELSE 0 END, namedlambdavariable(), namedlambdavariable()))|
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|[1, 5, 6]                                                                                                                                                                                                                         |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+

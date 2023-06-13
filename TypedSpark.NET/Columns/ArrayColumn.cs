@@ -371,11 +371,29 @@ public static class ArrayColumn
     /// Sorts the input array in ascending order.
     /// Null elements will be placed at the end of the returned array.
     /// </summary>
-    /// <param name="column">Column to apply</param>
+    /// <param name="column">column</param>
     /// <returns>array column</returns>
     [Since("2.4.0")]
     public static ArrayColumn<T> Sort<T>(this ArrayColumn<T> column)
         where T : TypedColumn, TypedOrdColumn, new() => New<T>(F.ArraySort(column));
+
+    /// <summary>
+    /// Sorts the input array based on the logic defined in the `compFunc`.
+    /// </summary>
+    /// <param name="column">column</param>
+    /// <param name="compFunc">comparator function</param>
+    /// <returns>array column</returns>
+    [Since("3.0.0")]
+    public static ArrayColumn<T> Sort<T>(
+        this ArrayColumn<T> column,
+        Func<T, T, IntegerColumn> compFunc
+    )
+        where T : TypedColumn, TypedOrdColumn, new() =>
+        New<T>(
+            F.Expr(
+                $"array_sort({column}, (left, right) -> {compFunc(new T { Column = F.Col("left") }, new T { Column = F.Col("right") })})"
+            )
+        );
 
     /// <summary>
     /// Returns the minimum value in the array
