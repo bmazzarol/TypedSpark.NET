@@ -1,0 +1,13 @@
+﻿root
+ |-- array_union(array(a, b, c), array(a, c, d)): array (nullable = false)
+ |    |-- element: string (containsNull = false)
+ |-- array_union(array(a, b, c), array(a, c, d)): array (nullable = false)
+ |    |-- element: string (containsNull = false)
+
+
+(top = 20)
++-------------------------------------------+-------------------------------------------+
+|array_union(array(a, b, c), array(a, c, d))|array_union(array(a, b, c), array(a, c, d))|
++-------------------------------------------+-------------------------------------------+
+|[a, b, c, d]                               |[a, b, c, d]                               |
++-------------------------------------------+-------------------------------------------+

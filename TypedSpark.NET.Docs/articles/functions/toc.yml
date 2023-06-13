@@ -61,9 +61,9 @@
     href: array-contains.md
   - name: Array Distinct
     href: array-distinct.md
-  - name: Array Except
+  - name: Array Except (-)
     href: array-except.md
-  - name: Array Intersect
+  - name: Array Intersect (|)
     href: array-intersect.md
   - name: Array Join
     href: array-join.md
@@ -79,3 +79,5 @@
     href: array-repeat.md
   - name: Array Sort
     href: array-sort.md
+  - name: Array Union (&)
+    href: array-union.md
