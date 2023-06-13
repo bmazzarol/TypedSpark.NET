@@ -86,8 +86,7 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// <param name="value">Value to locate</param>
     /// <returns>integer column</returns>
     [Since("2.4.0")]
-    public IntegerColumn Position(T value) =>
-        IntegerColumn.New(F.ArrayPosition(Column, (Column)value));
+    public LongColumn Position(T value) => LongColumn.New(F.ArrayPosition(Column, (Column)value));
 
     /// <summary>
     /// Remove all elements that equal to element from the given array
