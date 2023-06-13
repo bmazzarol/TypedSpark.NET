@@ -1,0 +1,18 @@
+# [Results](#tab/results)
+
+|array_remove(array(1, 2, 3, NULL, 3), 3)|array_remove(array(1, 2, 3, NULL, 3), 4)|
+|----------------------------------------|----------------------------------------|
+|[1, 2, null]                            |[1, 2, 3, null, 3]                      |
+
+_(top = 20)_
+
+# [Schema](#tab/schema)
+
+```shell
+root
+ |-- array_remove(array(1, 2, 3, NULL, 3), 3): array (nullable = false)
+ |    |-- element: integer (containsNull = true)
+ |-- array_remove(array(1, 2, 3, NULL, 3), 4): array (nullable = false)
+ |    |-- element: integer (containsNull = true)
+
+```
