@@ -9,6 +9,6 @@ asinh(`expr`) - Returns inverse hyperbolic sine of `expr`.
 
 ## Examples
 
-[!code-csharp[Example1](../../../TypedSpark.NET.Tests/Examples/Asin.cs#Example1)]
+[!code-csharp[Example1](../../../TypedSpark.NET.Tests/Examples/Asinh.cs#Example1)]
 
-[!INCLUDE [Example1](../../../TypedSpark.NET.Tests/Examples/__examples__/Asin.Case1.md)]
+[!INCLUDE [Example1](../../../TypedSpark.NET.Tests/Examples/__examples__/Asinh.Case1.md)]
