@@ -1,0 +1,10 @@
+﻿root
+ |-- ascii(CAST(2 AS STRING)): integer (nullable = false)
+
+
+(top = 20)
++------------------------+
+|ascii(CAST(2 AS STRING))|
++------------------------+
+|50                      |
++------------------------+

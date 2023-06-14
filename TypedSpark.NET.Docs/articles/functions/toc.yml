@@ -87,3 +87,5 @@
     href: arrays-overlap.md
   - name: Array Zip
     href: array-zip.md
+  - name: Ascii
+    href: ascii.md
