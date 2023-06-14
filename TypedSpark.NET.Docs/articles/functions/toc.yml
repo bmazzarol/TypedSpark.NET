@@ -85,3 +85,5 @@
     href: array-union.md
   - name: Arrays Overlap
     href: arrays-overlap.md
+  - name: Array Zip
+    href: array-zip.md

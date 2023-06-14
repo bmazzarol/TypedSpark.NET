@@ -1,0 +1,13 @@
+﻿root
+ |-- arrays_zip(array(1, 2, 3), array(2, 3, 4)): array (nullable = false)
+ |    |-- element: struct (containsNull = false)
+ |    |    |-- 0: integer (nullable = true)
+ |    |    |-- 1: integer (nullable = true)
+
+
+(top = 20)
++------------------------------------------+
+|arrays_zip(array(1, 2, 3), array(2, 3, 4))|
++------------------------------------------+
+|[{1, 2}, {2, 3}, {3, 4}]                  |
++------------------------------------------+
