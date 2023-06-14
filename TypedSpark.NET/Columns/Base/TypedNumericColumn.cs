@@ -307,4 +307,11 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <returns>double column</returns>
     [Since("1.4.0")]
     public DoubleColumn Asin() => DoubleColumn.New(F.Asin(Column));
+
+    /// <summary>
+    /// Returns the inverse hyperbolic sine
+    /// </summary>
+    /// <returns>double column</returns>
+    [Since("3.0.0")]
+    public DoubleColumn Asinh() => DoubleColumn.New(F.Asinh(Column));
 }
