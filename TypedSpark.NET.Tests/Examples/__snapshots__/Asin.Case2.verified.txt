@@ -1,0 +1,10 @@
+﻿root
+ |-- ASIN(2): double (nullable = true)
+
+
+(top = 20)
++-------+
+|ASIN(2)|
++-------+
+|NaN    |
++-------+
