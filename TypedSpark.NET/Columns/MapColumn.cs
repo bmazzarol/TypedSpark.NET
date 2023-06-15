@@ -106,11 +106,11 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// Creates a new row for each element in the given map column
     /// </summary>
     /// <returns>key value columns</returns>
-    public ExplodedColumn Explode(out TKey key, out TValue value)
+    public VoidColumn Explode(out TKey key, out TValue value)
     {
         key = NewKey(F.Col("key"));
         value = NewValue(F.Col("value"));
-        return new ExplodedColumn(F.Explode(Column));
+        return new VoidColumn(F.Explode(Column));
     }
 
     /// <summary>
@@ -118,23 +118,23 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// Unlike Explode(), if the map is null or empty then null is produced.
     /// </summary>
     /// <returns>key value columns</returns>
-    public ExplodedColumn ExplodeOuter(out TKey key, out TValue value)
+    public VoidColumn ExplodeOuter(out TKey key, out TValue value)
     {
         key = NewKey(F.Col("key"));
         value = NewValue(F.Col("value"));
-        return new ExplodedColumn(F.ExplodeOuter(Column));
+        return new VoidColumn(F.ExplodeOuter(Column));
     }
 
     /// <summary>
     /// Creates a new row for each element with position in the given map column
     /// </summary>
     /// <returns>pos, key, value columns</returns>
-    public ExplodedColumn PosExplode(out IntegerColumn pos, out TKey key, out TValue value)
+    public VoidColumn PosExplode(out IntegerColumn pos, out TKey key, out TValue value)
     {
         pos = IntegerColumn.New("pos");
         key = NewKey(F.Col("key"));
         value = NewValue(F.Col("value"));
-        return new ExplodedColumn(F.PosExplode(Column));
+        return new VoidColumn(F.PosExplode(Column));
     }
 
     /// <summary>
@@ -142,12 +142,12 @@ public sealed class MapColumn<TKey, TValue> : TypedColumn<MapColumn<TKey, TValue
     /// Unlike Posexplode(), if the map is null or empty then the row(null, null) is produced.
     /// </summary>
     /// <returns>pos, key and value columns</returns>
-    public ExplodedColumn PosExplodeOuter(out IntegerColumn pos, out TKey key, out TValue value)
+    public VoidColumn PosExplodeOuter(out IntegerColumn pos, out TKey key, out TValue value)
     {
         pos = IntegerColumn.New("pos");
         key = NewKey(F.Col("key"));
         value = NewValue(F.Col("value"));
-        return new ExplodedColumn(F.PosExplodeOuter(Column));
+        return new VoidColumn(F.PosExplodeOuter(Column));
     }
 }
 

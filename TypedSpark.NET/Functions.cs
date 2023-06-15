@@ -109,4 +109,12 @@ public static class Functions
         ArrayColumn.New<IntegerColumn>(
             F.PercentileApprox(column.Column, percentages.Column, accuracy.Column)
         );
+
+    /// <summary>
+    /// Returns null if the condition is true, and throws an exception otherwise
+    /// </summary>
+    /// <param name="assertion">boolean column</param>
+    /// <returns>void column</returns>
+    [Since("2.0.0")]
+    public static VoidColumn Assert(BooleanColumn assertion) => new(F.AssertTrue(assertion.Column));
 }

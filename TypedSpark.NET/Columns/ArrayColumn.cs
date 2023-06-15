@@ -180,11 +180,11 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// Creates a new row for each element with position in the given array column
     /// </summary>
     /// <returns>pos and col columns</returns>
-    public ExplodedColumn PosExplode(out IntegerColumn pos, out T col)
+    public VoidColumn PosExplode(out IntegerColumn pos, out T col)
     {
         pos = IntegerColumn.New("pos");
         col = NewValue(F.Col("col"));
-        return new ExplodedColumn(F.PosExplode(Column));
+        return new VoidColumn(F.PosExplode(Column));
     }
 
     /// <summary>
@@ -192,11 +192,11 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     /// Unlike Posexplode(), if the array is null or empty then the row(null, null) is produced.
     /// </summary>
     /// <returns>pos and col columns</returns>
-    public ExplodedColumn PosExplodeOuter(out IntegerColumn pos, out T col)
+    public VoidColumn PosExplodeOuter(out IntegerColumn pos, out T col)
     {
         pos = IntegerColumn.New("pos");
         col = NewValue(F.Col("col"));
-        return new ExplodedColumn(F.PosExplodeOuter(Column));
+        return new VoidColumn(F.PosExplodeOuter(Column));
     }
 
     /// <summary>

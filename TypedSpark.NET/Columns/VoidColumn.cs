@@ -5,11 +5,11 @@ using Microsoft.Spark.Sql.Types;
 namespace TypedSpark.NET.Columns;
 
 /// <summary>
-/// Exploded column, has no operations as the column is no longer singular and has been exploded out
+/// Void column, has no operations
 /// </summary>
-public class ExplodedColumn : TypedColumn
+public class VoidColumn : TypedColumn
 {
-    internal ExplodedColumn(Column column)
+    internal VoidColumn(Column column)
         : base(new NullType(), column) { }
 
     /// <inheritdoc />
