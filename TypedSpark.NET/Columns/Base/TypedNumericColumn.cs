@@ -314,4 +314,11 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     /// <returns>double column</returns>
     [Since("3.0.0")]
     public DoubleColumn Asinh() => DoubleColumn.New(F.Asinh(Column));
+
+    /// <summary>
+    /// Returns the inverse tangent in radians
+    /// </summary>
+    /// <returns>double column</returns>
+    [Since("1.4.0")]
+    public DoubleColumn Atan() => DoubleColumn.New(F.Atan(Column));
 }
