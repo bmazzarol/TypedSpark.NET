@@ -97,3 +97,5 @@
     href: assert-true.md
   - name: Atan
     href: atan.md
+  - name: Atan2
+    href: atan2.md

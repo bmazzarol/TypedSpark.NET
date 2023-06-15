@@ -27,5 +27,21 @@ namespace TypedSpark.NET.Tests.Examples
 
                 return result;
             });
+
+        [Fact]
+        public static async Task Case2() =>
+            await DebugDataframeAndSaveExample(s =>
+            {
+                var df = s.CreateEmptyFrame();
+
+                #region Example2
+
+                IntegerColumn x = 0;
+                DataFrame result = df.Select(x.Atan2((DoubleColumn)0.0));
+
+                #endregion
+
+                return result;
+            });
     }
 }

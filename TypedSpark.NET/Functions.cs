@@ -117,4 +117,15 @@ public static class Functions
     /// <returns>void column</returns>
     [Since("2.0.0")]
     public static VoidColumn Assert(BooleanColumn assertion) => new(F.AssertTrue(assertion.Column));
+
+    /// <summary>
+    /// Computes atan2 for the given `x` and `y`
+    /// </summary>
+    /// <param name="y">coordinate on y-axis</param>
+    /// <param name="x">coordinate on x-axis</param>
+    /// <returns>double column</returns>
+    [Since("1.4.0")]
+    public static DoubleColumn Atan2<TA, TB>(this TA y, TB x)
+        where TA : TypedColumn, TypedNumericColumn
+        where TB : TypedColumn, TypedNumericColumn => DoubleColumn.New(F.Atan2(y.Column, x.Column));
 }
