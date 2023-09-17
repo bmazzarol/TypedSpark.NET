@@ -5,6 +5,7 @@
 
 # TypedSpark.NET
 
+---
 > Due to inactivity and lack of support for [spark.NET](https://github.com/dotnet/spark)
 > this has been archived.
 > I would recommend building Spark applications in a supported language, not
