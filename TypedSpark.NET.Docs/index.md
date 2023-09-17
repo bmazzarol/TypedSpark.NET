@@ -6,11 +6,6 @@
 # TypedSpark.NET
 
 ---
-> Due to inactivity and lack of support for [spark.NET](https://github.com/dotnet/spark)
-> this has been archived.
-> I would recommend building Spark applications in a supported language, not
-> in dotnet.
----
 
 [![Nuget](https://img.shields.io/nuget/v/TypedSpark.NET)](https://www.nuget.org/packages/TypedSpark.NET/)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bmazzarol_TypedSpark.NET&metric=coverage)](https://sonarcloud.io/summary/new_code?id=bmazzarol_TypedSpark.NET)
@@ -21,6 +16,11 @@
 
 Typesafe bindings for :star: Spark.NET
 
+> [!IMPORTANT]
+> Due to inactivity and lack of support for [spark.NET](https://github.com/dotnet/spark)
+> this has been archived.
+> I would recommend building Spark applications in a supported language, not
+> in dotnet.
 ---
 
 </div>
