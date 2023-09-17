@@ -21,6 +21,7 @@ Typesafe bindings for :star: Spark.NET
 > this has been archived.
 > I would recommend building Spark applications in a supported language, not
 > in dotnet.
+
 ---
 
 </div>
