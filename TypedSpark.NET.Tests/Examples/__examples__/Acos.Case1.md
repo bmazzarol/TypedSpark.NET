@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|ACOS(1)|
-|-------|
-|0.0    |
+|ACOS(1)|ACOS(1)|
+|-------|-------|
+|0.0    |0.0    |
 
 _(top = 20)_
 
@@ -10,6 +10,7 @@ _(top = 20)_
 
 ```shell
 root
+ |-- ACOS(1): double (nullable = true)
  |-- ACOS(1): double (nullable = true)
 
 ```

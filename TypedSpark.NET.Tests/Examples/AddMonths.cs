@@ -23,7 +23,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                 DateColumn a = new DateTime(2016, 08, 31);
                 IntegerColumn b = -1;
-                DataFrame result = df.Select(a, a.AddMonths(1), b, a.AddMonths(b));
+                DataFrame result = df.Select(a, a.AddMonths(1), b, Functions.AddMonths(a, b));
 
                 #endregion
 
@@ -40,7 +40,7 @@ namespace TypedSpark.NET.Tests.Examples
 
                 TimestampColumn a = new DateTime(2016, 08, 31, 12, 0, 0, DateTimeKind.Utc);
                 IntegerColumn b = -1;
-                DataFrame result = df.Select(a, a.AddMonths(1), b, a.AddMonths(b));
+                DataFrame result = df.Select(a, a.AddMonths(1), b, Functions.AddMonths(a, b));
 
                 #endregion
 

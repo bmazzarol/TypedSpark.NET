@@ -5,7 +5,7 @@
 abs(`expr`) - Returns the absolute value of the numeric value.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#abs)
-* [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.Abs*)
+* [API Docs](xref:TypedSpark.NET.Functions.Abs*)
 
 ## Examples
 

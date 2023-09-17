@@ -6,7 +6,7 @@ acos(`expr`) - Returns the inverse cosine (a.k.a. arc cosine) of `expr`, as if
 computed by `java.lang.Math.acos`
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#acos)
-* [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.Acos*)
+* [API Docs](xref:TypedSpark.NET.Functions.Acos*)
 
 ## Examples
 

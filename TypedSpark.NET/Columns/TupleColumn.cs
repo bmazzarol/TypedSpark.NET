@@ -1,4 +1,4 @@
-﻿#pragma warning disable MA0048, CS1591
+﻿#pragma warning disable CS1591
 
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Spark.Sql;

@@ -6,7 +6,7 @@ concat(`array1`, `array2`) - Returns an array of the elements in `array1`
 concatenated with `array2`.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#concat)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.Concat*)
+* [API Docs](xref:TypedSpark.NET.Functions.Concat*)
 
 ## Examples
 

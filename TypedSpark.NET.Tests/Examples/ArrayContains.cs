@@ -23,7 +23,11 @@ namespace TypedSpark.NET.Tests.Examples
                 #region Example1
 
                 ArrayColumn<IntegerColumn> array = new IntegerColumn[] { 1, 2, 3 };
-                DataFrame result = df.Select(array.Contains(2), array.Contains(5));
+                DataFrame result = df.Select(
+                    array.Contains(2),
+                    array.Contains(5),
+                    Functions.Contains(array, 3)
+                );
 
                 #endregion
 

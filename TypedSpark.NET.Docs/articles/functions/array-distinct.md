@@ -5,7 +5,7 @@
 array_distinct(`array`) - Removes duplicate values from the `array`.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#array_distinct)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.Distinct)
+* [API Docs](xref:TypedSpark.NET.Functions.Distinct)
 
 ## Examples
 

@@ -139,12 +139,4 @@ public sealed class TimestampColumn
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(DateTimeOffset lhs, TimestampColumn rhs) =>
         lhs.UtcDateTime - rhs;
-
-    /// <summary>
-    /// Returns the date that is `months` after the current timestamp
-    /// </summary>
-    /// <param name="months">months to add</param>
-    /// <returns>date column</returns>
-    public DateColumn AddMonths(IntegerColumn months) =>
-        DateColumn.New(F.AddMonths(Column, months));
 }

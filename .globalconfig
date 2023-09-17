@@ -8,3 +8,6 @@ dotnet_diagnostic.CA1716.severity = suggestion
 
 # Add comma after the last value
 dotnet_diagnostic.MA0007.severity = none
+
+# File name must match type name
+dotnet_diagnostic.MA0048.severity = none

@@ -29,7 +29,7 @@ namespace TypedSpark.NET.Tests.Examples
                     Functions.Null<IntegerColumn>(),
                     3
                 );
-                DataFrame result = df.Select(array.Distinct());
+                DataFrame result = df.Select(array.Distinct(), Functions.Distinct(array));
 
                 #endregion
 

@@ -5,7 +5,7 @@
 acosh(`expr`) - Returns inverse hyperbolic cosine of `expr`.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#acosh)
-* [API Docs](xref:TypedSpark.NET.Columns.TypedNumericColumn`3.Acosh*)
+* [API Docs](xref:TypedSpark.NET.Functions.Acosh*)
 
 ## Examples
 

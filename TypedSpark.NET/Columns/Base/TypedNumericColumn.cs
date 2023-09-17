@@ -281,27 +281,6 @@ public abstract class TypedNumericColumn<TThis, TSparkType, TNativeType>
     public BooleanColumn IsNaN() => BooleanColumn.New(F.IsNaN(Column));
 
     /// <summary>
-    /// Returns the absolute value of the numeric value
-    /// </summary>
-    /// <returns>numeric column</returns>
-    [Since("1.2.0")]
-    public TThis Abs() => New(F.Abs(Column));
-
-    /// <summary>
-    /// Returns the inverse cosine (a.k.a. arc cosine)
-    /// </summary>
-    /// <returns>double column</returns>
-    [Since("1.4.0")]
-    public DoubleColumn Acos() => DoubleColumn.New(F.Acos(Column));
-
-    /// <summary>
-    /// Returns inverse hyperbolic cosine
-    /// </summary>
-    /// <returns>double column</returns>
-    [Since("3.1.0")]
-    public DoubleColumn Acosh() => DoubleColumn.New(F.Acosh(Column));
-
-    /// <summary>
     /// Returns inverse sine in radians
     /// </summary>
     /// <returns>double column</returns>

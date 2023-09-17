@@ -20,8 +20,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example1
 
-                IntegerColumn a = 1;
-                DataFrame result = df.Select(a.Acos());
+                IntegerColumn x = 1;
+                DataFrame result = df.Select(x.Acos(), Functions.Acos(x));
 
                 #endregion
 
@@ -36,8 +36,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example2
 
-                IntegerColumn a = 2;
-                DataFrame result = df.Select(a.Acos());
+                IntegerColumn x = 2;
+                DataFrame result = df.Select(x.Acos(), Functions.Acos(x));
 
                 #endregion
 

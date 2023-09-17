@@ -6,6 +6,7 @@ using Microsoft.Spark;
 using Microsoft.Spark.Sql;
 using Microsoft.Spark.Sql.Types;
 using F = Microsoft.Spark.Sql.Functions;
+using TF = TypedSpark.NET.Functions;
 
 namespace TypedSpark.NET.Columns;
 
@@ -59,23 +60,17 @@ public sealed class StringColumn : TypedOrdColumn<StringColumn, StringType, stri
     /// <summary>
     /// Concatenation
     /// </summary>
-    public static StringColumn operator +(StringColumn lhs, StringColumn rhs) => lhs.Plus(rhs);
+    public static StringColumn operator +(StringColumn lhs, StringColumn rhs) => lhs.Concat(rhs);
 
     /// <summary>
     /// Concatenation
     /// </summary>
-    public static StringColumn operator +(StringColumn lhs, string rhs) => lhs.Plus(rhs);
+    public static StringColumn operator +(StringColumn lhs, string rhs) => lhs.Concat(rhs);
 
     /// <summary>
     /// Concatenation
     /// </summary>
-    public static StringColumn operator +(string lhs, StringColumn rhs) =>
-        ((StringColumn)lhs).Plus(rhs);
-
-    /// <summary>
-    /// Concatenation
-    /// </summary>
-    public StringColumn Plus(StringColumn rhs) => New(F.Concat(Column, rhs));
+    public static StringColumn operator +(string lhs, StringColumn rhs) => TF.Concat(lhs, rhs);
 
     /// <summary>
     /// Computes the character length of a given string or number of bytes of a binary string

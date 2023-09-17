@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|abs(-1)|
-|-------|
-|1      |
+|abs(-1)|abs(-1)|
+|-------|-------|
+|1      |1      |
 
 _(top = 20)_
 
@@ -10,6 +10,7 @@ _(top = 20)_
 
 ```shell
 root
+ |-- abs(-1): integer (nullable = false)
  |-- abs(-1): integer (nullable = false)
 
 ```

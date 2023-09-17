@@ -5,7 +5,7 @@
 `expr1` and `expr2` - Logical AND.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#and)
-* [API Docs](xref:TypedSpark.NET.Columns.BooleanColumn.op_BitwiseAnd*)
+* [API Docs](xref:TypedSpark.NET.Functions.And*)
 
 ## Examples
 

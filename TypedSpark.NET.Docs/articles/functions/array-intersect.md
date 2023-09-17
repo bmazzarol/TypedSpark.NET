@@ -6,7 +6,7 @@ array_intersect(`array1`, `array2`) - Returns an array of the elements in the
 intersection of `array1` and `array2`, without duplicates.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#array_intersect)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn`1.op_BitwiseOr*)
+* [API Docs](xref:TypedSpark.NET.Functions.Intersect*)
 
 ## Examples
 

@@ -24,7 +24,11 @@ namespace TypedSpark.NET.Tests.Examples
 
                 var array1 = ArrayColumn.New<IntegerColumn>(1, 2, 3);
                 var array2 = ArrayColumn.New<IntegerColumn>(1, 3, 5);
-                DataFrame result = df.Select(array1 - array2, array1.Except(array2));
+                DataFrame result = df.Select(
+                    array1 - array2,
+                    array1.Except(array2),
+                    Functions.Except(array1, array2)
+                );
 
                 #endregion
 

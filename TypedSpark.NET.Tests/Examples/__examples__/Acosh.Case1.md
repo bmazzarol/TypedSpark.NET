@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|ACOSH(1)|
-|--------|
-|0.0     |
+|ACOSH(1)|ACOSH(1)|
+|--------|--------|
+|0.0     |0.0     |
 
 _(top = 20)_
 
@@ -10,6 +10,7 @@ _(top = 20)_
 
 ```shell
 root
+ |-- ACOSH(1): double (nullable = true)
  |-- ACOSH(1): double (nullable = true)
 
 ```

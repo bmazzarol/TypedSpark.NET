@@ -44,8 +44,13 @@ namespace TypedSpark.NET.Tests.Examples
                 DataFrame result = df.Select(
                     array,
                     state.As("state"),
-                    array
-                        .Aggregate(state, (acc, x) => acc + x, acc => (acc * 10).CastToString())
+                    Functions
+                        .Aggregate(
+                            array,
+                            state,
+                            (acc, x) => acc + x,
+                            acc => (acc * 10).CastToString()
+                        )
                         .As("aggregate")
                 );
 

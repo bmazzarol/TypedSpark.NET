@@ -21,7 +21,7 @@ namespace TypedSpark.NET.Tests.Examples
                 #region Example1
 
                 ArrayColumn<StringColumn> array = new StringColumn[] { "hello", "world" };
-                DataFrame result = df.Select(array.Join(" "));
+                DataFrame result = df.Select(array.Join(" "), Functions.Join(array, ";"));
 
                 #endregion
 

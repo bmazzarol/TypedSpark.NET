@@ -76,26 +76,33 @@ public sealed class BooleanColumn : TypedOrdColumn<BooleanColumn, BooleanType, b
     public BooleanColumn Or(BooleanColumn other) => New(Column.Or((Column)other));
 
     /// <summary>
-    /// Apply boolean AND operator for the given two columns
+    /// Applies the boolean AND operator with between `expr1` and `expr2`
     /// </summary>
-    /// <param name="lhs">Column on the left side of the operator</param>
-    /// <param name="rhs">Column on the right side of the operator</param>
+    /// <param name="expr1">first boolean column expr</param>
+    /// <param name="expr2">second boolean column expr</param>
     /// <returns>boolean column</returns>
-    public static BooleanColumn operator &(BooleanColumn lhs, BooleanColumn rhs) => lhs.And(rhs);
+    [Since("1.0.0")]
+    public static BooleanColumn operator &(BooleanColumn expr1, BooleanColumn expr2) =>
+        expr1.And(expr2);
 
     /// <summary>
-    /// Apply boolean AND operator with the given column
+    /// Applies the boolean AND operator with between `expr1` and `expr2`
     /// </summary>
-    /// <param name="other">Column to apply AND operator</param>
+    /// <param name="expr1">first boolean literal expr</param>
+    /// <param name="expr2">second boolean column expr</param>
     /// <returns>boolean column</returns>
-    public BooleanColumn And(BooleanColumn other) => New(Column.And((Column)other));
+    [Since("1.0.0")]
+    public static BooleanColumn operator &(bool expr1, BooleanColumn expr2) =>
+        Functions.And(expr1, expr2);
 
     /// <summary>
-    /// Returns true if at least one value of expr is true
+    /// Applies the boolean AND operator with between `expr1` and `expr2`
     /// </summary>
+    /// <param name="expr1">first boolean column expr</param>
+    /// <param name="expr2">second boolean literal expr</param>
     /// <returns>boolean column</returns>
-    [Since("3.0.0")]
-    public BooleanColumn Any() => New(F.Expr($"any({Column})"));
+    [Since("1.0.0")]
+    public static BooleanColumn operator &(BooleanColumn expr1, bool expr2) => expr1.And(expr2);
 
     /// <summary>
     /// Casts the column to a string column, using the canonical string

@@ -6,7 +6,7 @@ array_contains(`array`, `value`) - Returns true if the `array` contains
 the `value`.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#array_contains)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn.Contains*)
+* [API Docs](xref:TypedSpark.NET.Functions.Contains*)
 
 ## Examples
 

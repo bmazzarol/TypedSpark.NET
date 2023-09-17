@@ -110,11 +110,4 @@ public sealed class DateColumn
     /// <param name="rhs">right hand side</param>
     /// <returns>interval column</returns>
     public static IntervalColumn operator -(DateTime lhs, DateColumn rhs) => new Date(lhs) - rhs;
-
-    /// <summary>
-    /// Returns the date that is `months` after the current date
-    /// </summary>
-    /// <param name="months">months to add</param>
-    /// <returns>date column</returns>
-    public DateColumn AddMonths(IntegerColumn months) => New(F.AddMonths(Column, months));
 }

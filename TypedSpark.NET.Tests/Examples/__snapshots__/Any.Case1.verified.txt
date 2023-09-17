@@ -1,10 +1,11 @@
 ﻿root
  |-- any(x): boolean (nullable = true)
+ |-- any(x): boolean (nullable = true)
 
 
 (top = 20)
-+------+
-|any(x)|
-+------+
-|true  |
-+------+
++------+------+
+|any(x)|any(x)|
++------+------+
+|true  |true  |
++------+------+

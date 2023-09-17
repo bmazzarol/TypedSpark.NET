@@ -20,8 +20,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example1
 
-                IntegerColumn a = -1;
-                DataFrame result = df.Select(a.Abs());
+                IntegerColumn x = -1;
+                DataFrame result = df.Select(x.Abs(), Functions.Abs(x));
 
                 #endregion
 

@@ -23,7 +23,7 @@ namespace TypedSpark.NET.Tests.Examples
                     new[] { true, false, false }.Select(x => new { x })
                 );
                 BooleanColumn x = BooleanColumn.New("x");
-                DataFrame result = df.Select(x.Any());
+                DataFrame result = df.Select(x.Any(), Functions.Any(x));
 
                 #endregion
 

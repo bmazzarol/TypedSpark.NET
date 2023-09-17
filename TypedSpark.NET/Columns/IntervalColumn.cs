@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Microsoft.Spark;
 using Microsoft.Spark.Sql;
@@ -11,7 +10,6 @@ namespace TypedSpark.NET.Columns;
 /// <summary>
 /// Day time interval type
 /// </summary>
-[SuppressMessage("Design", "MA0048:File name must match type name")]
 public sealed class DayTimeIntervalType : AtomicType
 {
     /// <inheritdoc />

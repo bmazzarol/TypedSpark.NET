@@ -97,22 +97,6 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     public ArrayColumn<T> Remove(T element) => New(F.ArrayRemove(Column, (Column)element));
 
     /// <summary>
-    /// Removes duplicate values from the array
-    /// </summary>
-    /// <returns>array column</returns>
-    [Since("2.4.0")]
-    public ArrayColumn<T> Distinct() => New(F.ArrayDistinct(Column));
-
-    /// <summary>
-    /// Returns an array of the elements in the intersection of the given two arrays,
-    /// without duplicates
-    /// </summary>
-    /// <param name="other">Right side column to apply</param>
-    /// <returns>array column</returns>
-    [Since("2.4.0")]
-    public ArrayColumn<T> Intersect(ArrayColumn<T> other) => New(F.ArrayIntersect(Column, other));
-
-    /// <summary>
     /// Returns an array of the elements in the intersection of the given two arrays,
     /// without duplicates
     /// </summary>
@@ -142,15 +126,6 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
     [Since("2.4.0")]
     public static ArrayColumn<T> operator &(ArrayColumn<T> lhs, ArrayColumn<T> rhs) =>
         lhs.Union(rhs);
-
-    /// <summary>
-    /// Returns an array of the elements in the `col1` but not in the `col2`,
-    /// without duplicates. The order of elements in the result is nondeterministic.
-    /// </summary>
-    /// <param name="other">Right side column to apply</param>
-    /// <returns>array column</returns>
-    [Since("2.4.0")]
-    public ArrayColumn<T> Except(ArrayColumn<T> other) => New(F.ArrayExcept(Column, other));
 
     /// <summary>
     /// Returns an array of the elements in the `lhs` but not in the `rhs`,
@@ -246,57 +221,6 @@ public sealed class ArrayColumn<T> : TypedColumn<ArrayColumn<T>, ArrayType>
             )
         );
 
-    private TC InternalAggregate<TB, TC>(
-        TB seed,
-        Func<TB, T, TB> merge,
-        Func<TB, TC>? project = default
-    )
-        where TB : TypedColumn, new()
-        where TC : TypedColumn, new() =>
-        new()
-        {
-            Column = F.Expr(
-                $"aggregate({Column},{seed.Column},"
-                    + $"(acc, x) -> {merge(new TB { Column = F.Col("acc") }, new T { Column = F.Col("x") })}"
-                    + (
-                        project != null
-                            ? $",x -> {project(new TB { Column = F.Col("x") })}"
-                            : string.Empty
-                    )
-                    + ")"
-            )
-        };
-
-    /// <summary>
-    /// Applies a binary operator to an initial state and all elements in the array, and reduces this to a single state
-    /// </summary>
-    /// <param name="seed">seed</param>
-    /// <param name="merge">merge function</param>
-    /// <returns>aggregated state</returns>
-    [Since("2.4.0")]
-    public TB Aggregate<TB>(TB seed, Func<TB, T, TB> merge)
-        where TB : TypedColumn, new() => InternalAggregate<TB, TB>(seed, merge);
-
-    /// <summary>
-    /// Applies a binary operator to an initial state and all elements in the array, and reduces this to a single state
-    /// </summary>
-    /// <param name="seed">seed</param>
-    /// <param name="merge">merge function</param>
-    /// <param name="project">projection function</param>
-    /// <returns>aggregated state</returns>
-    [Since("2.4.0")]
-    public TC Aggregate<TB, TC>(TB seed, Func<TB, T, TB> merge, Func<TB, TC> project)
-        where TB : TypedColumn, new()
-        where TC : TypedColumn, new() => InternalAggregate(seed, merge, project);
-
-    /// <summary>
-    /// Returns the concatenation of `this` array of the elements in the `other` array
-    /// </summary>
-    /// <param name="other">Right side column to apply</param>
-    /// <returns>array column</returns>
-    [Since("2.4.0")]
-    public ArrayColumn<T> Concat(ArrayColumn<T> other) => New(F.Concat(Column, other.Column));
-
     /// <summary>
     /// Returns the concatenation of `lhs` array of the elements in the `rhs` array
     /// </summary>
@@ -354,36 +278,6 @@ public static class ArrayColumn
     /// <returns>array column</returns>
     public static ArrayColumn<T> AsArrayColumn<T>(this IEnumerable<T> columns)
         where T : TypedColumn, new() => New(columns);
-
-    /// <summary>
-    /// Returns null if the array is null, true if the array contains `value`,
-    /// and false otherwise
-    /// </summary>
-    /// <param name="array">array to test against</param>
-    /// <param name="value">Value to check for existence</param>
-    /// <returns>boolean column</returns>
-    public static BooleanColumn Contains<T>(this ArrayColumn<T> array, T value)
-        where T : TypedColumn, TypedOrdColumn, new() =>
-        BooleanColumn.New(F.ArrayContains(array.Column, (Column)value));
-
-    /// <summary>
-    /// Concatenates the elements of `column` using the `delimiter`
-    /// </summary>
-    /// <param name="column">column</param>
-    /// <param name="delimiter">Delimiter for join</param>
-    /// <param name="nullReplacement">String to replace null value</param>
-    /// <returns>array column</returns>
-    [Since("2.4.0")]
-    public static StringColumn Join(
-        this ArrayColumn<StringColumn> column,
-        string delimiter,
-        string? nullReplacement = default
-    ) =>
-        StringColumn.New(
-            nullReplacement != null
-                ? F.ArrayJoin(column, delimiter, nullReplacement)
-                : F.ArrayJoin(column, delimiter)
-        );
 
     /// <summary>
     /// Sorts the input array in ascending order.

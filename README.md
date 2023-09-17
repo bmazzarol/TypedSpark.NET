@@ -5,6 +5,11 @@
 
 # TypedSpark.NET
 
+> Due to inactivity and lack of support for [spark.NET](https://github.com/dotnet/spark)
+> this has been archived.
+> I would recommend building Spark applications in a supported language, not
+> in dotnet.
+
 [:running: **_Getting Started_**](https://bmazzarol.github.io/TypedSpark.NET/articles/getting-started.html)
 [:books: **_Documentation_**](https://bmazzarol.github.io/TypedSpark.NET)
 

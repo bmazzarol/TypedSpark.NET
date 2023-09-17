@@ -8,7 +8,7 @@ replace nulls. If no value is set for `nullReplacement`, any null value is
 filtered.
 
 * [Spark Docs](https://spark.apache.org/docs/3.2.2/api/sql/index.html#array_join)
-* [API Docs](xref:TypedSpark.NET.Columns.ArrayColumn.Join*)
+* [API Docs](xref:TypedSpark.NET.Functions.Join*)
 
 ## Examples
 

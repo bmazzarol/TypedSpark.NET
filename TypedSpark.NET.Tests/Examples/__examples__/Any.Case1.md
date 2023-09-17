@@ -1,8 +1,8 @@
 # [Results](#tab/results)
 
-|any(x)|
-|------|
-|true  |
+|any(x)|any(x)|
+|------|------|
+|true  |true  |
 
 _(top = 20)_
 
@@ -10,6 +10,7 @@ _(top = 20)_
 
 ```shell
 root
+ |-- any(x): boolean (nullable = true)
  |-- any(x): boolean (nullable = true)
 
 ```

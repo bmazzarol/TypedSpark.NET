@@ -1,10 +1,11 @@
 ﻿root
  |-- ACOSH(0): double (nullable = true)
+ |-- ACOSH(0): double (nullable = true)
 
 
 (top = 20)
-+--------+
-|ACOSH(0)|
-+--------+
-|NaN     |
-+--------+
++--------+--------+
+|ACOSH(0)|ACOSH(0)|
++--------+--------+
+|NaN     |NaN     |
++--------+--------+

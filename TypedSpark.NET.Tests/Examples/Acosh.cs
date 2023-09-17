@@ -20,8 +20,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example1
 
-                IntegerColumn a = 1;
-                DataFrame result = df.Select(a.Acosh());
+                IntegerColumn x = 1;
+                DataFrame result = df.Select(x.Acosh(), Functions.Acosh(x));
 
                 #endregion
 
@@ -36,8 +36,8 @@ namespace TypedSpark.NET.Tests.Examples
 
                 #region Example2
 
-                IntegerColumn a = 0;
-                DataFrame result = df.Select(a.Acosh());
+                ShortColumn x = 0;
+                DataFrame result = df.Select(x.Acosh(), Functions.Acosh(x));
 
                 #endregion
 
